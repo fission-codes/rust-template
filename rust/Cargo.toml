@@ -1,0 +1,38 @@
+[package]
+name = "{{project-name}}"
+version = "0.1.0"
+description = "{{description}}"
+keywords = []
+categories = []{% if license == "Apache" %}
+license = "Apache"
+{% elsif license == "MIT" %}
+license = "MIT"
+{% else %}
+license = "Apache-2.0 or MIT"
+{% endif %}readme = "README.md"
+edition = "2021"
+documentation = "https://docs.rs/{{project-name}}"
+repository = "https://github.com/{{github-name}}/{{project-name}}"
+authors = [ "{{authors}}" ]
+{% if crate_type == "lib" %}
+[lib]
+path = "src/lib.rs"
+{% else %}
+[[bin]]
+name = "{{project-name}}"
+path = "src/main.rs"
+doc = true
+{% endif %}
+[dependencies]
+{% if crate_type == "lib" %}tracing = "0.1"
+{% else %}
+tracing = "0.1"
+tracing-subscriber = "0.3"
+{% endif %}
+[features]
+default = []
+
+# Speedup build on macOS
+# See https://blog.rust-lang.org/2021/03/25/Rust-1.51.0.html#splitting-debug-information
+[profile.dev]
+split-debuginfo = "unpacked"

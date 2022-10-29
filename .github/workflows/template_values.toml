@@ -1,0 +1,12 @@
+[values]
+codecov = true
+description = "Rust template for project."
+dependabot = true
+discord = ""
+github-actions = true
+github-codeowner = "rush/geddylee"
+github-name = "geddylee"
+license = "dual"
+nix = true
+node-or-web = "web"
+toolchain = "stable"
