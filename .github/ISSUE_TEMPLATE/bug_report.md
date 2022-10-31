@@ -11,7 +11,7 @@ assignees: ''
 
 ## Problem
 
-Describe the immediate problem
+Describe the immediate problem.
 
 ### Impact
 
@@ -19,7 +19,7 @@ What's the impact of this bug?
 
 ## Solution
 
-Describe the sort of fix that would solve the issue
+Describe the sort of fix that would solve the issue.
 
 # Detail
 

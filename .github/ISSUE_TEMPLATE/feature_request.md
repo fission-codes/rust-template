@@ -13,11 +13,11 @@ NB: Feature requests will only be considered if they solve a pain or present a u
 
 ## Problem
 
-Describe the pain that this feature will solve
+Describe the pain that this feature will solve.
 
 ### Impact
 
-The impact of not having this feature
+Describe the impact of not having this feature.
 
 ## Solution
 
