@@ -19,4 +19,4 @@ Please delete options that are not relevant.
 
 ## Screenshots/Screencaps
 
-Please add previews of any UI Changes
+Please add previews of any UI Changes.
