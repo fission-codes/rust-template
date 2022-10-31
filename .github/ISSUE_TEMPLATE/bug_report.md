@@ -15,7 +15,7 @@ Describe the immediate problem
 
 ### Impact
 
-The impact that this bug has
+What's the impact of this bug?
 
 ## Solution
 
