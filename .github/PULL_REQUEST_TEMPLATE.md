@@ -4,7 +4,7 @@ Please include a summary of the change and which issue is fixed. Please also inc
 
 ## Link to issue
 
-Please add a link to any relevant issues/tickets
+Please add a link to any relevant issues/tickets.
 
 ## Type of change
 
