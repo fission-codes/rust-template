@@ -21,7 +21,7 @@ The impact of not having this feature
 
 ## Solution
 
-Describe the solution
+Describe the solution.
 
 # Detail
 
