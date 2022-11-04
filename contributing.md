@@ -1,19 +1,19 @@
 # Contributing to {{Project-Name}}
 
-We welcome everyone to contribute what they can. Whether you are brand new, just want to contribute a little bit, or want contribute a lot there is probably something you can help out with.
+We welcome everyone to contribute what they can. Whether you are brand new, just want to contribute a little bit, or want to contribute a lot there is probably something you can help out with.
 
 ## Where to get help
-The main way to get help is on our [discord server](https://discord.gg/uh69TdKfBD).  Though, this guide should help you get started. It may be slightly lengthy, but it designed for those who are new so please don't let length intimidate you.
+The main way to get help is on our [discord server](https://discord.gg/uh69TdKfBD).  Though, this guide should help you get started. It may be slightly lengthy, but it's designed for those who are new so please don't let length intimidate you.
 
 ## Code of Conduct
-Please be nice to each other when interacting with others and follow our [code of conduct](<link to code of conduct>).
+Please be nice when interacting with others and follow our [code of conduct](<link to code of conduct>).
 
 ## How to contribute
 If the code adds a feature that is not already present in an issue, you can create a new issue for the feature and add the pull request to it. If the code adds a feature that is not already present in an issue, you can create a new issue for the feature and add the pull request to it.
 
 ### Contributing by adding an issue
 If you have found a bug and would like to report it or if you have a feature that you feel we should add, then we'd love it if you opened an issue! ❤️ Before you do, please search the other issues to avoid creating a duplicate issue. 
-Submit a new issue just hit the issue button and a choice between two templates should appear. Then, follow along with the template you chose. If you don't know how to fill in all parts of the template go ahead and skip those parts. You can edit the issue later.
+To submit a new issue just hit the issue button and a choice between two templates should appear. Then, follow along with the template you chose. If you don't know how to fill in all parts of the template go ahead and skip those parts. You can edit the issue later.
 
 ### Contributing through code
 In order to contribute through code follow the steps below. Note that you don't need to be the best programmer to contribute. Our discord is open for questions
@@ -23,7 +23,7 @@ In order to contribute through code follow the steps below. Note that you don't 
  2. **Discuss** the issue with the rest of the community
 	 - Before you write any code, it is recommended that you discuss your intention to write the code on the issue you are attempting to edit
 	 -  This helps to stop you from wasting your time duplicating the work of others that maybe working on the same issue; at the same time
-	 - This step also allows you to get helpful pointers on the community on some problems they may encountered on similar issues
+	 - This step also allows you to get helpful pointers on the community on some problems they may have encountered on similar issues
  3. **Fork** the repository
 	 - A fork creates a copy of the code on your Github, so you can work on it separately from everyone else.
 	 - You can learn more about forking [here](https://docs.github.com/en/get-started/quickstart/fork-a-repo)
@@ -41,8 +41,8 @@ In order to contribute through code follow the steps below. Note that you don't 
 	 - Make sure to test your code with `{{test-code-cmd}}`
  8. **Write tests** for your code
 	 - If you are adding a new feature you should write tests that ensure that if someone make changes to the code it cannot break your new feature without breaking the test
-	 - If your code add a new feature you should also write at least one documentation test. The documentation test's purpose is to demonstrate and document how the use the API feature
-	 - If your code fixes a bug you should write tests that ensure that if some makes code changes in the future the bug does not re-emerge without breaking tests
+	 - If your code adds a new feature you should also write at least one documentation test. The documentation test's purpose is to demonstrate and document how to use the API feature
+	 - If your code fixes a bug you should write tests that ensure that if someone makes code changes in the future the bug does not re-emerge without breaking tests
 	 - {% if wasm %}Tests should be put in the test folder and in a test file relevant to the project you are working in {% end if %}
 	 - {% if !wasm %}Tests should be put inside the test folder inside the source folder and in a test file relevant to the project you are working in {% end if %}
 	 - For more information on how to write tests look at [this link](https://doc.rust-lang.org/book/ch11-01-writing-tests.html)
@@ -56,4 +56,4 @@ In order to contribute through code follow the steps below. Note that you don't 
  11. The final step is to create **pull request** to our main branch 🥳🎉
 	 - A pull request is how you merge the code you just worked so hard on with the code everyone else has access to
 	 - Once you have submitted your pull request, we will review your code and check to make sure the code implements the feature or fixes the bug. We may leave some feedback and suggest edits. You can make the changes we suggest by committing more code to your fork.
-	 - You can lean more about pull request [here](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests)
+	 - You can learn more about pull requests [here](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests)
