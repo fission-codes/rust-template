@@ -79,19 +79,19 @@ library.
 - Generate a binary project:
 
   ``` console
-  cargo generate --bin --git https://github.com/fission/rust-template
+  cargo generate --bin --git https://github.com/fission-codes/rust-template
   ```
 
 - Generate an application library project:
 
   ``` console
-  cargo generate --lib --git https://github.com/fission/rust-template
+  cargo generate --lib --git https://github.com/fission-codes/rust-template
   ```
 
 - Generate a project from src, locally:
 
   ``` console
-  cargo generate --lib --path fission/rust-template/
+  cargo generate --lib --path fission-codes/rust-template/
   ```
 
 *Note on SSH-Keys*: When genearting a project/repository, please be aware
@@ -102,7 +102,7 @@ associated error using the template, please specify your private key when
 generating a project/repository like so:
 
 ```console
-cargo generate -i ~/.ssh/id_ed25519 https://github.com/fission/rust-template
+cargo generate -i ~/.ssh/id_ed25519 https://github.com/fission-codes/rust-template
 ```
 
 #### 🔋 Batteries Included
@@ -123,7 +123,7 @@ or frameworks that can use Wasm NPM package explicitly, but this is on our
 radar.
 
 ```console
-cargo generate --git https://github.com/fission/rust-template
+cargo generate --git https://github.com/fission-codes/rust-template
 ```
 
 *Note*: Currently, `wasm-pack` [does not support building binary
