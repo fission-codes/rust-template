@@ -115,7 +115,9 @@ cargo generate -i ~/.ssh/id_ed25519 https://github.com/fission/rust-template
 
 The `rust+wasm` template is designed for generating a workspace containing both
 a rust native library, as well as one compiled for wasm and leveraging
-[wasm-pack][wasm-pack].
+[wasm-pack][wasm-pack]. We don't currently support any Javascript examples
+or frameworks that can use wasm NPM package explicitly, but this is on our
+radar.
 
 ```console
 cargo generate --git https://github.com/fission/rust-template
