@@ -76,7 +76,7 @@ library.
 - Generate a binary project:
 
   ``` console
-  cargo generate --bin --git https://github.com/fission/rust-template`
+  cargo generate --bin --git https://github.com/fission/rust-template
   ```
 
 - Generate an application library project:
@@ -101,6 +101,15 @@ generating a project/repository like so:
 ```console
 cargo generate -i ~/.ssh/id_ed25519 https://github.com/fission/rust-template
 ```
+
+#### 🔋 Batteries Included
+
+- [`tracing`][tracing] for instrumenting Rust programs to collect structured,
+  event-based diagnostic information, going beyond just logging-style
+  diagnostics
+- [`tracing-subscriber`][tracing-subscriber] for Rust binary applications
+  to collect trace data, such as by logging it to standard output, and
+  consume messages emitted by log-instrumented libraries and modules.
 
 ### Generating a Rust+Wasm Workspace Project
 
@@ -188,6 +197,8 @@ conditions.
 [rust]: https://www.rust-lang.org/
 [rust-nix-template]: https://github.com/nerosnm/rust-nix-template
 [rustfmt]: https://github.com/rust-lang/rustfmt
+[tracing]: https://github.com/tokio-rs/tracing
+[tracing-subscriber]: https://docs.rs/tracing-subscriber/latest/tracing_subscriber/index.html
 [wasm]: https://webassembly.org/
 [wasm-bindgen]: https://github.com/rustwasm/wasm-bindgen
 [wasm-bindgen-futures]: https://rustwasm.github.io/wasm-bindgen/api/wasm_bindgen_futures/
