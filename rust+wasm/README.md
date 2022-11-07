@@ -148,8 +148,16 @@ a type of `fix`, `feat`, `docs`, `ci`, `refactor`, etc..., structured like so:
 ```
 
 ## Getting Help
+{% if discord != "" %}
+For usage questions, usecases, or issues reach out to us in our [Discord channel]({{discord}}).
+{% else %}
+For usage questions, usecases, or issues please open an issue in our repository.
+{% endif %}
+We would be happy to try to answer your question or try opening a new issue on Github.
 
 ## External Resources
+
+These are references to specifications, talks and presentations, etc.
 
 ## License
 {% if license == "Apache" %}
