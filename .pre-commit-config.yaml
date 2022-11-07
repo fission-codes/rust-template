@@ -16,11 +16,12 @@ repos:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: check-yaml
-        exclude: ^catalog-info.yaml
+        exclude: ^(rust|rust+wasm)
       - id: check-json
-        exclude: ^tests/data/
+        exclude: ^(rust|rust+wasm)
       - id: check-added-large-files
       - id: detect-private-key
-        exclude: ^tests/data/
+        exclude: ^(rust|rust+wasm)
       - id: check-executables-have-shebangs
       - id: check-toml
+        exclude: ^(rust|rust+wasm)

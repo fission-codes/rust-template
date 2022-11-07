@@ -85,7 +85,7 @@ $ cargo install {{project-name}}
 
 ## Setting-up {{project-name}}-wasm
 
-The `wasm` targetted version of this project relies on [wasm-pack][wasm-pack]
+The Wasm targetted version of this project relies on [wasm-pack][wasm-pack]
 for building, testing, and publishing artifacts sutiable for
 [Node.js][node-js], web broswers, or bundlers like [webpack][webpack].
 

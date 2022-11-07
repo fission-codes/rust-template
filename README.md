@@ -25,9 +25,9 @@
 
 ##
 
-This is Fission's opinionated [Rust][rust] and [Rust][rust]+[WebAssembly][wasm]
-(wasm) project generator, which leverages the [cargo-generate][cargo-generate]
-tool.
+This template repository is Fission's opinionated [Rust][rust] and
+[Rust][rust]+[WebAssembly][wasm] (Wasm) project generator, which leverages the
+[cargo-generate][cargo-generate] tool.
 
 These templates provide various features for getting-up and running with Rust or
 Rust *and* Wasm, including:
@@ -35,12 +35,12 @@ Rust *and* Wasm, including:
 * README standardization, code of conduct, contribuing guidelines, and
   a consistent project layout
 * GitHub issue and pull-request templates
-* Default Rust dependencies (particulary for wasm)
+* Default Rust dependencies (particulary for Wasm)
 * Release GitHub Action workflow(s) using the
   [release-please-action][release-please-action] and the
   [release-please][release-please] deploy strategy (*optional*)
-  * For wasm libraries, this includes publishing to NPM via
-    [wasm-pack][wasm-pack], reliant on the Cargo version for the wasm package.
+  * For Wasm libraries, this includes publishing to NPM via
+    [wasm-pack][wasm-pack], reliant on the Cargo version for the Wasm package.
 * Test, lint, audit, and code coverage (via [Codecov][codecov]) GitHub Action
   workflows (*optional*)
 * [Pre-commit][pre-commit] and [rustfmt][rustfmt] opinionated defaults
@@ -114,9 +114,9 @@ cargo generate -i ~/.ssh/id_ed25519 https://github.com/fission/rust-template
 ### Generating a Rust+Wasm Workspace Project
 
 The `rust+wasm` template is designed for generating a workspace containing both
-a rust native library, as well as one compiled for wasm and leveraging
+a rust native library, as well as one compiled to Wasm and leveraging
 [wasm-pack][wasm-pack]. We don't currently support any Javascript examples
-or frameworks that can use wasm NPM package explicitly, but this is on our
+or frameworks that can use Wasm NPM package explicitly, but this is on our
 radar.
 
 ```console
@@ -161,7 +161,7 @@ This repository recommends using [pre-commit][pre-commit] for running pre-commit
 hooks. Please run this before every commit and/or push.
 
 - Once installed, Run `pre-commit install` to setup the pre-commit hooks
-  locally.  This will reduce failed CI builds.
+  locally. This will reduce failed CI builds.
 - If you are doing interim commits locally, and for some reason if you _don't_
   want pre-commit hooks to fire, you can run
   `git commit -a -m "Your message here" --no-verify`.

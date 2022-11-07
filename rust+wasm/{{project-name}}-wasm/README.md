@@ -62,12 +62,12 @@ Description.
   ```
 {% endif %}
 We'll use [`wasm-pack`][wasm-pack] for building, testing, and publishing
-our wasm project.
+our Wasm project.
 
 ### Build for Javascript
 
 The `wasm-pack build` command will compile the code in this directory into
-wasm and generate a `pkg` folder by default, containing the wasm binary, a
+Wasm and generate a `pkg` folder by default, containing the Wasm binary, a
 Javascript-wrapper file, the {{project-name}}-wasm README (and version), and a
 `package.json` file.
 
