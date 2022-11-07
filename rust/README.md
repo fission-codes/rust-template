@@ -44,6 +44,7 @@
 
 - {% if crate_type == "lib" %}[Usage](#usage){% else %}[Installation](#installation){% endif %}
 - [Testing the Project](#testing-the-project)
+- [Benchmarking the Project](#benchmarking-the-project)
 - [Contributing](#contributing)
 - [Getting Help](#getting-help)
 - [External Resources](#external-resources)
@@ -68,11 +69,28 @@ $ cargo install {{project-name}}
 ## Testing the Project
 
 - Run tests
-
+{% if bench %}
+  ```console
+  cargo test --all-features
+  ```
+{% else %}
   ```console
   cargo test
   ```
+{% endif %}{% if bench %}
+## Benchmarking the Project
 
+For benchmarking and measuring performance, this project leverages
+[criterion][criterion] and a `test_utils` feature flag
+for integrating [proptest][proptest] within the the suite for working with
+[strategies][strategies] and sampling from randomly generated values.
+
+- Run benchmarks
+
+  ```console
+  cargo bench --features test_utils
+  ```
+{% endif %}
 ## Contributing
 
 :balloon: We're thankful for any feedback and help in improving our project!
@@ -101,7 +119,7 @@ installed**.
 {% endif %}
 ### Pre-commit Hook
 
-This library recommends using [pre-commit][pre-commit] for running pre-commit
+This project recommends using [pre-commit][pre-commit] for running pre-commit
 hooks. Please run this before every commit and/or push.
 {% if nix == false %}
 - Once installed, Run `pre-commit install` and `pre-commit install --hook-type commit-msg`
@@ -179,8 +197,11 @@ conditions.
 [commit-spec]: https://www.conventionalcommits.org/en/v1.0.0/#specification
 [commit-spec-site]: https://www.conventionalcommits.org/
 {% if nix %}[direnv]:https://direnv.net/{% endif %}
+{% if bench %}[criterion]: https://github.com/bheisler/criterion.rs{% endif %}
 [irust]: https://github.com/sigmaSd/IRust
 [mit]: http://opensource.org/licenses/MIT
 {% if nix %}[nix]:https://nixos.org/download.html{% endif %}
 {% if nix %}[nix-flake]: https://nixos.wiki/wiki/Flakes{% endif %}
-[pre-commit]: https://pre-commit.com/
+[pre-commit]: https://pre-commit.com/{% if bench %}
+[proptest]: https://github.com/proptest-rs/proptest
+[strategies]: https://docs.rs/proptest/latest/proptest/strategy/trait.Strategy.html{% endif %}

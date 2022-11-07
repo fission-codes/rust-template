@@ -133,8 +133,7 @@ jobs:
           toolchain: stable
 
       - name: Run Rust Headless Browser Tests
-        run: wasm-pack test --headless --{{ "${{ matrix.browser " }}}}
-{% else %}
+        run: wasm-pack test --headless --{{ "${{ matrix.browser " }}}}{% else %}
   run-node-tests:
     runs-on: ubuntu-latest
     strategy:
@@ -161,5 +160,4 @@ jobs:
           toolchain: stable
 
       - name: Run Rust Headless Browser Tests
-        run: wasm-pack test --node
-{% endif %}
+        run: wasm-pack test --node{% endif %}

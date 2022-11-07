@@ -14,7 +14,7 @@
     </a>{% endif %}{% if github_actions %}
     <a href="https://github.com/{{github-name}}/{{project-name}}/actions?query=">
       <img src="https://github.com/{{github-name}}/{{project-name}}/actions/workflows/tests_and_checks.yml/badge.svg" alt="Build Status">
-    </a> {% endif %}{% if license == "Apache" %}
+    </a>{% endif %}{% if license == "Apache" %}
     <a href="https://github.com/{{github-name}}/{{project-name}}/blob/main/LICENSE">
       <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License">
     </a>{% elsif license == "MIT" %}

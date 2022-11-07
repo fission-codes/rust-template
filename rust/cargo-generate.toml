@@ -47,16 +47,21 @@ type = "bool"
 prompt = "Set up a Nix flake?"
 default = true
 
-[placeholders.license]
-type = "string"
-prompt = "What license to use?"
-choices = ["Apache", "MIT", "dual"]
-default = "Apache"
-
 [placeholders.have_discord]
 type = "bool"
 prompt = "Link a discord community?"
 default = true
+
+[placeholders.license]
+type = "string"
+prompt = "What license to use?"
+choices = ["Apache", "MIT", "dual"]
+default = "dual"
+
+[placeholders.bench]
+type = "bool"
+prompt = "Set up Rust benchmarking?"
+default = false
 
 [conditional.'github_actions == true'.placeholders.codecov]
 type = "bool"
@@ -75,8 +80,14 @@ ignore = [
 
 [conditional.'crate_type == "bin"']
 ignore = [
-    "src/lib.rs",
     "examples"
+]
+
+[conditional.'bench == false']
+ignore = [
+    "benches",
+    "src/test_utils",
+    ".github/workflows/bench.yml",
 ]
 
 [conditional.'nix == false']

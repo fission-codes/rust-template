@@ -1,6 +1,7 @@
 [workspace]
 members = [
-	"{{project-name}}",
+	"{{project-name}}",{%if bench %}
+	"{{project-name}}-benches",{% endif %}
 	"{{project-name}}-wasm"
 ]
 

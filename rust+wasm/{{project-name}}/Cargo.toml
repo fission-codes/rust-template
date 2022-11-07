@@ -18,16 +18,23 @@ authors = ["{{authors}}"]
 [lib]
 path = "src/lib.rs"
 {% else %}
+[lib]
+path = "src/lib.rs"
+doctest = false
+
 [[bin]]
 name = "{{project-name}}"
 path = "src/main.rs"
 doc = true
 {% endif %}
 [dependencies]
+anyhow = "1.0"{% if bench %}
+proptest = { version = "1.0", optional = true }{% endif %}
 {% if crate_type == "lib" %}tracing = "0.1"
 {% else %}
 tracing = "0.1"
 tracing-subscriber = "0.3"
 {% endif %}
 [features]
-default = []
+default = []{% if bench %}
+test_utils = ["proptest"]{% endif %}

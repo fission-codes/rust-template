@@ -58,6 +58,17 @@ type = "bool"
 prompt = "Link a discord community?"
 default = true
 
+[placeholders.license]
+type = "string"
+prompt = "What license to use?"
+choices = ["Apache", "MIT", "dual"]
+default = "dual"
+
+[placeholders.bench]
+type = "bool"
+prompt = "Set up Rust benchmarking?"
+default = false
+
 [conditional.'github_actions == true'.placeholders.codecov]
 type = "bool"
 prompt = "Enable codecov coverage upload via GitHub Actions?"
@@ -67,12 +78,6 @@ default = true
 type = "string"
 prompt = "Enter a discord invite link?"
 
-[placeholders.license]
-type = "string"
-prompt = "What license to use?"
-choices = ["Apache", "MIT", "dual"]
-default = "Apache"
-
 [conditional.'crate_type == "lib"']
 ignore = [
     "{{project-name}}/src/main.rs",
@@ -81,8 +86,14 @@ ignore = [
 
 [conditional.'crate_type == "bin"']
 ignore = [
-    "{{project-name}}/src/lib.rs",
-    "{{project-name}}/examples"
+     "{{project-name}}/examples"
+]
+
+[conditional.'bench == false']
+ignore = [
+    "{{project-name}}-benches",
+    "{{project-name}}/src/test_utils",
+    ".github/workflows/bench.yml",
 ]
 
 [conditional.'nix == false']
