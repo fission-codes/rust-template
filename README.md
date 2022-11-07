@@ -68,6 +68,9 @@ This repository contains two sub-templates:
 
 ## Getting Started
 
+First, install [cargo-generate][cargo-generate] via `cargo install cargo-generate`.
+More installation options are available [here][cargo-generate-install].
+
 ### Generating a Rust-Only Project
 
 The `rust` template is designed for generating a rust binary or application
@@ -192,6 +195,7 @@ conditions.
 [apache]: https://www.apache.org/licenses/LICENSE-2.0
 [bevy-template]: https://github.com/taurr/bevy-template-rs
 [cargo-generate]: https://github.com/cargo-generate/cargo-generate
+[cargo-generate-install]: https://github.com/cargo-generate/cargo-generate#installation
 [cargo-generate-issue]: https://github.com/cargo-generate/cargo-generate/issues/384
 [cargo-workspace]: https://doc.rust-lang.org/cargo/reference/workspaces.html
 [codecov]: https://about.codecov.io/
