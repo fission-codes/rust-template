@@ -25,7 +25,7 @@
 
 ##
 
-This template repository is Fission's opinionated [Rust][rust] and
+This template repository is [Fission's][fission] opinionated [Rust][rust] and
 [Rust][rust]+[WebAssembly][wasm] (Wasm) project generator, which leverages the
 [cargo-generate][cargo-generate] tool.
 
@@ -202,6 +202,7 @@ conditions.
 [codecov-quick]: https://docs.codecov.com/docs/quick-start
 [console-hook]: https://github.com/rustwasm/console_error_panic_hook
 [dependabot]: https://github.com/dependabot
+[fission]: https://fission.codes/
 [github-rsa]: https://github.blog/2021-09-01-improving-git-protocol-security-github/
 [js-sys]: https://docs.rs/js-sys/latest/js_sys/
 [mit]: http://opensource.org/licenses/MIT
