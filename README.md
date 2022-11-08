@@ -117,7 +117,7 @@ cargo generate -i ~/.ssh/id_ed25519 https://github.com/fission-codes/rust-templa
 ### Generating a Rust+Wasm Workspace Project
 
 The `rust+wasm` template is designed for generating a workspace containing both
-a rust native library, as well as one compiled to Wasm and leveraging
+a rust-native library, as well as one for compilation to Wasm and leveraging
 [wasm-pack][wasm-pack]. We don't currently support any Javascript examples
 or frameworks that can use Wasm NPM package explicitly, but this is on our
 radar.

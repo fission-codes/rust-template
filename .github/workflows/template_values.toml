@@ -2,7 +2,6 @@
 codecov = true
 description = "Rust template for project."
 dependabot = true
-discord = ""
 github_actions = true
 github-codeowner = "rush/geddylee"
 github-name = "geddylee"

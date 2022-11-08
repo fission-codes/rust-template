@@ -1,7 +1,8 @@
 //! Test suite for the Web and headless browsers.
-
+{% if node-or-web == "nodejs" %}
+use wasm_bindgen_test::wasm_bindgen_test;
+{% else %}
 use wasm_bindgen_test::{wasm_bindgen_test, wasm_bindgen_test_configure};
-{% if node-or-web == "web" %}
 wasm_bindgen_test_configure!(run_in_browser);
 {% endif %}
 #[wasm_bindgen_test]

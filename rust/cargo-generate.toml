@@ -1,4 +1,5 @@
 [template]
+cargo_generate_version = ">=0.16.0"
 ignore = [
     ".git",
     "pre-script.rhai"

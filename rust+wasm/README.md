@@ -46,7 +46,7 @@
 ## Outline
 
 - [Crates](#crates)
-- {% if crate_type == "lib" %}[Usage](#usage){% else %}[Installation](#installation){% endif %}
+- {% if crate_type == "lib" %}[Usage](#usage){% else %}[Usage and Installation](#usage-and-installation){% endif %}
 - [Testing the Project](#testing-the-project)
 - [Setting-up {{project-name}}-wasm](#setting-up-{{project-name}}-wasm)
 - [Contributing](#contributing)
@@ -61,27 +61,53 @@
 {% if crate_type == "lib" %}
 ## Usage
 
-Add the following to the `[dependencies]` section of your `Cargo.toml` file:
+- Add the following to the `[dependencies]` section of your `Cargo.toml` file
+  for using the rust-only `{{project-name}}` crate/workspace:
 
 ```toml
 {{project-name}} = "0.1.0"
 ```
+
+- Add the following to the `[dependencies]` section of your `Cargo.toml` file
+  for using `{{project-name}}-wasm` crate/workspace:
+
+```toml
+{{project-name}}-wasm = "0.1.0"
+```
 {% else %}
-## Installation
+## Usage and Installation
 
 ### Using `cargo`
+
+This is just for the rust-only `{{project-name}}` binary application:
 
 ```console
 $ cargo install {{project-name}}
 ```
+
+### {{project-name}}-wasm Usage
+
+Due to the reliance on [wasm-pack][wasm-pack], `{{project-name}}-wasm` is only
+available as a library.
+
+- Add the following to the `[dependencies]` section of your `Cargo.toml` file
+  for using `{{project-name}}-wasm` crate/workspace:
+
+```toml
+{{project-name}}-wasm = "0.1.0"
+```
 {% endif %}
 ## Testing the Project
 
-- Run tests
+- Run tests for crate/workspace `{{project-name}}`:
 
   ```console
-  cargo test
+  cd {{project-name}} && cargo test
   ```
+
+- To run tests for crate/workspace `{{project-name}}-wasm`, follow
+  the instructions in [{{project-name}}-wasm](./{{project-name}}-wasm#testing-the-project),
+  which leverages [wasm-pack][wasm-pack].
 
 ## Setting-up {{project-name}}-wasm
 
