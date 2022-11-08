@@ -74,7 +74,12 @@ $ cargo install {{project-name}}
   ```
 
 ## Contributing
+
+:balloon: We're thankful for any feedback and help in improving our project!
+We have a contributing guide to help you get involved. We also
+adhere to our [Code of Conduct](./CODE_OF_CONDUCT.md).
 {% if nix %}
+### Nix
 This repository contains a [Nix flake][nix-flake] that initiates both the Rust
 toolchain set in [rust-toolchain.toml](./rust-toolchain.toml) and a
 [pre-commit hook](#pre-commit-hook). It also installs helpful cargo binaries for
@@ -83,9 +88,13 @@ development. Please install [nix][nix] and [direnv][direnv] to get started.
 Run `nix develop` or `direnv allow` to load the `devShell` flake output,
 according to your preference.
 
+### Formatting
+
 For formatting Rust in particular, please use `cargo +nightly fmt` as it uses
 specific nightly features we recommend by default.
 {% else  %}
+### Formatting
+
 For formatting Rust in particular, please use `cargo +nightly fmt` as it uses
 specific nightly features we recommend. **Make sure you have nightly
 installed**.
