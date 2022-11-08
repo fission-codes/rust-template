@@ -53,10 +53,14 @@ prompt = "What is your rust-generated wasm package targeting?"
 choices = ["bundler", "nodejs", "web"]
 default = "web"
 
-[placeholders.discord]
+[placeholders.have-discord]
+type = "bool"
+prompt = "Link a discord community?"
+default = true
+
+[conditional.'have-discord == true'.placeholders.discord-link]
 type = "string"
 prompt = "Enter a discord invite link?"
-default = ""
 
 [placeholders.license]
 type = "string"

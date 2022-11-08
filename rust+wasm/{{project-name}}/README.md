@@ -29,8 +29,8 @@
     </a>{% endif %}
     <a href="https://docs.rs/{{project-name}}">
       <img src="https://img.shields.io/static/v1?label=Docs&message=docs.rs&color=blue" alt="Docs">
-    </a>{% if discord != "" %}
-    <a href="{{discord}}">
+    </a>{% if have-discord %}
+    <a href="{{discord-link}}">
       <img src="https://img.shields.io/static/v1?label=Discord&message=join%20us!&color=mediumslateblue" alt="Discord">
     </a>{% endif %}
   </p>

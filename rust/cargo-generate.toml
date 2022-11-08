@@ -53,10 +53,14 @@ prompt = "What license to use?"
 choices = ["Apache", "MIT", "dual"]
 default = "Apache"
 
-[placeholders.discord]
+[placeholders.have-discord]
+type = "bool"
+prompt = "Link a discord community?"
+default = true
+
+[conditional.'have-discord == true'.placeholders.discord-link]
 type = "string"
 prompt = "Enter a discord invite link?"
-default = ""
 
 [conditional.'crate_type == "lib"']
 ignore = [

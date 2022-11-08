@@ -29,8 +29,8 @@
     </a>{% endif %}
     <a href="https://docs.rs/{{project-name}}">
       <img src="https://img.shields.io/static/v1?label=Docs&message=docs.rs&color=blue" alt="Docs">
-    </a>{% if discord != "" %}
-    <a href="{{discord}}">
+    </a>{% if have-discord %}
+    <a href="{{discord-link}}">
       <img src="https://img.shields.io/static/v1?label=Discord&message=join%20us!&color=mediumslateblue" alt="Discord">
     </a> {% endif %}
   </p>
@@ -129,8 +129,8 @@ a type of `fix`, `feat`, `docs`, `ci`, `refactor`, etc..., structured like so:
 ```
 
 ## Getting Help
-{% if discord != "" %}
-For usage questions, usecases, or issues reach out to us in our [Discord channel]({{discord}}).
+{% if have-discord %}
+For usage questions, usecases, or issues reach out to us in our [Discord channel]({{discord-link}}).
 {% else %}
 For usage questions, usecases, or issues please open an issue in our repository.
 {% endif %}
