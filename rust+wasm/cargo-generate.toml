@@ -21,7 +21,7 @@ type = "string"
 prompt = "Enter a description of the project."
 default = ""
 
-[placeholders.github-actions]
+[placeholders.github_actions]
 type = "bool"
 prompt = "Set up GitHub Actions CI/CD workflows?"
 default = true
@@ -29,11 +29,6 @@ default = true
 [placeholders.dependabot]
 type = "bool"
 prompt = "Enable Dependabot prs/checks?"
-default = true
-
-[conditional.'github-actions == true'.placeholders.codecov]
-type = "bool"
-prompt = "Enable codecov coverage upload via GitHub Actions?"
 default = true
 
 [placeholders.toolchain]
@@ -53,12 +48,17 @@ prompt = "What is your rust-generated wasm package targeting?"
 choices = ["bundler", "nodejs", "web"]
 default = "web"
 
-[placeholders.have-discord]
+[placeholders.have_discord]
 type = "bool"
 prompt = "Link a discord community?"
 default = true
 
-[conditional.'have-discord == true'.placeholders.discord-link]
+[conditional.'github_actions == true'.placeholders.codecov]
+type = "bool"
+prompt = "Enable codecov coverage upload via GitHub Actions?"
+default = true
+
+[conditional.'have_discord == true'.placeholders.discordlink]
 type = "string"
 prompt = "Enter a discord invite link?"
 
@@ -86,7 +86,7 @@ ignore = [
     "flake.nix",
 ]
 
-[conditional.'github-actions == false']
+[conditional.'github_actions == false']
 ignore = [
    ".github/workflows",
 ]

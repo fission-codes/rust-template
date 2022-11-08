@@ -11,7 +11,7 @@
     </a>{% if codecov %}
     <a href="https://codecov.io/gh/{{github-name}}/{{project-name}}">
       <img src="https://codecov.io/gh/{{github-name}}/{{project-name}}/branch/main/graph/badge.svg?token=SOMETOKEN" alt="Code Coverage"/>
-    </a>{% endif %} {% if github-actions %}
+    </a>{% endif %} {% if github_actions %}
     <a href="https://github.com/{{github-name}}/{{project-name}}/actions?query=">
       <img src="https://github.com/{{github-name}}/{{project-name}}/actions/workflows/tests_and_checks.yml/badge.svg" alt="Build Status">
     </a> {% endif %} {% if license == "Apache" %}
@@ -29,8 +29,8 @@
     </a>{% endif %}
     <a href="https://docs.rs/{{project-name}}">
       <img src="https://img.shields.io/static/v1?label=Docs&message=docs.rs&color=blue" alt="Docs">
-    </a>{% if have-discord %}
-    <a href="{{discord-link}}">
+    </a>{% if have_discord %}
+    <a href="{{discordlink}}">
       <img src="https://img.shields.io/static/v1?label=Discord&message=join%20us!&color=mediumslateblue" alt="Discord">
     </a>{% endif %}
   </p>
