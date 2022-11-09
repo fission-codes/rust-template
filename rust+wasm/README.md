@@ -123,7 +123,7 @@ Please read more on working with `wasm-pack` directly in
 This repository contains a [Nix flake][nix-flake] that initiates both the Rust
 toolchain set in [rust-toolchain.toml](./rust-toolchain.toml) and a
 [pre-commit hook](#pre-commit-hook). It also installs helpful cargo binaries for
-development.
+development. Please install [nix][nix] and [direnv][direnv] to get started.
 
 Run `nix develop` or `direnv allow` to load the `devShell` flake output,
 according to your preference.
@@ -214,8 +214,10 @@ conditions.
 [cargo-watch]: https://github.com/watchexec/cargo-watch
 [commit-spec]: https://www.conventionalcommits.org/en/v1.0.0/#specification
 [commit-spec-site]: https://www.conventionalcommits.org/
+{% if nix %}[direnv]:https://direnv.net/{% endif %}
 [irust]: https://github.com/sigmaSd/IRust
 [mit]: http://opensource.org/licenses/MIT
+{% if nix %}[nix]:https://nixos.org/download.html{% endif %}
 {% if nix %}[nix-flake]: https://nixos.wiki/wiki/Flakes{% endif %}
 [node-js]: https://nodejs.dev/en/
 [pre-commit]: https://pre-commit.com/
