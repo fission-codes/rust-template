@@ -148,7 +148,7 @@ will still be generated.
 - If using `nix` via [Nix flake][nix-flake], make sure to run `direnv allow`
   and add your files via `git add`.
 
-- If [Codecov][codecov] upload is enabled, via GitHub Actions, is enabled, make
+- If [Codecov][codecov] upload is enabled through GitHub Actions make
   sure to sync your project and gather tokens/badges. Read more
   [here][codecov-quick].
 
