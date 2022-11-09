@@ -1,3 +1,3 @@
 [toolchain]
-channel = "{{toolchain}}"
-components = ["cargo", "clippy", "rustfmt", "rust-src", "rust-std"]
+channel = "{{toolchain}}"{% if nix == false %}
+components = ["cargo", "clippy", "rustfmt", "rust-src", "rust-std"]{% endif %}

@@ -23,13 +23,12 @@
       overlays = [ (import rust-overlay) ];
       pkgs = import nixpkgs { inherit system overlays; };
 
-      nightly-rustfmt = pkgs.rust-bin.selectLatestNightlyWith
-        (toolchain: toolchain.minimal.override { extensions = [ "rustfmt" ]; });
-
       rust-toolchain =
         (pkgs.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml).override {
-          extensions = [ "cargo" "clippy" "rustfmt" "rust-src" "rust-std"];
+          extensions = [ "cargo" "clippy" "rustfmt" "rust-src" "rust-std" ];
         };
+
+      nightly-rustfmt = pkgs.rust-bin.nightly.latest.rustfmt;
 
       format-pkgs = with pkgs; [
         nixpkgs-fmt
@@ -62,6 +61,16 @@
       shellHook = ''
         [ -e .git/hooks/pre-commit ] || pre-commit install --install-hooks
       '';
+      };
+
+      checks = {
+        format = pkgs.runCommand
+          "check-nix-format"
+          { buildInputs = format-pkgs; }
+          ''
+            ${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt --check ${./.}
+            touch $out
+          '';
       };
     }
   );

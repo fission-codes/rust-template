@@ -13,7 +13,7 @@ license = "Apache-2.0 or MIT"
 edition = "2021"
 documentation = "https://docs.rs/{{project-name}}-wasm"
 repository = "https://github.com/{{github-name}}/{{project-name}}/tree/main/{{project-name}}-wasm"
-authors = [ "{{authors}}" ]
+authors = ["{{authors}}"]
 
 [lib]
 crate-type = ["cdylib", "rlib"]
