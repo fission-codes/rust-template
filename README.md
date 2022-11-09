@@ -154,7 +154,7 @@ will still be generated.
 
 - There are stock integration tests available for all templates, including
   a [wasm-bindgen][wasm-bindgen] decorated test, `#[wasm_bindgen_test]`, that
-  can be tested via [wasm-pack][wasm-pack].
+  can be tested with [wasm-pack][wasm-pack].
 
 ## Contributing
 
