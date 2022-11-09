@@ -24,11 +24,11 @@
       pkgs = import nixpkgs { inherit system overlays; };
 
       nightly-rustfmt = pkgs.rust-bin.selectLatestNightlyWith
-          (toolchain: toolchain.minimal.override { extensions = [ "rustfmt" ]; });
+        (toolchain: toolchain.minimal.override { extensions = [ "rustfmt" ]; });
 
       rust-toolchain =
         (pkgs.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml).override {
-          extensions = [ "rust-src" "clippy"];
+          extensions = [ "cargo" "clippy" "rustfmt" "rust-src" "rust-std"];
         };
 
       format-pkgs = with pkgs; [
@@ -36,11 +36,10 @@
       ];
 
       cargo-installs = with pkgs; [
-          cargo-expand
-          cargo-sort
-          cargo-udeps
-          cargo-watch
-          evcxr
+        cargo-expand
+        cargo-sort
+        cargo-udeps
+        cargo-watch
       ];
     in
     rec
@@ -58,7 +57,7 @@
         ] ++ format-pkgs ++ cargo-installs;
 
       shellHook = ''
-          [ -e .git/hooks/pre-commit ] || pre-commit install --install-hooks
+        [ -e .git/hooks/pre-commit ] || pre-commit install --install-hooks
       '';
       };
     }

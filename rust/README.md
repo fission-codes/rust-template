@@ -105,12 +105,12 @@ hooks. Please run this before every commit and/or push.
 ### Recommended Development Flow
 {% if nix %}
 - We recommend leveraging [cargo-watch][cargo-watch],
-  [cargo-expand][cargo-expand] and [evcxr][evcxr] for Rust development.
+  [cargo-expand][cargo-expand] and [irust][irust] for Rust development.
 - We recommend using [cargo-udeps][cargo-udeps] for removing unused dependencies
   before commits and pull-requests.
 {% else %}
 - We recommend installing and leveraging [cargo-watch][cargo-watch],
-  [cargo-expand][cargo-expand] and [evcxr][evcxr] for Rust development.
+  [cargo-expand][cargo-expand] and [irust][irust] for Rust development.
 {% endif %}
 ### Conventional Commits
 
@@ -169,7 +169,7 @@ conditions.
 [cargo-watch]: https://github.com/watchexec/cargo-watch
 [commit-spec]: https://www.conventionalcommits.org/en/v1.0.0/#specification
 [commit-spec-site]: https://www.conventionalcommits.org/
-[evcxr]: https://github.com/google/evcxr
+[irust]: https://github.com/sigmaSd/IRust
 [mit]: http://opensource.org/licenses/MIT
 {% if nix %}[nix-flake]: https://nixos.wiki/wiki/Flakes{% endif %}
 [pre-commit]: https://pre-commit.com/
