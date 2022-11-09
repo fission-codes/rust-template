@@ -1,0 +1,128 @@
+name: 🏪 Build Template
+
+on:
+  push:
+    branches: [ main ]
+
+  pull_request:
+    branches: [ '*' ]
+
+jobs:
+  generate-templates:
+    runs-on: ubuntu-latest
+    env:
+      PROJECT_NAME: fission-codes-rust-template
+    strategy:
+      fail-fast: false
+      matrix:
+        templates:
+          - rust
+          - rust+wasm
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup cargo-generate
+        uses: cargo-generate/cargo-generate-action@v0.16.0
+        with:
+          name: ${{ env.PROJECT_NAME }}
+          subfolder: ${{ matrix.templates }}
+          template_values_file: .github/workflows/template_values.toml
+          other: "--lib"
+
+      - name: Install Rust Toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          override: true
+          profile: minimal
+          toolchain: stable
+
+      - name: Install Rust Toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          override: true
+          profile: minimal
+          components: rustfmt
+          toolchain: nightly
+
+      # move generated project to temp folder:
+      # https://github.com/rust-lang/cargo/issues/9922
+      - name: Check If Repository Compiles, Formats, & Lints
+        run: |
+          mv $PROJECT_NAME ${{ runner.temp }}/
+          cd ${{ runner.temp }}/$PROJECT_NAME
+          cargo check
+          cargo clippy
+          cargo +nightly fmt --all -- --check
+
+  test-rust-project:
+    runs-on: ubuntu-latest
+    env:
+      PROJECT_NAME: fission-codes-rust-template
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup cargo-generate
+        uses: cargo-generate/cargo-generate-action@v0.16.0
+        with:
+          name: ${{ env.PROJECT_NAME }}
+          subfolder: rust
+          template_values_file: .github/workflows/template_values.toml
+          other: "--lib"
+
+      - name: Cache Project
+        uses: Swatinem/rust-cache@v2
+
+      - name: Install Rust Toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          override: true
+          toolchain: stable
+
+      # move generated project to temp folder:
+      # https://github.com/rust-lang/cargo/issues/9922
+      - name: Run Tests
+        run: |
+          mv $PROJECT_NAME ${{ runner.temp }}/
+          cd ${{ runner.temp }}/$PROJECT_NAME
+          cargo test
+
+  test-rust-wasm-project:
+    runs-on: ubuntu-latest
+    env:
+      PROJECT_NAME: fission-codes-rust-template
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup cargo-generate
+        uses: cargo-generate/cargo-generate-action@v0.16.0
+        with:
+          name: ${{ env.PROJECT_NAME }}
+          subfolder: rust+wasm
+          template_values_file: .github/workflows/template_values.toml
+          other: "--lib"
+
+      - name: Install Rust Toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          override: true
+          toolchain: stable
+
+      - name: Install wasm-pack
+        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+
+      # move generated project to temp folder:
+      # https://github.com/rust-lang/cargo/issues/9922
+      - name: Run Tests
+        run: |
+          mv $PROJECT_NAME ${{ runner.temp }}/
+          cd ${{ runner.temp }}/$PROJECT_NAME/$PROJECT_NAME
+          cargo test
+          cd ../$PROJECT_NAME-wasm
+          wasm-pack test --headless --firefox --chrome

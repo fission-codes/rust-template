@@ -1,0 +1,27 @@
+# See https://pre-commit.com for more information
+repos:
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v2.1.1
+    hooks:
+      - id: conventional-pre-commit
+        stages:
+          - commit-msg
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.3.0
+    hooks:
+      - id: no-commit-to-branch
+        args: ["-b", "main"]
+      - id: check-merge-conflict
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+        exclude: ^(rust|rust+wasm)
+      - id: check-json
+        exclude: ^(rust|rust+wasm)
+      - id: check-added-large-files
+      - id: detect-private-key
+        exclude: ^(rust|rust+wasm)
+      - id: check-executables-have-shebangs
+      - id: check-toml
+        exclude: ^(rust|rust+wasm)

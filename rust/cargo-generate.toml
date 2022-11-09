@@ -1,0 +1,98 @@
+[template]
+cargo_generate_version = ">=0.16.0"
+ignore = [
+    ".git",
+    "pre-script.rhai"
+]
+
+[hooks]
+pre = ["pre-script.rhai"]
+
+[placeholders.github-name]
+type = "string"
+prompt = "Enter your GitHub username or org."
+regex = "^[A-Za-z0-9][A-Za-z0-9-]{0,38}$"
+
+[placeholders.github-codeowner]
+type = "string"
+prompt = "Who is the GitHub codeowner - GitHub user or org/team?"
+
+[placeholders.description]
+type = "string"
+prompt = "Enter a description of the project."
+default = ""
+
+[placeholders.github_actions]
+type = "bool"
+prompt = "Set up GitHub Actions CI?"
+default = true
+
+[placeholders.dependabot]
+type = "bool"
+prompt = "Enable Dependabot prs/checks?"
+default = true
+
+[placeholders.toolchain]
+type = "string"
+prompt = "Which rust toolchain version do you want?"
+choices = ["stable", "beta", "nightly"]
+default = "stable"
+
+[placeholders.nix]
+type = "bool"
+prompt = "Set up a Nix flake?"
+default = true
+
+[placeholders.license]
+type = "string"
+prompt = "What license to use?"
+choices = ["Apache", "MIT", "dual"]
+default = "Apache"
+
+[placeholders.have_discord]
+type = "bool"
+prompt = "Link a discord community?"
+default = true
+
+[conditional.'github_actions == true'.placeholders.codecov]
+type = "bool"
+prompt = "Enable codecov coverage upload via GitHub Actions?"
+default = true
+
+[conditional.'have_discord'.placeholders.discordlink]
+type = "string"
+prompt = "Enter a discord invite link?"
+
+[conditional.'crate_type == "lib"']
+ignore = [
+    "src/main.rs",
+    "Cargo.lock"
+]
+
+[conditional.'crate_type == "bin"']
+ignore = [
+    "src/lib.rs",
+    "examples"
+]
+
+[conditional.'nix == false']
+ignore = [
+    ".envrc",
+    "flake.nix"
+]
+
+[conditional.'github_actions == false']
+ignore = [
+   ".github/workflows",
+]
+
+[conditional.'dependabot == false']
+ignore = [
+   ".github/dependabot.yml",
+]
+
+[conditional.'codecov == false']
+ignore = [
+   ".github/workflows/coverage.yml",
+   "codecov.yml"
+]
