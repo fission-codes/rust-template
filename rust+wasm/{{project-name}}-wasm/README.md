@@ -10,7 +10,7 @@
       <img src="https://img.shields.io/crates/v/{{project-name}}-wasm?label=crates" alt="Crate">
     </a>
     <a href="https://npmjs.com/package/{{project-name}}">
-      <img src="https://img.shields.io/npm/v/{{project-name}}" alt="Npm">
+      <img src="https://img.shields.io/npm/v/{{project-name}}" alt="npm">
     </a>{% if codecov %}
     <a href="https://codecov.io/gh/{{github-name}}/{{project-name}}">
       <img src="https://codecov.io/gh/{{github-name}}/{{project-name}}/branch/main/graph/badge.svg?token=SOMETOKEN" alt="Code Coverage"/>
@@ -116,7 +116,7 @@ locally.
 
 Once you've [built the package](#build-for-javascript), which lives under
 `pkg` by default (or a sub-directory of your choosing), you can pack and
-publish it via (given credentials):
+publish it to [npm][npm] via (given credentials):
 
 ```console
 wasm-pack publish
@@ -148,5 +148,6 @@ conditions.
 [apache]: https://www.apache.org/licenses/LICENSE-2.0
 [mit]: http://opensource.org/licenses/MIT
 [node-js]: https://nodejs.dev/en/
+[npm]: https://www.npmjs.com/
 [wasm-pack]: https://rustwasm.github.io/docs/wasm-pack/
 [webpack]: https://webpack.js.org/

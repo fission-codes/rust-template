@@ -156,6 +156,12 @@ will still be generated.
   a [wasm-bindgen][wasm-bindgen] decorated test, `#[wasm_bindgen_test]`, that
   can be tested with [wasm-pack][wasm-pack].
 
+- For CI/CD purposes, be aware there's [some secrets you'll need to configure
+  in Github][gh-secrets], including:
+  * `CODECOV_TOKEN` if you choose to use coverage via [Codecov][codecov]
+  * `CARGO_REGISTRY_TOKEN` for publshing Rust packages to [crates.io][crates-io]
+  * `NPM_TOKEN` for publishing a Wasm project to [npm][npm]
+
 ## Contributing
 
 ### Pre-commit Hook
@@ -201,14 +207,17 @@ conditions.
 [codecov]: https://about.codecov.io/
 [codecov-quick]: https://docs.codecov.com/docs/quick-start
 [console-hook]: https://github.com/rustwasm/console_error_panic_hook
+[crates-io]: https://crates.io/
 [dependabot]: https://github.com/dependabot
 [fission]: https://fission.codes/
 [github-rsa]: https://github.blog/2021-09-01-improving-git-protocol-security-github/
+[gh-secrets]: https://docs.github.com/en/rest/actions/secrets
 [js-sys]: https://docs.rs/js-sys/latest/js_sys/
 [mit]: http://opensource.org/licenses/MIT
 [nix-flake]: https://nixos.wiki/wiki/Flakes
 [node-js]: https://nodejs.dev/en/
 [no-binary]: https://github.com/rustwasm/wasm-pack/issues/734
+[npm]: https://www.npmjs.com/
 [pre-commit]: https://pre-commit.com/
 [release-please]: https://github.com/googleapis/release-please
 [release-please-action]: https://github.com/google-github-actions/release-please-action

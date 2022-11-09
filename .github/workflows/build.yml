@@ -37,14 +37,23 @@ jobs:
           profile: minimal
           toolchain: stable
 
+      - name: Install Rust Toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          override: true
+          profile: minimal
+          components: rustfmt
+          toolchain: nightly
+
       # move generated project to temp folder:
       # https://github.com/rust-lang/cargo/issues/9922
-      - name: Check If Repository Compiles and Lints
+      - name: Check If Repository Compiles, Formats, & Lints
         run: |
           mv $PROJECT_NAME ${{ runner.temp }}/
           cd ${{ runner.temp }}/$PROJECT_NAME
           cargo check
           cargo clippy
+          cargo +nightly fmt --all -- --check
 
   test-rust-project:
     runs-on: ubuntu-latest
