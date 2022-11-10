@@ -76,6 +76,7 @@ jobs:
         rust-toolchain:
           - stable
           - nightly
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -90,7 +91,7 @@ jobs:
           toolchain: {{ "${{ matrix.rust-toolchain " }}}}
 
       - name: Run Tests
-        run: cargo test --all
+        run: cargo test --manifest-path {{project-name}}/Cargo.toml
 {% if node-or-web == "web" %}
   run-headless-tests:
     strategy:
