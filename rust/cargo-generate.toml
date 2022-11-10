@@ -13,6 +13,10 @@ type = "string"
 prompt = "Enter your GitHub username or org."
 regex = "^[A-Za-z0-9][A-Za-z0-9-]{0,38}$"
 
+[placeholders.github-email]
+type = "string"
+prompt = "What is the email associated w/ the username or org?"
+
 [placeholders.github-codeowner]
 type = "string"
 prompt = "Who is the GitHub codeowner - GitHub user or org/team?"

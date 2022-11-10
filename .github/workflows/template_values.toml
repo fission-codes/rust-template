@@ -4,6 +4,7 @@ description = "Rust template for project."
 dependabot = true
 github_actions = true
 github-codeowner = "rush/geddylee"
+github-email = "flybynight@subdivisions.com"
 github-name = "geddylee"
 have_discord = true
 discordlink = "http://discord.link"
