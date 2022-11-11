@@ -100,7 +100,7 @@ jobs:
         run: cargo test --manifest-path {{project-name}}/Cargo.toml
 {% if node-or-web == "web" %}
   run-headless-tests:
-    runs-on: ${{ "${{ matrix.os " }}}}
+    runs-on: {{ "${{ matrix.os " }}}}
     strategy:
       fail-fast: false
       matrix:
