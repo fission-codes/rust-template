@@ -104,20 +104,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os:
-          - ubuntu-latest
-          - windows-latest
-          - macos-latest
+        os: [ ubuntu-latest ]
+        browser: [ firefox, chrome ]
 
-        include:
-          - os: 'ubuntu-latest'
-            browser: 'firefox'
-
-          - os: 'macos-latest'
-            browser: 'safari'
-
-          - os: 'windows-latest'
-            browser: 'chrome'
+        # include:
+        # bug w/ wasm-bindgen: https://github.com/rustwasm/wasm-bindgen/issues/3004
+          # - os: macos-latest
+          #   browser: safari
 
     defaults:
       run:
