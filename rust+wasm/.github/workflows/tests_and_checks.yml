@@ -96,6 +96,7 @@ jobs:
         run: cargo test --manifest-path {{project-name}}/Cargo.toml
 {% if node-or-web == "web" %}
   run-headless-tests:
+    runs-on: ${{ "${{ matrix.os " }}}}
     strategy:
       fail-fast: false
       matrix:
@@ -138,6 +139,7 @@ jobs:
         run: wasm-pack test --headless --{{ "${{ matrix.browser " }}}}
 {% else %}
   run-node-tests:
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
 

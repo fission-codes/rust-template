@@ -91,11 +91,7 @@ Javascript-wrapper file, the {{project-name}}-wasm README (and version), and a
 
 ## Testing the Project
 
-For running tests in the current directly, use this command:
-
-```console
-wasm-pack test --node | --headless --*
-```
+For running tests in the current directly, use one of these commands:
 
 - Run tests expected to execute in [Node.js][node-js]:
 

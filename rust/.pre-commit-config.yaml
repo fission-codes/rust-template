@@ -1,9 +1,9 @@
 # See https://pre-commit.com for more information
+# pre-commit install
+# pre-commit install --hook-type commit-msg
 repos:
   - repo: local
     hooks:
-      # allow for crate import granularity:
-      # https://github.com/rust-lang/rustfmt/issues/4991
       - id: fmt
         name: fmt
         description: Format rust files.
