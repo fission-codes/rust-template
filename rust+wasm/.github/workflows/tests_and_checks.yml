@@ -63,6 +63,10 @@ jobs:
         if: {{ "${{ matrix.rust-toolchain == 'stable' " }}}}
         run: cargo-audit audit
 
+      - name: Install wasm-pack
+        if: {{ "${{ matrix.rust-toolchain == 'stable' " }}}} && github.event_name == 'push' }}
+        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+
       # Only "test" release build on push event.
       - name: Test Release
         if: {{ "${{ matrix.rust-toolchain == 'stable' " }}}} && github.event_name == 'push' }}
