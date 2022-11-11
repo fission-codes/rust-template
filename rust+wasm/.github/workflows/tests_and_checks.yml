@@ -124,11 +124,11 @@ jobs:
         working-directory: ./{{project-name}}-wasm
 
     steps:
-      - name: Install wasm-pack
-        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
-
       - name: Checkout Repository
         uses: actions/checkout@v3
+
+      - name: Install wasm-pack
+        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
 
       - name: Cache Project
         uses: Swatinem/rust-cache@v2
@@ -152,11 +152,11 @@ jobs:
         working-directory: ./{{project-name}}-wasm
 
     steps:
-      - name: Install wasm-pack
-        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
-
       - name: Checkout Repository
         uses: actions/checkout@v3
+
+      - name: Install wasm-pack
+        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
 
       - name: Cache Project
         uses: Swatinem/rust-cache@v2
