@@ -57,7 +57,7 @@
         ] ++ format-pkgs ++ cargo-installs;
 
       shellHook = ''
-        [ -e .git/hooks/pre-commit ] || pre-commit install --install-hooks
+        [ -e .git/hooks/pre-commit ] || pre-commit install --install-hooks && pre-commit install --hook-type commit-msg
       '';
       };
 

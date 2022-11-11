@@ -29,3 +29,8 @@ while switch license {
   ]);
 }
 variable::set("license", license);
+
+// Set for Copyright Info (Apache)
+variable::set("year", "2022");
+let name = variable::get("github-name").to_title_case();
+variable::set("copyright-owner", name);

@@ -173,8 +173,8 @@ adhere to Fission's [Code of Conduct](./CODE_OF_CONDUCT.md).
 This repository recommends using [pre-commit][pre-commit] for running pre-commit
 hooks. Please run this before every commit and/or push.
 
-- Once installed, Run `pre-commit install` to setup the pre-commit hooks
-  locally. This will reduce failed CI builds.
+- Once installed, Run `pre-commit install` and `pre-commit install --hook-type commit-msg`
+  to setup the pre-commit hooks locally. This will reduce failed CI builds.
 - If you are doing interim commits locally, and for some reason if you _don't_
   want pre-commit hooks to fire, you can run
   `git commit -a -m "Your message here" --no-verify`.

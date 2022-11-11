@@ -26,6 +26,7 @@
       rust-toolchain =
         (pkgs.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml).override {
           extensions = [ "cargo" "clippy" "rustfmt" "rust-src" "rust-std" ];
+          targets = [ "wasm32-unknown-unknown" ];
         };
 
       nightly-rustfmt = pkgs.rust-bin.nightly.latest.rustfmt;
@@ -60,7 +61,7 @@
         ] ++ format-pkgs ++ cargo-installs;
 
       shellHook = ''
-        [ -e .git/hooks/pre-commit ] || pre-commit install --install-hooks
+        [ -e .git/hooks/pre-commit ] || pre-commit install --install-hooks && pre-commit install --hook-type commit-msg
       '';
       };
 

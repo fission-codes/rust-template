@@ -63,10 +63,16 @@ jobs:
         if: {{ "${{ matrix.rust-toolchain == 'stable' " }}}}
         run: cargo-audit audit
 
+      - name: Install wasm-pack
+        if: {{ "${{ matrix.rust-toolchain == 'stable' " }}}} && github.event_name == 'push' }}
+        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+
       # Only "test" release build on push event.
       - name: Test Release
         if: {{ "${{ matrix.rust-toolchain == 'stable' " }}}} && github.event_name == 'push' }}
-        run: cargo build --release
+        run: |
+          cargo build --manifest-path {{project-name}}/Cargo.toml --release
+          cd {{project-name}}-wasm && wasm-pack build --target {{node-or-web}} --release
 
   run-cargo-tests:
     runs-on: ubuntu-latest
@@ -76,6 +82,7 @@ jobs:
         rust-toolchain:
           - stable
           - nightly
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -90,37 +97,31 @@ jobs:
           toolchain: {{ "${{ matrix.rust-toolchain " }}}}
 
       - name: Run Tests
-        run: cargo test --all
+        run: cargo test --manifest-path {{project-name}}/Cargo.toml
 {% if node-or-web == "web" %}
   run-headless-tests:
+    runs-on: {{ "${{ matrix.os " }}}}
     strategy:
       fail-fast: false
       matrix:
-        os:
-          - ubuntu-latest
-          - windows-latest
-          - macos-latest
+        os: [ ubuntu-latest ]
+        browser: [ firefox, chrome ]
 
-        include:
-          - os: 'ubuntu-latest'
-            browser: 'firefox'
-
-          - os: 'macos-latest'
-            browser: 'safari'
-
-          - os: 'windows-latest'
-            browser: 'chrome'
+        # include:
+        # bug w/ wasm-bindgen: https://github.com/rustwasm/wasm-bindgen/issues/3004
+          # - os: macos-latest
+          #   browser: safari
 
     defaults:
       run:
         working-directory: ./{{project-name}}-wasm
 
     steps:
-      - name: Install wasm-pack
-        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
-
       - name: Checkout Repository
         uses: actions/checkout@v3
+
+      - name: Install wasm-pack
+        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
 
       - name: Cache Project
         uses: Swatinem/rust-cache@v2
@@ -135,6 +136,7 @@ jobs:
         run: wasm-pack test --headless --{{ "${{ matrix.browser " }}}}
 {% else %}
   run-node-tests:
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
 
@@ -143,11 +145,11 @@ jobs:
         working-directory: ./{{project-name}}-wasm
 
     steps:
-      - name: Install wasm-pack
-        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
-
       - name: Checkout Repository
         uses: actions/checkout@v3
+
+      - name: Install wasm-pack
+        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
 
       - name: Cache Project
         uses: Swatinem/rust-cache@v2
