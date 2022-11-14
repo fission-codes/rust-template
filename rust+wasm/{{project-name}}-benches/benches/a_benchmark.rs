@@ -1,5 +1,5 @@
 use criterion::{criterion_group, criterion_main, Criterion};
-{% if crate_type == "lib" %}
+
 pub fn add_benchmark(c: &mut Criterion) {
     let mut rvg = {{crate_name}}::test_utils::Rvg::deterministic();
     let int_val_1 = rvg.sample(&(0..100i32));
