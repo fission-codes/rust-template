@@ -32,13 +32,13 @@ jobs:
         run: cargo bench --features test_utils -- --output-format bencher | tee output.txt
 
       - name: Upload Benchmark Result Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: bench_result
           path: output.txt
 
       - name: Create gh-pages Branch
-        uses: peterjgrainger/action-create-branch@v2.2.0
+        uses: peterjgrainger/action-create-branch@v2.3.0
         env:
           GITHUB_TOKEN: {{ "${{ secrets.GITHUB_TOKEN " }}}}
         with:
