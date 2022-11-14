@@ -127,7 +127,7 @@ generated values.
   cargo bench -p {{project-name}}-benches
   ```
 
-*Note*: Currently, this workspace only supports rust-native benchmarking, as
+*Note*: Currently, this workspace only supports Rust-native benchmarking, as
 `wasm-bindgen` support for criterion is still [an open issue][criterion-bindgen].
 However, with some extra work, benchmarks can be compiled to [wasi][wasi] and
 run via [wasmer][wasmer]/[wasmtime][wasmtime] or via the brower with
