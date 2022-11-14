@@ -108,6 +108,7 @@ jobs:
           cd ${{ runner.temp }}/$PROJECT_NAME
           git init
           git add .
+          nix flake check
           nix develop --show-trace -c rustc --version
           nix develop --show-trace -c wasm-pack --version
 
