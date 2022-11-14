@@ -131,7 +131,7 @@ generated values.
 `wasm-bindgen` support for criterion is still [an open issue][criterion-bindgen].
 However, with some extra work, benchmarks can be compiled to [wasi][wasi] and
 run with [wasmer][wasmer]/[wasmtime][wasmtime] or in the brower with
-[webassembly.sh][wasmsh]. Please catch-up w/ wasm support for criterion on their
+[webassembly.sh][wasmsh]. Please catch-up with wasm support for criterion on their
 [user-guide][criterion-user-guide].
 {% endif %}
 ## Setting-up {{project-name}}-wasm
