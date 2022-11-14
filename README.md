@@ -21,8 +21,6 @@
   </p>
 </div>
 
-<div align="center"><sub>:warning: Work in progress :warning:</sub></div>
-
 ##
 
 This template repository is [Fission's][fission] opinionated [Rust][rust] and
@@ -35,7 +33,7 @@ Rust *and* Wasm, including:
 * README standardization, code of conduct, contribuing guidelines, and
   a consistent project layout
 * GitHub issue and pull-request templates
-* Default Rust dependencies (particulary for Wasm)
+* Opinionated default Rust dependencies (particulary for Wasm)
 * [`cargo-bench`][cargo-bench] scaffolding (*optional*)
 * Release GitHub Action workflow(s) using the
   [release-please-action][release-please-action] and the
@@ -44,6 +42,11 @@ Rust *and* Wasm, including:
     [wasm-pack][wasm-pack], reliant on the Cargo version for the Wasm package.
 * Test, lint, audit, and code coverage (via [Codecov][codecov]) GitHub Action
   workflows (*optional*)
+* Cross-compile-compatible (`arm64`, `amd64`), [buildx][buildx]-focused
+  [Dockerfiles][dockerfile]—pick a `musl` or `glibc` build—for binary
+  executables (*right now*), as well as an associated GitHub Action for building
+  and pushing to [GitHub Packages Registry][gh-registry] and
+  [Docker Hub][dockerhub].
 * [Pre-commit][pre-commit] and [rustfmt][rustfmt] opinionated defaults
 * [Dependabot][dependabot] support (*optional*)
 * [Nix flake][nix-flake] support (*optional*)
@@ -221,6 +224,7 @@ conditions.
 
 [apache]: https://www.apache.org/licenses/LICENSE-2.0
 [anyhow]: https://github.com/dtolnay/anyhow
+[buildx]: https://github.com/docker/buildx
 [bevy-template]: https://github.com/taurr/bevy-template-rs
 [cargo-bench]: https://doc.rust-lang.org/cargo/commands/cargo-bench.html
 [cargo-generate]: https://github.com/cargo-generate/cargo-generate
@@ -234,7 +238,10 @@ conditions.
 [criterion]: https://github.com/bheisler/criterion.rs
 [dependabot]: https://github.com/dependabot
 [direnv]:https://direnv.net/
+[dockerfile]: https://docs.docker.com/engine/reference/builder/
+[dockerhub]: https://hub.docker.com/
 [fission]: https://fission.codes/
+[gh-registry]: https://github.com/features/packages
 [github-rsa]: https://github.blog/2021-09-01-improving-git-protocol-security-github/
 [gh-secrets]: https://docs.github.com/en/rest/actions/secrets
 [integration-testing]: https://doc.rust-lang.org/book/ch11-03-test-organization.html#integration-tests-for-binary-crates

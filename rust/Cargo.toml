@@ -4,10 +4,16 @@ version = "0.1.0"
 description = "{{description}}"
 keywords = []
 categories = []{% if license == "Apache" %}
+{% if crate_type == "lib" %}include = ["/src", "/examples"{% if bench %}, "/benches"{% endif %}, "README.md", "LICENSE"]{% else %}
+include = ["/src"{% if bench %}, "/benches"{% endif %}, "README.md", "LICENSE"]{% endif %}
 license = "Apache"
 {% elsif license == "MIT" %}
+{% if crate_type == "lib" %}include = ["/src", "/examples"{% if bench %}, "/benches"{% endif %}, "README.md", "LICENSE"]{% else %}
+include = ["/src"{% if bench %}, "/benches"{% endif %}, "README.md", "LICENSE"]{% endif %}
 license = "MIT"
 {% else %}
+{% if crate_type == "lib" %}include = ["/src", "/examples"{% if bench %}, "/benches"{% endif %}, "README.md", "LICENSE-APACHE", "LICENSE-MIT"]{% else %}
+include = ["/src"{% if bench %}, "/benches"{% endif %}, "README.md", "LICENSE-APACHE", "LICENSE-MIT"]{% endif %}
 license = "Apache-2.0 or MIT"
 {% endif %}readme = "README.md"
 edition = "2021"
@@ -34,11 +40,15 @@ bench = false{% endif %}
 name = "a_benchmark"
 harness = false
 required-features = ["test_utils"]
+{% endif %}{% if crate_type == "lib" %}
+[[example]]
+name = "counterparts"
+path = "examples/counterparts.rs"
 {% endif %}
 [dependencies]
 anyhow = "1.0"{% if bench %}
-proptest = { version = "1.0", optional = true }{% endif %}
-{% if crate_type == "lib" %}tracing = "0.1"{% else %}
+proptest = { version = "1.0", optional = true }{% endif %}{% if crate_type == "lib" %}
+tracing = "0.1"{% else %}
 tracing = "0.1"
 tracing-subscriber = "0.3"{% endif %}
 {% if bench %}

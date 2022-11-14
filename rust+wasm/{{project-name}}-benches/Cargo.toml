@@ -6,7 +6,7 @@ edition = "2021"
 authors = ["{{authors}}"]
 
 [dependencies]
-{{project-name}} = { path = "../{{project-name}}", features = ["test_utils"] }
+{{project-name}} = { path = "../{{project-name}}", version = "0.1", features = ["test_utils"] }
 
 [dev-dependencies]
 criterion = { version = "0.4", default-features = false }

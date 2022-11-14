@@ -69,6 +69,24 @@ type = "bool"
 prompt = "Set up Rust benchmarking?"
 default = false
 
+[conditional.'crate_type == "bin"'.placeholders.docker]
+type = "bool"
+prompt = "Want to set up Docker for the Rust binary?"
+default = true
+
+[conditional.'docker == true'.placeholders.dockerbuild]
+type = "string"
+prompt = "For docker, do you want a glibc or musl build?"
+choices = ["glibc", "musl"]
+default = "musl"
+
+[conditional.'docker == false']
+ignore = [
+    "docker",
+    ".dockerignore",
+    ".github/workflows/docker.yml"
+]
+
 [conditional.'github_actions == true'.placeholders.codecov]
 type = "bool"
 prompt = "Enable codecov coverage upload via GitHub Actions?"
@@ -82,11 +100,9 @@ prompt = "Enter a discord invite link?"
 ignore = [
     "{{project-name}}/src/main.rs",
     "{{project-name}}/Cargo.lock",
-]
-
-[conditional.'crate_type == "bin"']
-ignore = [
-     "{{project-name}}/examples"
+    "docker",
+    ".dockerignore",
+    ".github/workflows/docker.yml"
 ]
 
 [conditional.'bench == false']

@@ -47,7 +47,9 @@
 
 - [Crates](#crates)
 - {% if crate_type == "lib" %}[Usage](#usage){% else %}[Usage and Installation](#usage-and-installation){% endif %}
-- [Testing the Project](#testing-the-project)
+- [Testing the Project](#testing-the-project){% if bench %}
+- [Benchmarking the Project](#benchmarking-the-project){% endif %}{% if docker %}
+- [Running {{project-name}} on Docker](#running-{{project-name}}-on-docker){% endif %}
 - [Setting-up {{project-name}}-wasm](#setting-up-{{project-name}}-wasm)
 - [Contributing](#contributing)
 - [Getting Help](#getting-help)
@@ -133,6 +135,42 @@ However, with some extra work, benchmarks can be compiled to [wasi][wasi] and
 run with [wasmer][wasmer]/[wasmtime][wasmtime] or in the brower with
 [webassembly.sh][wasmsh]. Please catch-up with wasm support for criterion on their
 [user-guide][criterion-user-guide].
+{% endif %}{% if docker %}
+## Running {{project-name}} on Docker
+
+We recommend setting your [Docker Engine][docker-engine] configuration
+with `experimental` and `buildkit` set to `true`, for example:
+
+``` json
+{
+  "builder": {
+    "gc": {
+      "defaultKeepStorage": "20GB",
+      "enabled": true
+    }
+  },
+  "experimental": true,
+  "features": {
+    "buildkit": true
+  }
+}
+```
+
+- Build a multi-plaform Docker image via [buildx][buildx] (from top-level):
+
+  ```console
+  docker buildx build --platform=linux/amd64,linux/arm64 --file docker/Dockerfile -t {{project-name}} --progress=plain .
+  ```
+
+- Run a Docker image (depending on your platform):
+
+  ```console
+  docker run --platform=linux/amd64 -t {{project-name}}
+  ```
+
+*Note*: The current [Dockerfile](./docker/Dockerfile) just builds the Rust-native
+binary on Docker. We can eventually take advntage of baking-in a front-end with
+the Wasm library, etc.
 {% endif %}
 ## Setting-up {{project-name}}-wasm
 
@@ -242,20 +280,21 @@ license, shall be dual licensed as above, without any additional terms or
 conditions.
 {% endif %}
 
-[apache]: https://www.apache.org/licenses/LICENSE-2.0
+[apache]: https://www.apache.org/licenses/LICENSE-2.0{% if docker %}
+[buildx]: https://github.com/docker/buildx{% endif %}
 [cargo-expand]: https://github.com/dtolnay/cargo-expand
 [cargo-udeps]: https://github.com/est31/cargo-udeps
 [cargo-watch]: https://github.com/watchexec/cargo-watch
 [commit-spec]: https://www.conventionalcommits.org/en/v1.0.0/#specification
-[commit-spec-site]: https://www.conventionalcommits.org/
-{% if bench %}[criterion]: https://github.com/bheisler/criterion.rs
-[criterion-bindgen]: https://github.com/bheisler/criterion.rs/issues/270
-{% endif %}
-{% if nix %}[direnv]:https://direnv.net/{% endif %}
+[commit-spec-site]: https://www.conventionalcommits.org/{% if bench %}
+[criterion]: https://github.com/bheisler/criterion.rs
+[criterion-bindgen]: https://github.com/bheisler/criterion.rs/issues/270{% endif %}{% if docker%}
+[docker-engine]: https://docs.docker.com/engine/{% endif %}{% if nix %}
+[direnv]:https://direnv.net/{% endif %}
 [irust]: https://github.com/sigmaSd/IRust
-[mit]: http://opensource.org/licenses/MIT
-{% if nix %}[nix]:https://nixos.org/download.html{% endif %}
-{% if nix %}[nix-flake]: https://nixos.wiki/wiki/Flakes{% endif %}
+[mit]: http://opensource.org/licenses/MIT{% if nix %}
+[nix]:https://nixos.org/download.html
+[nix-flake]: https://nixos.wiki/wiki/Flakes{% endif %}
 [node-js]: https://nodejs.dev/en/
 [pre-commit]: https://pre-commit.com/{% if bench %}
 [proptest]: https://github.com/proptest-rs/proptest
@@ -264,7 +303,6 @@ conditions.
 [wasi]: https://wasi.dev/
 [wasmer]: https://wasmer.io/
 [wasmtime]: https://docs.wasmtime.dev/
-[wasmsh]: https://webassembly.sh/
-{% endif %}
+[wasmsh]: https://webassembly.sh/{% endif %}
 [wasm-pack]: https://rustwasm.github.io/docs/wasm-pack/
 [webpack]: https://webpack.js.org/

@@ -9,6 +9,7 @@ github-email = "flybynight@subdivisions.com"
 github-name = "geddylee"
 have_discord = true
 discordlink = "http://discord.link"
+docker = false
 license = "dual"
 nix = true
 node-or-web = "web"
