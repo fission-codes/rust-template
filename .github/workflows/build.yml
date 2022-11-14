@@ -282,11 +282,11 @@ jobs:
         run: |
           mv $PROJECT_NAME ${{ runner.temp }}/
           cd ${{ runner.temp }}/$PROJECT_NAME
-          cargo bench --all-features
+          cargo bench --all-features -- --output-format bencher | tee output.txt
 
       - name: Run Benchmark - Rust+Wasm Template
         if: ${{ matrix.templates == 'rust+wasm' }}
         run: |
           mv $PROJECT_NAME ${{ runner.temp }}/
           cd ${{ runner.temp }}/$PROJECT_NAME
-          cargo bench -p $PROJECT_NAME-benches
+          cargo bench -p $PROJECT_NAME-benches -- --output-format bencher | tee output.txt
