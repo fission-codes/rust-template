@@ -130,7 +130,7 @@ generated values.
 *Note*: Currently, this workspace only supports Rust-native benchmarking, as
 `wasm-bindgen` support for criterion is still [an open issue][criterion-bindgen].
 However, with some extra work, benchmarks can be compiled to [wasi][wasi] and
-run via [wasmer][wasmer]/[wasmtime][wasmtime] or via the brower with
+run with [wasmer][wasmer]/[wasmtime][wasmtime] or in the brower with
 [webassembly.sh][wasmsh]. Please catch-up w/ wasm support for criterion on their
 [user-guide][criterion-user-guide].
 {% endif %}
