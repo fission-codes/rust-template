@@ -1,4 +1,5 @@
 [values]
+bench = true
 codecov = true
 description = "Rust template for project."
 dependabot = true

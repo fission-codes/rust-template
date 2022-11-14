@@ -36,10 +36,11 @@ Rust *and* Wasm, including:
   a consistent project layout
 * GitHub issue and pull-request templates
 * Default Rust dependencies (particulary for Wasm)
+* [`cargo-bench`][cargo-bench] scaffolding (*optional*)
 * Release GitHub Action workflow(s) using the
   [release-please-action][release-please-action] and the
   [release-please][release-please] deploy strategy (*optional*)
-  * For Wasm libraries, this includes publishing to NPM via
+  * For Wasm libraries, this includes publishing to npm with
     [wasm-pack][wasm-pack], reliant on the Cargo version for the Wasm package.
 * Test, lint, audit, and code coverage (via [Codecov][codecov]) GitHub Action
   workflows (*optional*)
@@ -71,6 +72,10 @@ This repository contains two sub-templates:
 First, install [cargo-generate][cargo-generate] via `cargo install cargo-generate`.
 More installation options are available [here][cargo-generate-install].
 
+The experience running through the experience should look something like this:
+
+![cargo-generate Rust Binary Application Screenshot](./assets/screenshot.png)
+
 ### Generating a Rust-Only Project
 
 The `rust` template is designed for generating a rust binary or application
@@ -81,6 +86,11 @@ library.
   ``` console
   cargo generate --bin --git https://github.com/fission-codes/rust-template
   ```
+*Note on binary crate types*: If using the `--bin` flag, this template will
+generate a Rust binary project scaffolding with both a `src/main.rs` and a
+`src/lib.rs`. This allows for better support for
+[integration testing][integration-testing] and helps with
+[separation of concerns][sep-of-concerns].
 
 - Generate an application library project:
 
@@ -107,6 +117,10 @@ cargo generate -i ~/.ssh/id_ed25519 https://github.com/fission-codes/rust-templa
 
 #### 🔋 Batteries Included
 
+- [`anyhow`][anyhow] as a ergonomic and idiomatic alternative for explicitly
+  handling errors
+- [`proptest`][proptest] and [`criterion`][criterion] for generating inputs and
+  running benchmarks (*optional*)
 - [`tracing`][tracing] for instrumenting Rust programs to collect structured,
   event-based diagnostic information, going beyond just logging-style
   diagnostics
@@ -119,11 +133,13 @@ cargo generate -i ~/.ssh/id_ed25519 https://github.com/fission-codes/rust-templa
 The `rust+wasm` template is designed for generating a workspace containing both
 a rust-native library, as well as one for compilation to Wasm and leveraging
 [wasm-pack][wasm-pack]. We don't currently support any Javascript examples
-or frameworks that can use Wasm NPM package explicitly, but this is on our
+or frameworks that can use Wasm npm package explicitly, but this is on our
 radar.
 
+Generate a project just like before and choose the `rust+wasm` template:
+
 ```console
-cargo generate --git https://github.com/fission-codes/rust-template
+cargo generate --lib --git https://github.com/fission-codes/rust-template
 ```
 
 *Note*: Currently, `wasm-pack` [does not support building binary
@@ -145,7 +161,8 @@ will still be generated.
 
 ### Notes for Post-Project Generation
 
-- If using `nix` via [Nix flake][nix-flake], make sure to run `direnv allow`
+- If using `nix` via [Nix flake][nix-flake], please install [nix][nix] and
+  [direnv][direnv] to get started. Then, make sure to run `direnv allow`
   and add your files via `git add`.
 
 - If [Codecov][codecov] upload is enabled through GitHub Actions make
@@ -203,7 +220,9 @@ license, shall be dual licensed as above, without any additional terms or
 conditions.
 
 [apache]: https://www.apache.org/licenses/LICENSE-2.0
+[anyhow]: https://github.com/dtolnay/anyhow
 [bevy-template]: https://github.com/taurr/bevy-template-rs
+[cargo-bench]: https://doc.rust-lang.org/cargo/commands/cargo-bench.html
 [cargo-generate]: https://github.com/cargo-generate/cargo-generate
 [cargo-generate-install]: https://github.com/cargo-generate/cargo-generate#installation
 [cargo-generate-issue]: https://github.com/cargo-generate/cargo-generate/issues/384
@@ -212,22 +231,28 @@ conditions.
 [codecov-quick]: https://docs.codecov.com/docs/quick-start
 [console-hook]: https://github.com/rustwasm/console_error_panic_hook
 [crates-io]: https://crates.io/
+[criterion]: https://github.com/bheisler/criterion.rs
 [dependabot]: https://github.com/dependabot
+[direnv]:https://direnv.net/
 [fission]: https://fission.codes/
 [github-rsa]: https://github.blog/2021-09-01-improving-git-protocol-security-github/
 [gh-secrets]: https://docs.github.com/en/rest/actions/secrets
+[integration-testing]: https://doc.rust-lang.org/book/ch11-03-test-organization.html#integration-tests-for-binary-crates
 [js-sys]: https://docs.rs/js-sys/latest/js_sys/
 [mit]: http://opensource.org/licenses/MIT
+[nix]:https://nixos.org/download.html
 [nix-flake]: https://nixos.wiki/wiki/Flakes
 [node-js]: https://nodejs.dev/en/
 [no-binary]: https://github.com/rustwasm/wasm-pack/issues/734
 [npm]: https://www.npmjs.com/
 [pre-commit]: https://pre-commit.com/
+[proptest]: https://github.com/proptest-rs/proptest
 [release-please]: https://github.com/googleapis/release-please
 [release-please-action]: https://github.com/google-github-actions/release-please-action
 [rust]: https://www.rust-lang.org/
 [rust-nix-template]: https://github.com/nerosnm/rust-nix-template
 [rustfmt]: https://github.com/rust-lang/rustfmt
+[sep-of-concerns]: https://doc.rust-lang.org/stable/book/ch12-03-improving-error-handling-and-modularity.html#separation-of-concerns-for-binary-projects
 [tracing]: https://github.com/tokio-rs/tracing
 [tracing-subscriber]: https://docs.rs/tracing-subscriber/latest/tracing_subscriber/index.html
 [wasm]: https://webassembly.org/

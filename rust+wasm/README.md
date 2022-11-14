@@ -14,10 +14,10 @@
     </a>{% if codecov %}
     <a href="https://codecov.io/gh/{{github-name}}/{{project-name}}">
       <img src="https://codecov.io/gh/{{github-name}}/{{project-name}}/branch/main/graph/badge.svg?token=SOMETOKEN" alt="Code Coverage"/>
-    </a>{% endif %} {% if github_actions %}
+    </a>{% endif %}{% if github_actions %}
     <a href="https://github.com/{{github-name}}/{{project-name}}/actions?query=">
       <img src="https://github.com/{{github-name}}/{{project-name}}/actions/workflows/tests_and_checks.yml/badge.svg" alt="Build Status">
-    </a>{% endif %} {% if license == "Apache" %}
+    </a>{% endif %}{% if license == "Apache" %}
     <a href="https://github.com/{{github-name}}/{{project-name}}/blob/main/LICENSE">
       <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License">
     </a>{% elsif license == "MIT" %}
@@ -100,15 +100,40 @@ available as a library.
 ## Testing the Project
 
 - Run tests for crate/workspace `{{project-name}}`:
-
+{% if bench %}
+  ```console
+  cd {{project-name}} && cargo test --all-features
+  ```
+{% else %}
   ```console
   cd {{project-name}} && cargo test
   ```
-
+{% endif %}
 - To run tests for crate/workspace `{{project-name}}-wasm`, follow
   the instructions in [{{project-name}}-wasm](./{{project-name}}-wasm#testing-the-project),
   which leverages [wasm-pack][wasm-pack].
+{% if bench %}
+## Benchmarking the Project
 
+For benchmarking and measuring performance, this workspaces provides
+a Rust-specific benchmarking package leveraging [criterion][criterion] and a
+`test_utils` feature flag for integrating [proptest][proptest] within the
+suite for working with [strategies][strategies] and sampling from randomly
+generated values.
+
+- Run benchmarks
+
+  ```console
+  cargo bench -p {{project-name}}-benches
+  ```
+
+*Note*: Currently, this workspace only supports Rust-native benchmarking, as
+`wasm-bindgen` support for criterion is still [an open issue][criterion-bindgen].
+However, with some extra work, benchmarks can be compiled to [wasi][wasi] and
+run with [wasmer][wasmer]/[wasmtime][wasmtime] or in the brower with
+[webassembly.sh][wasmsh]. Please catch-up with wasm support for criterion on their
+[user-guide][criterion-user-guide].
+{% endif %}
 ## Setting-up {{project-name}}-wasm
 
 The Wasm targetted version of this project relies on [wasm-pack][wasm-pack]
@@ -137,7 +162,7 @@ according to your preference.
 
 For formatting Rust in particular, please use `cargo +nightly fmt` as it uses
 specific nightly features we recommend by default.
-{% else  %}
+{% else %}
 ### Formatting
 
 For formatting Rust in particular, please use `cargo +nightly fmt` as it uses
@@ -223,12 +248,23 @@ conditions.
 [cargo-watch]: https://github.com/watchexec/cargo-watch
 [commit-spec]: https://www.conventionalcommits.org/en/v1.0.0/#specification
 [commit-spec-site]: https://www.conventionalcommits.org/
+{% if bench %}[criterion]: https://github.com/bheisler/criterion.rs
+[criterion-bindgen]: https://github.com/bheisler/criterion.rs/issues/270
+{% endif %}
 {% if nix %}[direnv]:https://direnv.net/{% endif %}
 [irust]: https://github.com/sigmaSd/IRust
 [mit]: http://opensource.org/licenses/MIT
 {% if nix %}[nix]:https://nixos.org/download.html{% endif %}
 {% if nix %}[nix-flake]: https://nixos.wiki/wiki/Flakes{% endif %}
 [node-js]: https://nodejs.dev/en/
-[pre-commit]: https://pre-commit.com/
+[pre-commit]: https://pre-commit.com/{% if bench %}
+[proptest]: https://github.com/proptest-rs/proptest
+[strategies]: https://docs.rs/proptest/latest/proptest/strategy/trait.Strategy.html
+[criterion-user-guide]: https://github.com/bheisler/criterion.rs/blob/version-0.4/book/src/user_guide/wasi.md
+[wasi]: https://wasi.dev/
+[wasmer]: https://wasmer.io/
+[wasmtime]: https://docs.wasmtime.dev/
+[wasmsh]: https://webassembly.sh/
+{% endif %}
 [wasm-pack]: https://rustwasm.github.io/docs/wasm-pack/
 [webpack]: https://webpack.js.org/

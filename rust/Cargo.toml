@@ -16,21 +16,38 @@ repository = "https://github.com/{{github-name}}/{{project-name}}"
 authors = ["{{authors}}"]
 {% if crate_type == "lib" %}
 [lib]
-path = "src/lib.rs"
+path = "src/lib.rs"{% if bench %}
+bench = false{% endif %}
 {% else %}
+[lib]
+path = "src/lib.rs"{% if bench %}
+bench = false{% endif %}
+doctest = false
+
 [[bin]]
 name = "{{project-name}}"
 path = "src/main.rs"
-doc = true
+doc = false{% if bench %}
+bench = false{% endif %}
+{% endif %}{% if bench %}
+[[bench]]
+name = "a_benchmark"
+harness = false
+required-features = ["test_utils"]
 {% endif %}
 [dependencies]
-{% if crate_type == "lib" %}tracing = "0.1"
-{% else %}
+anyhow = "1.0"{% if bench %}
+proptest = { version = "1.0", optional = true }{% endif %}
+{% if crate_type == "lib" %}tracing = "0.1"{% else %}
 tracing = "0.1"
-tracing-subscriber = "0.3"
+tracing-subscriber = "0.3"{% endif %}
+{% if bench %}
+[dev-dependencies]
+criterion = "0.4"
 {% endif %}
 [features]
-default = []
+default = []{% if bench %}
+test_utils = ["proptest"]{% endif %}
 
 # Speedup build on macOS
 # See https://blog.rust-lang.org/2021/03/25/Rust-1.51.0.html#splitting-debug-information
