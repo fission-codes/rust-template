@@ -117,7 +117,7 @@ available as a library.
 
 For benchmarking and measuring performance, this workspaces provides
 a Rust-specific benchmarking package leveraging [criterion][criterion] and a
-`test_utils` feature flag for integrating [proptest][proptest] within the the
+`test_utils` feature flag for integrating [proptest][proptest] within the
 suite for working with [strategies][strategies] and sampling from randomly
 generated values.
 
