@@ -40,7 +40,7 @@ Rust *and* Wasm, including:
 * Release GitHub Action workflow(s) using the
   [release-please-action][release-please-action] and the
   [release-please][release-please] deploy strategy (*optional*)
-  * For Wasm libraries, this includes publishing to npm via
+  * For Wasm libraries, this includes publishing to npm with
     [wasm-pack][wasm-pack], reliant on the Cargo version for the Wasm package.
 * Test, lint, audit, and code coverage (via [Codecov][codecov]) GitHub Action
   workflows (*optional*)
