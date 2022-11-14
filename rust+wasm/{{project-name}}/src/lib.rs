@@ -2,11 +2,13 @@
 #![warn(missing_debug_implementations, missing_docs, rust_2018_idioms)]
 #![deny(unreachable_pub, private_in_public)]
 
-//! {{project-name}}{% if bench %}
+//! {{project-name}}
+{% if bench %}
 /// Test utilities.
 #[cfg(any(test, feature = "test_utils"))]
 #[cfg_attr(docsrs, doc(cfg(feature = "test_utils")))]
-pub mod test_utils;{% endif %}{% if crate_type == "lib" %}
+pub mod test_utils;
+{% endif %}
 /// Add two integers together.
 pub fn add(a: i32, b: i32) -> i32 {
     a + b
@@ -25,4 +27,4 @@ mod tests {
     fn test_mult() {
         assert_eq!(mult(3, 2), 6);
     }
-}{% endif %}
+}

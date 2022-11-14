@@ -97,7 +97,7 @@ jobs:
           toolchain: {{ "${{ matrix.rust-toolchain " }}}}
 
       - name: Run Tests
-        run: cargo test --manifest-path {{project-name}}/Cargo.toml
+        run: cargo test --manifest-path {{project-name}}/Cargo.toml --all-features
 {% if node-or-web == "web" %}
   run-headless-tests:
     runs-on: {{ "${{ matrix.os " }}}}
