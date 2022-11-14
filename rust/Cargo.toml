@@ -47,8 +47,8 @@ criterion = "0.4"
 {% endif %}
 [features]
 default = []{% if bench %}
-test_utils = ["proptest"]
-{% endif %}
+test_utils = ["proptest"]{% endif %}
+
 # Speedup build on macOS
 # See https://blog.rust-lang.org/2021/03/25/Rust-1.51.0.html#splitting-debug-information
 [profile.dev]
