@@ -14,10 +14,11 @@ If the code adds a feature that is not already present in an issue, you can crea
 ### Contributing by Adding a Topic for Discussion
 #### Issues
 If you have found a bug and would like to report it or if you have a feature that you feel we should add, then we'd love it if you opened an issue! ❤️ Before you do, please search the other issues to avoid creating a duplicate issue. 
+
 To submit a new issue just hit the issue button and a choice between two templates should appear. Then, follow along with the template you chose. If you don't know how to fill in all parts of the template go ahead and skip those parts. You can edit the issue later.
 
 #### Discussion
-If you have some new discussion you want to start but it isn't a bug or feature add, then you can start a discussion. Some examples of what kinds of things that are good discussion topics can include, but not limited to the following
+If you have a new discussion you want to start but it isn't a bug or feature add, then you can start a [GitHub discussion](https://docs.github.com/en/discussions). Some examples of what kinds of things that are good discussion topics can include, but are not limited to the following
 -   Community announcements and asking the community for feedback
 -   Discussing a new release
 -   Asking questions, Q&A that isn't for sure a bug report
@@ -26,45 +27,45 @@ If you have some new discussion you want to start but it isn't a bug or feature 
 In order to contribute through code follow the steps below. Note that you don't need to be the best programmer to contribute. Our discord is open for questions
 
  1. **Pick a feature** you would like to add or a bug you would like to fix
-	 - If you wish to contribute but what you want to fix/add is not already covered in an existing issue, please open a new issue
+	- If you wish to contribute but what you want to fix/add is not already covered in an existing issue, please open a new issue
  2. **Discuss** the issue with the rest of the community
-	 - Before you write any code, it is recommended that you discuss your intention to write the code on the issue you are attempting to edit
-	 -  This helps to stop you from wasting your time duplicating the work of others that maybe working on the same issue; at the same time
-	 - This step also allows you to get helpful pointers on the community on some problems they may have encountered on similar issues
+	- Before you write any code, it is recommended that you discuss your intention to write the code on the issue you are attempting to edit
+	- This helps to stop you from wasting your time duplicating the work of others that maybe working on the same issue; at the same time
+	- This step also allows you to get helpful pointers on the community on some problems they may have encountered on similar issues
  3. **Fork** the repository
-	 - A fork creates a copy of the code on your Github, so you can work on it separately from everyone else.
-	 - You can learn more about forking [here](https://docs.github.com/en/get-started/quickstart/fork-a-repo)
+	- A fork creates a copy of the code on your Github, so you can work on it separately from everyone else
+	- You can learn more about forking [here](https://docs.github.com/en/get-started/quickstart/fork-a-repo)
  4. Ensure that you have **commit signing** enabled
-	 - This ensures that the code you submit was committed by you and not someone else who claims to be you
-	 - You can learn more about how to setup commit signing [here](https://www.freecodecamp.org/news/what-is-commit-signing-in-git/ "https://www.freecodecamp.org/news/what-is-commit-signing-in-git/")
-	 - If you have already made some commits that you wish to put in a pull request without signing them, then you can follow [this guide](https://dev.to/jmarhee/signing-existing-commits-with-gpg-5b58) on how to fix that.
+	- This ensures that the code you submit was committed by you and not someone else who claims to be you
+	- You can learn more about how to setup commit signing [here](https://www.freecodecamp.org/news/what-is-commit-signing-in-git/ "https://www.freecodecamp.org/news/what-is-commit-signing-in-git/")
+	- If you have already made some commits that you wish to put in a pull request without signing them, then you can follow [this guide](https://dev.to/jmarhee/signing-existing-commits-with-gpg-5b58) on how to fix that.
  5. **Clone** the repository to your local computer.
-	 - This puts a copy of your fork on your computer so you can edit it
-	 - You can learn more about cloning repositories [here](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
+	- This puts a copy of your fork on your computer so you can edit it
+	- You can learn more about cloning repositories [here](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
  6. **Build** the project
-	 - For a detailed look on how to build {{project-name}} look at our [README file](<./README>)
+	- For a detailed look on how to build {{project-name}} look at our [README file](<./README>)
  7. **Start writing** your code
-	 - Open up your favorite code editor and make the changes that you wanted to make to the repository
-	 - Make sure to test your code with the test command found in our [README file](<./README>)
+	- Open up your favorite code editor and make the changes that you wanted to make to the repository
+	- Make sure to test your code with the test command found in our [README file](<./README>)
  8. **Write tests** for your code
-	 - If you are adding a new feature you should write tests that ensure that if someone make changes to the code it cannot break your new feature without breaking the test
-	 - If your code adds a new feature you should also write at least one documentation test. The documentation test's purpose is to demonstrate and document how to use the API feature
-	 - If your code fixes a bug you should write tests that ensure that if someone makes code changes in the future the bug does not re-emerge without breaking test
+	- If you are adding a new feature you should write tests that ensure that if someone make changes to the code it cannot break your new feature without breaking the test
+	- If your code adds a new feature you should also write at least one documentation test. The documentation test's purpose is to demonstrate and document how to use the API feature.
+	- If your code fixes a bug you should write tests that ensure that if someone makes code changes in the future the bug does not re-emerge without breaking test
 	- Please create integration tests, if the addition is large enough to warrant them, and unit tests
-		 - Unit tests are tests that ensure the functionality of a single function or small section of code
-		 - Integration tests test large large sections of code
-		 - read more about the differences [here](https://www.geeksforgeeks.org/difference-between-unit-testing-and-integration-testing/)
-	 - Tests should be put inside the test folder inside the source folder and in a test file relevant to the project you are working in
-	 - For more information on how to write tests look at [this link](https://doc.rust-lang.org/book/ch11-01-writing-tests.html)
+		- Unit tests are tests that ensure the functionality of a single function or small section of code
+		- Integration tests test large large sections of code
+		- Read more about the differences [here](https://www.geeksforgeeks.org/difference-between-unit-testing-and-integration-testing/)
+	- Tests should be put inside the test folder inside the source folder and in a test file relevant to the project you are working in
+	- For more information on how to write tests look at [this link](https://doc.rust-lang.org/book/ch11-01-writing-tests.html)
  9. Ensure that the code that you made follows our Rust **coding guidelines**
-	 - You can find our list of guidelines [here](./coding-guide)
-	 - This is a courtesy to the programmers that come after you. The easier your code is to read, the easier it will be for the next person to make modifications.
-	 - If you find it difficult to follow the guidelines or if the guidelines or unclear please reach out to us through our discord linked above, or you can just continue and leave a comment in the pull request stage.
+	- You can find our list of guidelines [here](./coding-guide)
+	- This is a courtesy to the programmers that come after you. The easier your code is to read, the easier it will be for the next person to make modifications.
+	- If you find it difficult to follow the guidelines or if the guidelines or unclear please reach out to us through our discord linked above, or you can just continue and leave a comment at the pull request stage.
  10. **Commit and Push** your code
-	 - This sends your changes to your repository branch
-	 - You can learn more about committing code [here](https://docs.github.com/en/desktop/contributing-and-collaborating-using-github-desktop/making-changes-in-a-branch/committing-and-reviewing-changes-to-your-project) and pushing it [here](https://docs.github.com/en/get-started/using-git/pushing-commits-to-a-remote-repository).
-	 - We use conventional commits for the names and description of commits. You can find out more about them [here](https://www.conventionalcommits.org/en/v1.0.0/)
+	- This sends your changes to your repository branch
+	- You can learn more about committing code [here](https://docs.github.com/en/desktop/contributing-and-collaborating-using-github-desktop/making-changes-in-a-branch/committing-and-reviewing-changes-to-your-project) and pushing it [here](https://docs.github.com/en/get-started/using-git/pushing-commits-to-a-remote-repository).
+	- We use conventional commits for the names and description of commits. You can find out more about them [here](https://www.conventionalcommits.org/en/v1.0.0/)
  11. The final step is to create **pull request** to our main branch 🥳🎉
-	 - A pull request is how you merge the code you just worked so hard on with the code everyone else has access to
-	 - Once you have submitted your pull request, we will review your code and check to make sure the code implements the feature or fixes the bug. We may leave some feedback and suggest edits. You can make the changes we suggest by committing more code to your fork.
-	 - You can learn more about pull requests [here](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests)
+	- A pull request is how you merge the code you just worked so hard on with the code everyone else has access to
+	- Once you have submitted your pull request, we will review your code and check to make sure the code implements the feature or fixes the bug. We may leave some feedback and suggest edits. You can make the changes we suggest by committing more code to your fork.
+	- You can learn more about pull requests [here](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests)
