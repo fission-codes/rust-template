@@ -20,7 +20,7 @@ Please delete options that are not relevant.
 ## Test plan (required)
 
 Demonstrate the code is solid. Which commands did you test with and what are the expected results?
-Which tests have you added? Do the tests cover all of the changes included in this PR?
+Which tests have you added or updated? Do the tests cover all of the changes included in this PR?
 
 ## Screenshots/Screencaps
 
