@@ -17,6 +17,13 @@ Please add a link to any relevant issues/tickets.
 
 Please delete options that are not relevant.
 
+## Test plan (required)
+
+Demonstrate the code is solid. Are changes to the templates tested in the top-level project workflows?
+
+Which commands did you test with and what are the expected results? Which tests have you added or updated? Do the
+tests cover all of the changes included in this PR?
+
 ## Screenshots/Screencaps
 
-Please add previews of any UI Changes.
+Please include a screenshot or screencap that includes any commands that have been added to the generator.

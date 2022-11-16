@@ -24,31 +24,30 @@ Describe the sort of fix that would solve the issue.
 # Detail
 
 **Describe the bug**
+
 A clear and concise description of what the bug is.
 
 **To Reproduce**
+
 Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
+1. Run '...'
+2. Select option '....'
 4. See error
 
 **Expected behavior**
+
 A clear and concise description of what you expected to happen.
 
 **Screenshots**
-If applicable, add screenshots to help explain your problem.
+
+Please include a screenshot or copy-paste of the commands to run to reproduce the bug.
 
 **Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
 
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
+ - OS: [e.g. iOS]
  - Version [e.g. 22]
+ - Rust toolchain [e.g. stable]
 
 **Additional context**
+
 Add any other context about the problem here.
