@@ -7,7 +7,7 @@ assignees: ''
 
 ---
 
-NB: Feature requests will only be considered if they solve a pain or present a useful refactoring of the code. 
+NB: Feature requests will only be considered if they solve a pain or present a useful refactoring of the code.
 
 # Summary
 
