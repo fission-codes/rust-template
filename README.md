@@ -182,7 +182,7 @@ will still be generated.
 ## Contributing
 
 :balloon: We're thankful for any feedback and help in improving our template
-generator!  We have a [contributing guide](./CONTRIBUTING.md) to help you get
+generator! We have a [contributing guide](./CONTRIBUTING.md) to help you get
 involved. We also adhere to Fission's [Code of Conduct](./CODE_OF_CONDUCT.md).
 
 ### Pre-commit Hook
