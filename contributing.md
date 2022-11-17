@@ -58,7 +58,7 @@ In order to contribute through code follow the steps below. Note that you don't 
 	- Tests should be put inside the test folder inside the source folder and in a test file relevant to the project you are working in
 	- For more information on how to write tests look at [this link](https://doc.rust-lang.org/book/ch11-01-writing-tests.html)
  9. Ensure that the code that you made follows our Rust **coding guidelines**
-	- You can find our list of Rust guidelines [here](./coding-guide) This is a courtesy to the programmers that come after you. The easier your code is to read, the easier it will be for the next person to make modifications.
+	- You can find our list of Rust guidelines [here](https://rust-lang.github.io/api-guidelines/about.html) This is a courtesy to the programmers that come after you. The easier your code is to read, the easier it will be for the next person to make modifications.
 	- If you find it difficult to follow the guidelines or if the guidelines or unclear please reach out to us through our discord linked above, or you can just continue and leave a comment at the pull request stage.
  10. **Commit and Push** your code
 	- This sends your changes to your repository branch
