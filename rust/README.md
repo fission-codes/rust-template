@@ -94,8 +94,8 @@ for integrating [proptest][proptest] within the the suite for working with
 ## Contributing
 
 :balloon: We're thankful for any feedback and help in improving our project!
-We have a contributing guide to help you get involved. We also
-adhere to our [Code of Conduct](./CODE_OF_CONDUCT.md).
+We have a [contributing guide](./CONTRIBUTING.md) to help you get involved. We
+also adhere to our [Code of Conduct](./CODE_OF_CONDUCT.md).
 {% if nix %}
 ### Nix
 This repository contains a [Nix flake][nix-flake] that initiates both the Rust
