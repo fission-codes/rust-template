@@ -1,5 +1,7 @@
 ignore:
-  - "tests"
+  - "tests"{% if bench %}
+  - "benches"{% endif %}{% if crate_type == "lib" %}
+  - "examples"{% endif %}
 
 comment:
   layout: "reach, diff, flags, files"

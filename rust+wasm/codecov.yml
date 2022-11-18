@@ -1,6 +1,8 @@
 ignore:
   - "{{project-name}}/tests"
-  - "{{project-name}}-wasm/tests"
+  - "{{project-name}}-wasm"{% if bench %}
+  - "{{project-name}}-benches"{% endif %}
+  - "examples"
 
 comment:
   layout: "reach, diff, flags, files"

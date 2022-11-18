@@ -1,0 +1,10 @@
+*
+
+!**/Cargo.toml
+!**/Cargo.lock
+!**/src
+{% if bench %}
+{{project-name}}-benches
+{% endif %}
+# for now, only include {{project-name}} binary
+{{project-name}}-wasm

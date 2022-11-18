@@ -43,8 +43,9 @@
 ## Outline
 
 - {% if crate_type == "lib" %}[Usage](#usage){% else %}[Installation](#installation){% endif %}
-- [Testing the Project](#testing-the-project)
-- [Benchmarking the Project](#benchmarking-the-project)
+- [Testing the Project](#testing-the-project){% if bench %}
+- [Benchmarking the Project](#benchmarking-the-project){% endif %}{% if docker %}
+- [Running {{project-name}} on Docker](#running-{{project-name}}-on-docker){% endif %}
 - [Contributing](#contributing)
 - [Getting Help](#getting-help)
 - [External Resources](#external-resources)
@@ -89,6 +90,38 @@ for integrating [proptest][proptest] within the the suite for working with
 
   ```console
   cargo bench --features test_utils
+  ```
+{% endif %}{% if docker %}
+## Running {{project-name}} on Docker
+
+We recommend setting your [Docker Engine][docker-engine] configuration
+with `experimental` and `buildkit` set to `true`, for example:
+
+``` json
+{
+  "builder": {
+    "gc": {
+      "defaultKeepStorage": "20GB",
+      "enabled": true
+    }
+  },
+  "experimental": true,
+  "features": {
+    "buildkit": true
+  }
+}
+```
+
+- Build a multi-plaform Docker image via [buildx][buildx]:
+
+  ```console
+  docker buildx build --platform=linux/amd64,linux/arm64 -t {{project-name}} --progress=plain .
+  ```
+
+- Run a Docker image (depending on your platform):
+
+  ```console
+  docker run --platform=linux/amd64 -t {{project-name}}
   ```
 {% endif %}
 ## Contributing
@@ -190,18 +223,20 @@ license, shall be dual licensed as above, without any additional terms or
 conditions.
 {% endif %}
 
-[apache]: https://www.apache.org/licenses/LICENSE-2.0
+[apache]: https://www.apache.org/licenses/LICENSE-2.0{% if docker %}
+[buildx]: https://github.com/docker/buildx{% endif %}
 [cargo-expand]: https://github.com/dtolnay/cargo-expand
 [cargo-udeps]: https://github.com/est31/cargo-udeps
 [cargo-watch]: https://github.com/watchexec/cargo-watch
 [commit-spec]: https://www.conventionalcommits.org/en/v1.0.0/#specification
-[commit-spec-site]: https://www.conventionalcommits.org/
-{% if nix %}[direnv]:https://direnv.net/{% endif %}
-{% if bench %}[criterion]: https://github.com/bheisler/criterion.rs{% endif %}
+[commit-spec-site]: https://www.conventionalcommits.org/{% if docker %}
+[docker-engine]: https://docs.docker.com/engine/{% endif %}{% if nix %}
+[direnv]:https://direnv.net/{% endif %}{% if bench %}
+[criterion]: https://github.com/bheisler/criterion.rs{% endif %}
 [irust]: https://github.com/sigmaSd/IRust
-[mit]: http://opensource.org/licenses/MIT
-{% if nix %}[nix]:https://nixos.org/download.html{% endif %}
-{% if nix %}[nix-flake]: https://nixos.wiki/wiki/Flakes{% endif %}
+[mit]: http://opensource.org/licenses/MIT{% if nix %}
+[nix]:https://nixos.org/download.html
+[nix-flake]: https://nixos.wiki/wiki/Flakes{% endif %}
 [pre-commit]: https://pre-commit.com/{% if bench %}
 [proptest]: https://github.com/proptest-rs/proptest
 [strategies]: https://docs.rs/proptest/latest/proptest/strategy/trait.Strategy.html{% endif %}

@@ -290,3 +290,83 @@ jobs:
           mv $PROJECT_NAME ${{ runner.temp }}/
           cd ${{ runner.temp }}/$PROJECT_NAME
           cargo bench -p $PROJECT_NAME-benches -- --output-format bencher | tee output.txt
+
+  test-docker:
+    runs-on: ubuntu-latest
+    env:
+      PROJECT_NAME: fission-codes-rust-template
+    strategy:
+      fail-fast: false
+      matrix:
+        templates:
+          - rust
+          - rust+wasm
+        dockerbuild:
+          - glibc
+          - musl
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup cargo-generate
+        uses: cargo-generate/cargo-generate-action@v0.16.0
+        with:
+          name: ${{ env.PROJECT_NAME }}
+          subfolder: ${{ matrix.templates }}
+          template_values_file: .github/workflows/template_values.toml
+          other: "--bin -d docker=true -d dockerbuild=${{ matrix.dockerbuild }}"
+
+      - name: Setup QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Setup Buildx
+        uses: docker/setup-buildx-action@v2
+        with:
+          buildkitd-flags: "--debug"
+
+      - name: Docker Build MUSL - Rust Template
+        if: ${{ matrix.dockerbuild == 'musl' && matrix.templates == 'rust' }}
+        run: |
+          mv $PROJECT_NAME ${{ runner.temp }}/
+          cd ${{ runner.temp }}/$PROJECT_NAME
+          docker buildx build \
+          --cache-from type=gha --cache-to type=gha,mode=max \
+          --platform=linux/amd64,linux/arm64 \
+          --tag $PROJECT_NAME:latest \
+          --progress tty .
+
+      - name: Docker Build MUSL - Rust+Wasm Template
+        if: ${{ matrix.dockerbuild == 'musl' && matrix.templates == 'rust+wasm' }}
+        run: |
+          mv $PROJECT_NAME ${{ runner.temp }}/
+          cd ${{ runner.temp }}/$PROJECT_NAME
+          docker buildx build \
+          --cache-from type=gha --cache-to type=gha,mode=max \
+          --platform=linux/amd64,linux/arm64 \
+          --tag $PROJECT_NAME:latest \
+          --file docker/Dockerfile \
+          --progress tty .
+
+      - name: Docker Build GLIBC - Rust Template
+        if: ${{ matrix.dockerbuild == 'glibc' && matrix.templates == 'rust' }}
+        run: |
+          mv $PROJECT_NAME ${{ runner.temp }}/
+          cd ${{ runner.temp }}/$PROJECT_NAME
+          docker buildx build \
+          --cache-from type=gha --cache-to type=gha,mode=max \
+          --platform=linux/amd64 \
+          --tag $PROJECT_NAME:latest \
+          --progress tty .
+
+      - name: Docker Build GLIBC - Rust+Wasm Template
+        if: ${{ matrix.dockerbuild == 'glibc' && matrix.templates == 'rust+wasm' }}
+        run: |
+          mv $PROJECT_NAME ${{ runner.temp }}/
+          cd ${{ runner.temp }}/$PROJECT_NAME
+          docker buildx build \
+          --cache-from type=gha --cache-to type=gha,mode=max \
+          --platform=linux/amd64 \
+          --tag $PROJECT_NAME:latest \
+          --file docker/Dockerfile \
+          --progress tty .
