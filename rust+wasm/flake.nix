@@ -36,7 +36,9 @@
       ];
 
       cargo-installs = with pkgs; [
-        binaryen
+        binaryen{% if auditable %}
+        cargo-audit
+        cargo-auditable{% endif %}
         cargo-deny
         cargo-expand
         cargo-sort

@@ -7,7 +7,7 @@ while switch license.to_upper() {
     file::delete("{{project-name}}-wasm/LICENSE-MIT");
     file::rename("LICENSE-APACHE", "LICENSE");
     file::rename("{{project-name}}/LICENSE-APACHE", "{{project-name}}/LICENSE");
-    file::rename("{{project-name}}-wasm/LICENSE-APACHE", "{{project-name}}/LICENSE");
+    file::rename("{{project-name}}-wasm/LICENSE-APACHE", "{{project-name}}-wasm/LICENSE");
     false
   }
   "MIT" => {

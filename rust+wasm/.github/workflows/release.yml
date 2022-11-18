@@ -20,11 +20,15 @@ concurrency:
 jobs:
   release-please:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && github.repository_owner == '{{github-name}}'
+    if: >
+      github.ref == 'refs/heads/main' &&
+      github.repository_owner == '{{github-name}}' &&
+      github.event.workflow_run.conclusion == 'success'
 
     outputs:
       releases_created: {{ "${{ steps.release.outputs" }}['{{project-name}}--release_created'] || steps.release.outputs['{{project-name}}-wasm--release_created'] }}
-      wasm_release_created: {{ "${{ steps.release.outputs" }}['{{project-name}}-wasm--release_created'] }}
+      wasm_release_created: {{ "${{ steps.release.outputs" }}['{{project-name}}-wasm--release_created'] }}{% if auditable %}
+      tag: {{ "${{ steps.release.outputs" }}['{{project-name}}--tag_name'] }}{% endif %}
 
     steps:
       - name: Run release-please
@@ -35,8 +39,76 @@ jobs:
           default-branch: main
           command: manifest
           extra-files: |
-            Cargo.toml
+            README.md
 
+{% if auditable %}
+  # Build auditable (https://github.com/rust-secure-code/cargo-auditable) binaries across os's/target's.
+  build-and-release-auditable-bin:
+    runs-on: {{ "${{ matrix.os " }}}}
+    needs: [ release-please, publish-release-crates ]
+
+    permissions:
+      contents: write
+
+    if: {{ "${{ needs.release-please.outputs.releases_created " }}|| github.event.inputs.force-publish }}
+
+    strategy:
+      matrix:
+        include:
+          - target: aarch64-unknown-linux-gnu
+            os: ubuntu-latest
+          - target: aarch64-unknown-linux-musl
+            os: ubuntu-latest
+          - target: x86_64-unknown-linux-gnu
+            os: ubuntu-latest
+          - target: x86_64-unknown-linux-musl
+            os: ubuntu-latest
+          - target: x86_64-apple-darwin
+            os: macos-latest
+          - target: aarch64-apple-darwin
+            os: macos-latest
+          - target: x86_64-pc-windows-msvc
+            os: windows-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Install cargo tools
+        uses: actions-rs/cargo@v1
+        with:
+          command: install
+          args: cargo-auditable
+
+      - name: Install Cross-Compilation Tools
+        uses: taiki-e/setup-cross-toolchain-action@v1
+        with:
+          target: {{ "${{ matrix.target " }}}}
+        if: startsWith(matrix.os, 'ubuntu')  && !contains(matrix.target, '-musl')
+
+      - name: Install cross for Musl
+        uses: taiki-e/install-action@cross
+        if: contains(matrix.target, '-musl')
+
+      - name: Build Auditable Binary
+        uses: actions-rs/cargo@v1
+        with:
+          command: auditable
+          args: build --manifest-path {{project-name}}/Cargo.toml --release
+
+      - name: Upload release binaries
+        uses: taiki-e/upload-rust-binary-action@v1
+        with:
+          bin: {{project-name}}
+          ref: refs/tags/{{ "${{ needs.release-please.outputs.tag " }}}}
+          include: {% if license == "dual" %}LICENSE-MIT,LICENSE-APACHE,README.md{% else %}LICENSE,README.md{% endif %}
+          archive: $bin-$tag-$target
+          target: {{ "${{ matrix.target " }}}}
+          token: {{ "${{ secrets.GITHUB_TOKEN " }}}}
+        env:
+          CARGO_PROFILE_RELEASE_LTO: true
+          CARGO_PROFILE_RELEASE_CODEGEN_UNITS: 1
+{% endif %}
   publish-release-crates:
     if: {{ "${{ needs.release-please.outputs.releases_created " }}|| github.event.inputs.force-publish }}
 
@@ -45,7 +117,6 @@ jobs:
 
     permissions:
       contents: write
-      pull-requests: write
 
     steps:
       - name: Checkout Repository
@@ -82,7 +153,6 @@ jobs:
 
     permissions:
       contents: write
-      pull-requests: write
 
     defaults:
       run:

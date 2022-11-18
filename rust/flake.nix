@@ -34,7 +34,9 @@
         nixpkgs-fmt
       ];
 
-      cargo-installs = with pkgs; [
+      cargo-installs = with pkgs; [{% if auditable %}
+        cargo-audit
+        cargo-auditable{% endif %}
         cargo-deny
         cargo-expand
         cargo-sort
