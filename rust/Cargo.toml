@@ -17,6 +17,7 @@ include = ["/src"{% if bench %}, "/benches"{% endif %}, "README.md", "LICENSE-AP
 license = "Apache-2.0 or MIT"
 {% endif %}readme = "README.md"
 edition = "2021"
+rust-version = "1.64"
 documentation = "https://docs.rs/{{project-name}}"
 repository = "https://github.com/{{github-name}}/{{project-name}}"
 authors = ["{{authors}}"]
