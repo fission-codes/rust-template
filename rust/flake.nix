@@ -35,6 +35,7 @@
       ];
 
       cargo-installs = with pkgs; [
+        cargo-deny
         cargo-expand
         cargo-sort
         cargo-udeps

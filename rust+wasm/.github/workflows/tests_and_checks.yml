@@ -52,16 +52,20 @@ jobs:
           command: clippy
           toolchain: {{ "${{ matrix.rust-toolchain " }}}}
 
-      - name: Install Cargo Audit
+      # Check for security advisories.
+      - name: Check Advisories
         if: {{ "${{ matrix.rust-toolchain == 'stable' " }}}}
-        uses: actions-rs/cargo@v1
+        uses: EmbarkStudios/cargo-deny-action@v1
         with:
-          args: --force cargo-audit
-          command: install
+          command: check advisories
+        continue-on-error: true
 
-      - name: Run Audit on Deps
+      # Audit licenses, unreleased crates, and unexpected duplicate versions.
+      - name: Check Bans, Licenses, and Sources
         if: {{ "${{ matrix.rust-toolchain == 'stable' " }}}}
-        run: cargo-audit audit
+        uses: EmbarkStudios/cargo-deny-action@v1
+        with:
+          command: check bans licenses sources
 
       - name: Install wasm-pack
         if: {{ "${{ matrix.rust-toolchain == 'stable' " }}}} && github.event_name == 'push' }}

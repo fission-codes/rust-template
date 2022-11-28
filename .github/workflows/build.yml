@@ -48,14 +48,21 @@ jobs:
           components: rustfmt
           toolchain: nightly
 
+      - name: Install Cargo Audit
+        uses: actions-rs/cargo@v1
+        with:
+          args: --force cargo-deny
+          command: install
+
       # move generated project to temp folder:
       # https://github.com/rust-lang/cargo/issues/9922
-      - name: Check If Repository Formats & Lints
+      - name: Check If Repository Formats, Lints, Checks
         run: |
           mv $PROJECT_NAME ${{ runner.temp }}/
           cd ${{ runner.temp }}/$PROJECT_NAME
           cargo clippy
           cargo +nightly fmt --all -- --check
+          cargo deny check
 
   nix-flake-check:
     runs-on: ubuntu-latest
