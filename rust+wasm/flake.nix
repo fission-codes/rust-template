@@ -37,6 +37,7 @@
 
       cargo-installs = with pkgs; [
         binaryen
+        cargo-deny
         cargo-expand
         cargo-sort
         cargo-udeps
