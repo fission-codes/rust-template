@@ -9,7 +9,7 @@ updates:
   - package-ecosystem: "cargo"
     directory: "/{{project-name}}"
     commit-message:
-      prefix: "chore(deps)"
+      prefix: "chore(rust)"
       include: "scope"
     target-branch: "main"
     schedule:
@@ -18,7 +18,7 @@ updates:
   - package-ecosystem: "npm"
     directory: "/{{project-name}}-wasm"
     commit-message:
-      prefix: "chore(deps)"
+      prefix: "chore(npm)"
       include: "scope"
     target-branch: "main"
     schedule:
@@ -27,7 +27,7 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     commit-message:
-      prefix: "chore(ci-deps)"
+      prefix: "chore(ci)"
       include: "scope"
     target-branch: "main"
     schedule:
