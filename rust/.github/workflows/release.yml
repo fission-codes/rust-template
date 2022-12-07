@@ -22,6 +22,9 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && github.repository_owner == '{{github-name}}'
 
+    outputs:
+      release_created: {{ "${{ steps.release.outputs.release_created " }}}}
+
     steps:
       - name: Run release-please
         id: release
@@ -41,7 +44,7 @@ jobs:
       contents: write
       pull-requests: write
 
-    if: {{ "${{ needs.release.outputs.releases_created " }}|| github.event.inputs.force-publish }}
+    if: {{ "${{ needs.release-please.outputs.release_created " }}|| github.event.inputs.force-publish }}
 
     steps:
       - name: Checkout Repository
