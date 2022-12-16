@@ -1,6 +1,6 @@
-let license = variable::get("license").to_upper();
+let license = variable::get("license");
 
-while switch license {
+while switch license.to_upper() {
   "APACHE" => {
     file::delete("LICENSE-MIT");
     file::rename("LICENSE-APACHE", "LICENSE");
@@ -14,7 +14,7 @@ while switch license {
   "DUAL" => false,
   _ => true,
 } {
-  license = variable::prompt("What license to use?", "Apache", [
+  license = variable::prompt("What license to use?", "dual", [
     "Apache",
     "MIT",
     "dual"

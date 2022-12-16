@@ -5,7 +5,7 @@ description = "{{description}}"
 keywords = []
 categories = []{% if license == "Apache" %}
 include = ["/src", "README.md", "LICENSE"]
-license = "Apache"
+license = "Apache-2.0"
 {% elsif license == "MIT" %}
 include = ["/src", "README.md", "LICENSE"]
 license = "MIT"

@@ -6,7 +6,7 @@ keywords = []
 categories = []{% if license == "Apache" %}
 {% if crate_type == "lib" %}include = ["/src", "/examples"{% if bench %}, "/benches"{% endif %}, "README.md", "LICENSE"]{% else %}
 include = ["/src"{% if bench %}, "/benches"{% endif %}, "README.md", "LICENSE"]{% endif %}
-license = "Apache"
+license = "Apache-2.0"
 {% elsif license == "MIT" %}
 {% if crate_type == "lib" %}include = ["/src", "/examples"{% if bench %}, "/benches"{% endif %}, "README.md", "LICENSE"]{% else %}
 include = ["/src"{% if bench %}, "/benches"{% endif %}, "README.md", "LICENSE"]{% endif %}
@@ -29,7 +29,7 @@ bench = false{% endif %}
 [lib]
 path = "src/lib.rs"{% if bench %}
 bench = false{% endif %}
-doctest = false
+doctest = true
 
 [[bin]]
 name = "{{project-name}}"
