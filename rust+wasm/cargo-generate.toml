@@ -8,6 +8,10 @@ ignore = [
 [hooks]
 pre = ["pre-script.rhai"]
 
+[placeholders.repo-name]
+type = "string"
+prompt = "Enter the name of the respository, which may be different from the project name."
+
 [placeholders.github-name]
 type = "string"
 prompt = "Enter your GitHub username or org?"
@@ -79,6 +83,11 @@ type = "string"
 prompt = "For docker, do you want a glibc or musl build?"
 choices = ["glibc", "musl"]
 default = "musl"
+
+[conditional.'crate_type == "bin" && github_actions == true'.placeholders.auditable]
+type = "bool"
+prompt = "Embed dependency information into a binary and publish the artifact?"
+default = false
 
 [conditional.'docker == false']
 ignore = [

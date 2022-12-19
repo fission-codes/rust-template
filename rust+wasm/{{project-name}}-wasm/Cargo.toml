@@ -16,7 +16,7 @@ license = "Apache-2.0 or MIT"
 edition = "2021"
 rust-version = "1.64"
 documentation = "https://docs.rs/{{project-name}}-wasm"
-repository = "https://github.com/{{github-name}}/{{project-name}}/tree/main/{{project-name}}-wasm"
+repository = "https://github.com/{{github-name}}/{{repo-name}}/tree/main/{{project-name}}-wasm"
 authors = ["{{authors}}"]
 
 [lib]
