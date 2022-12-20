@@ -1,3 +1,5 @@
+#![cfg(target_arch = "wasm32")]
+
 //! Test suite for the Web and headless browsers.
 {% if node-or-web == "nodejs" %}
 use wasm_bindgen_test::wasm_bindgen_test;
