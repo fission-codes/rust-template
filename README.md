@@ -120,8 +120,10 @@ cargo generate -i ~/.ssh/id_ed25519 https://github.com/fission-codes/rust-templa
 
 #### 🔋 Batteries Included
 
-- [`anyhow`][anyhow] as a ergonomic and idiomatic alternative for explicitly
-  handling errors
+- [`anyhow`][anyhow] as a ergonomic and idiomatic alternative for handling
+  errors in applications, and ['thiserror'][thiserror] for designing
+  dedicated error type(s) in libraries so that on failures the caller gets
+  exactly the information chosen
 - [`proptest`][proptest] and [`criterion`][criterion] for generating inputs and
   running benchmarks (*optional*)
 - [`tracing`][tracing] for instrumenting Rust programs to collect structured,
@@ -262,6 +264,7 @@ conditions.
 [rust-nix-template]: https://github.com/nerosnm/rust-nix-template
 [rustfmt]: https://github.com/rust-lang/rustfmt
 [sep-of-concerns]: https://doc.rust-lang.org/stable/book/ch12-03-improving-error-handling-and-modularity.html#separation-of-concerns-for-binary-projects
+[thiserror]: https://github.com/dtolnay/thiserror
 [tracing]: https://github.com/tokio-rs/tracing
 [tracing-subscriber]: https://docs.rs/tracing-subscriber/latest/tracing_subscriber/index.html
 [wasm]: https://webassembly.org/
