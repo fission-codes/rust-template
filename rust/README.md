@@ -45,8 +45,8 @@
 - {% if crate_type == "lib" %}[Usage](#usage){% else %}[Installation](#installation){% endif %}
 - [Testing the Project](#testing-the-project){% if bench %}
 - [Benchmarking the Project](#benchmarking-the-project){% endif %}{% if docker %}
-- [Running {{project-name}} on Docker](#running-{{project-name}}-on-docker){% endif %}
-- [Contributing](#contributing)
+- [Running {{project-name}} on Docker](#running-{{project-name}}-on-docker){% endif %}{% if contributing %}
+- [Contributing](#contributing){% endif %}
 - [Getting Help](#getting-help)
 - [External Resources](#external-resources)
 - [License](#license)
@@ -119,14 +119,15 @@ with `experimental` and `buildkit` set to `true`, for example:
   ```console
   docker run --platform=linux/amd64 -t {{project-name}}
   ```
-{% endif %}
+{% endif %}{% if contributing %}
 ## Contributing
 
 :balloon: We're thankful for any feedback and help in improving our project!
-We have a [contributing guide](./CONTRIBUTING.md) to help you get involved. We
+{% if contributing %}We have a [contributing guide](./CONTRIBUTING.md) to help you get involved.{% endif %} We
 also adhere to our [Code of Conduct](./CODE_OF_CONDUCT.md).
-{% if nix %}
+{% endif %}{% if nix %}
 ### Nix
+
 This repository contains a [Nix flake][nix-flake] that initiates both the Rust
 toolchain set in [rust-toolchain.toml](./rust-toolchain.toml) and a
 [pre-commit hook](#pre-commit-hook). It also installs helpful cargo binaries for
@@ -203,7 +204,7 @@ This project is licensed under the [Apache License 2.0](./LICENSE), or
 {% elsif license == "MIT" %}
 This project is licensed under the [MIT License](./LICENSE),
 or [http://opensource.org/licenses/MIT][mit].
-{% else %}
+{% elsif license == "dual" %}
 This project is licensed under either of
 
 - Apache License, Version 2.0, ([LICENSE-APACHE](./LICENSE-APACHE) or [http://www.apache.org/licenses/LICENSE-2.0][apache])

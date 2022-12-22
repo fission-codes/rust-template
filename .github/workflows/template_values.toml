@@ -18,6 +18,7 @@ node-or-web = "web"
 readme = true
 repo-name = "fission-codes"
 rust_project = false
+security_policy = true
 templates = true
 toolchain = "stable"
 wasm_project = false

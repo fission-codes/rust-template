@@ -175,12 +175,13 @@ in the project root:
   ```
 
 When taking this approach, please be aware that some of the generated code,
-e.g. benches, relies on dependencies that may not be set in your existing
-Rust codebase, so please make the appropriate changes where needed.
+e.g. benches, READMEs, etc., rely on dependencies or contain text that may
+not be set in or follow the layout of your existing Rust codebase, so please
+make the appropriate changes where needed.
 
 If the generator detects a conflict, it will not alter your project in any way,
-failing with an error. We can't cover all the cases when extending an existing
-project. If you run into problems, open an [issue][gh-issues].
+failing with an error. **We can't cover all the cases when extending an existing
+project**. If you run into problems, open an [issue][gh-issues].
 
 ### Notes for Post-Project Generation
 

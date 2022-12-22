@@ -8,7 +8,7 @@ of issue that good for those new to the project.
 
 ## Where to Get Help
 {% if have_discord %}
-The main way to get help is on our [discord server]({{discordlink}}).server][{{discordlink}}].
+The main way to get help is on our [discord server]({{discordlink}}).
 Though, this guide should help you get started. It may be slightly lengthy, but it's
 designed for those who are new so please don't let length intimidate you.
 {% else %}
