@@ -164,7 +164,7 @@ will still be generated.
 - [`web-sys`][web-sys] for bindings to Web APIs like `window.fetch`, WebGL,
   WebAudio, etc. (*optional*, via feature-flag)
 
-### Generating GitHub Actions, Docker, Wasm workspace, etc in an existing project
+### Generation in an existing project
 
 The `rust` and `rust+wasm` templates are also designed for specific prompts
 when working within existing Rust projects when using the [`--init` flag][cargo-generate-init].
