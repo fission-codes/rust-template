@@ -60,7 +60,7 @@ default = false
 
 [conditional.'within_cargo_project == true && is_init == true'.placeholders.wasm_project]
 type = "bool"
-prompt = "Want to set up a Wasm package/workspace of the project?"
+prompt = "Want to set up a Wasm package/workspace in the project?"
 default = true
 
 [conditional.'within_cargo_project == true && is_init == true'.placeholders.rust_project]
