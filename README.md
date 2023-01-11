@@ -174,8 +174,8 @@ when working within existing Rust projects when using the [`--init` flag][cargo-
   ```
 
 When taking this approach, please be aware that some of the generated code,
-e.g. benches, relies on dependencies that may not be set in your exiting
-Rust codebase, so please make the appropriate changes if need be.
+e.g. benches, relies on dependencies that may not be set in your existing
+Rust codebase, so please make the appropriate changes where needed.
 
 ### Notes for Post-Project Generation
 
