@@ -164,6 +164,19 @@ will still be generated.
 - [`web-sys`][web-sys] for bindings to Web APIs like `window.fetch`, WebGL,
   WebAudio, etc. (*optional*, via feature-flag)
 
+### Generating GitHub Actions, Docker, Wasm workspace, etc in an existing project
+
+The `rust` and `rust+wasm` templates are also designed for specific prompts
+when working within existing Rust projects when using the [`--init` flag][cargo-generate-init].
+
+  ``` console
+  cargo generate --git https://github.com/fission-codes/rust-template --init
+  ```
+
+When taking this approach, please be aware that some of the generated code,
+e.g. benches, relies on dependencies that may not be set in your exiting
+Rust codebase, so please make the appropriate changes if need be.
+
 ### Notes for Post-Project Generation
 
 - If using `nix` via [Nix flake][nix-flake], please install [nix][nix] and
@@ -232,6 +245,7 @@ conditions.
 [bevy-template]: https://github.com/taurr/bevy-template-rs
 [cargo-bench]: https://doc.rust-lang.org/cargo/commands/cargo-bench.html
 [cargo-generate]: https://github.com/cargo-generate/cargo-generate
+[cargo-generate-init]: https://cargo-generate.github.io/cargo-generate/usage.html#generating-into-current-dir
 [cargo-generate-install]: https://github.com/cargo-generate/cargo-generate#installation
 [cargo-generate-issue]: https://github.com/cargo-generate/cargo-generate/issues/384
 [cargo-workspace]: https://doc.rust-lang.org/cargo/reference/workspaces.html

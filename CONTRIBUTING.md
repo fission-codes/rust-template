@@ -52,7 +52,7 @@ limited to the following:
 ### Contributing through Code
 
 In order to contribute through code follow the steps below. Note that you don't
-need to be the best programmer to contribute. Our discord is open for questions
+need to be the best programmer to contribute. Our discord is open for questions.
 
  1. **Pick a feature** you would like to add or a bug you would like to fix
 	- If you wish to contribute but what you want to fix/add is not already
