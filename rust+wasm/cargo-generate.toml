@@ -6,7 +6,9 @@ ignore = [
 ]
 
 [hooks]
+init = ["init-msg.rhai"]
 pre = ["pre-script.rhai"]
+post = ["final-msg.rhai"]
 
 [placeholders.github-name]
 type = "string"
@@ -47,16 +49,27 @@ type = "bool"
 prompt = "Set up a Contributing guide?"
 default = true
 
-[placeholders.license]
-type = "string"
-prompt = "What license to use?"
-choices = ["Apache", "MIT", "dual"]
-default = "dual"
+[placeholders.templates]
+type = "bool"
+prompt = "Set up a GitHub Issue and PR templates?"
+default = true
 
 [placeholders.bench]
 type = "bool"
 prompt = "Set up Rust benchmarking?"
 default = false
+
+[conditional.'within_cargo_project == false || is_init == false'.placeholders.license]
+type = "string"
+prompt = "What license to use?"
+choices = ["Apache", "MIT", "dual"]
+default = "dual"
+
+[conditional.'within_cargo_project == true && is_init == true'.placeholders.license]
+type = "string"
+prompt = "What license to use?"
+choices = ["Apache", "MIT", "dual", "use existing"]
+default = "dual"
 
 [conditional.'within_cargo_project == true && is_init == true'.placeholders.wasm_project]
 type = "bool"
@@ -65,7 +78,7 @@ default = true
 
 [conditional.'within_cargo_project == true && is_init == true'.placeholders.rust_project]
 type = "bool"
-prompt = "Want to set up a Rust package/workspace of the project?"
+prompt = "Want to set up a Rust package/workspace in the project?"
 default = true
 
 [conditional.'(github_actions == true && bench == true) || readme == true'.placeholders.repo-name]
@@ -83,6 +96,11 @@ prompt = "What is your rust-generated wasm package targeting?"
 choices = ["bundler", "nodejs", "web"]
 default = "web"
 
+[conditional.'within_cargo_project == true && is_init == true'.placeholders.coc]
+type = "bool"
+prompt = "Set up a Code of Conduct?"
+default = true
+
 [conditional.'within_cargo_project == true && is_init == true'.placeholders.readme]
 type = "bool"
 prompt = "Add README.md for the top-level project?"
@@ -92,6 +110,10 @@ default = true
 type = "bool"
 prompt = "Link a discord community?"
 default = true
+
+[conditional.'coc == true || contributing == true'.placeholders.github-email]
+type = "string"
+prompt = "What is the email associated w/ the username or org?"
 
 [conditional.'(within_cargo_project == false || is_init == false || rust_project == true) && crate_type == "bin"'.placeholders.docker]
 type = "bool"
@@ -150,6 +172,17 @@ ignore = [
 [conditional.'contributing == false']
 ignore = [
     "CONTRIBUTING.md"
+]
+
+[conditional.'templates == false']
+ignore = [
+    ".github/ISSUE_TEMPLATE",
+    ".github/PULL_REQUEST_TEMPLATE.md"
+]
+
+[conditional.'coc == false']
+ignore = [
+    "CODE_OF_CONDUCT.md"
 ]
 
 [conditional.'github_actions == false']

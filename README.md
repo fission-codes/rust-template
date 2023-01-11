@@ -166,8 +166,9 @@ will still be generated.
 
 ### Generation in an existing project
 
-The `rust` and `rust+wasm` templates are also designed for specific prompts
-when working within existing Rust projects when using the [`--init` flag][cargo-generate-init].
+The generator is also designed for templating within an existing project and
+prompts with this in mind. To generate in an existing project, run this command
+in the project root:
 
   ``` console
   cargo generate --git https://github.com/fission-codes/rust-template --init
@@ -176,6 +177,10 @@ when working within existing Rust projects when using the [`--init` flag][cargo-
 When taking this approach, please be aware that some of the generated code,
 e.g. benches, relies on dependencies that may not be set in your existing
 Rust codebase, so please make the appropriate changes where needed.
+
+If the generator detects a conflict, it will not alter your project in any way,
+failing with an error. We can't cover all the cases when extending an existing
+project. If you run into problems, open an [issue][gh-issues].
 
 ### Notes for Post-Project Generation
 
@@ -259,6 +264,7 @@ conditions.
 [dockerfile]: https://docs.docker.com/engine/reference/builder/
 [dockerhub]: https://hub.docker.com/
 [fission]: https://fission.codes/
+[gh-issues]: https://github.com/fission-codes/rust-template/issues
 [gh-registry]: https://github.com/features/packages
 [github-rsa]: https://github.blog/2021-09-01-improving-git-protocol-security-github/
 [gh-secrets]: https://docs.github.com/en/rest/actions/secrets
