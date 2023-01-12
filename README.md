@@ -123,12 +123,12 @@ cargo generate -i ~/.ssh/id_ed25519 https://github.com/fission-codes/rust-templa
 - [`anyhow`][anyhow] as a ergonomic and idiomatic alternative for handling
   errors in applications, and [`thiserror`][thiserror] for designing
   dedicated error type(s) in libraries so that on failures the caller gets
-  exactly the information chosen
+  exactly the information chosen.
 - [`proptest`][proptest] and [`criterion`][criterion] for generating inputs and
-  running benchmarks (*optional*)
+  running benchmarks (*optional*).
 - [`tracing`][tracing] for instrumenting Rust programs to collect structured,
   event-based diagnostic information, going beyond just logging-style
-  diagnostics
+  diagnostics.
 - [`tracing-subscriber`][tracing-subscriber] for Rust binary applications
   to collect trace data, such as by logging it to standard output, and
   consume messages emitted by log-instrumented libraries and modules.
@@ -154,15 +154,15 @@ will still be generated.
 #### 🔋 Batteries Included
 
 - [`wasm-bindgen`][wasm-bindgen] for communicating
-  between WebAssembly and JavaScript
+  between WebAssembly and JavaScript.
 - [`wasm-bindgen-futures`][wasm-bindgen-futures] for converting between
-  Javascript Promises and Rust futures
+  Javascript Promises and Rust futures.
 - [`console_error_panic_hook`][console-hook]
   for logging panic messages to the developer console.
 - [`js-sys`][js-sys] for bindings to Javascript's standard, built-in
-  objects
+  objects.
 - [`web-sys`][web-sys] for bindings to Web APIs like `window.fetch`, WebGL,
-  WebAudio, etc. (*optional*, via feature-flag)
+  WebAudio, etc. (*optional*, via feature-flag).
 
 ### Generation in an existing project
 
