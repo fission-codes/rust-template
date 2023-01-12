@@ -121,7 +121,7 @@ cargo generate -i ~/.ssh/id_ed25519 https://github.com/fission-codes/rust-templa
 #### 🔋 Batteries Included
 
 - [`anyhow`][anyhow] as a ergonomic and idiomatic alternative for handling
-  errors in applications, and ['thiserror'][thiserror] for designing
+  errors in applications, and [`thiserror`][thiserror] for designing
   dedicated error type(s) in libraries so that on failures the caller gets
   exactly the information chosen
 - [`proptest`][proptest] and [`criterion`][criterion] for generating inputs and
