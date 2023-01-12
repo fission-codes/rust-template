@@ -12,12 +12,18 @@ while switch license.to_upper() {
     false
   }
   "DUAL" => false,
+  "USE EXISTING" => {
+    file::delete("LICENSE-MIT");
+    file::delete("LICENSE-APACHE");
+    false
+  },
   _ => true,
 } {
   license = variable::prompt("What license to use?", "dual", [
     "Apache",
     "MIT",
-    "dual"
+    "dual",
+    "use existing"
   ]);
 }
 variable::set("license", license);
@@ -45,7 +51,7 @@ if variable::is_set("docker") && variable::get("docker") {
   variable::set("dockerbuild", dockerbuild);
 }
 
-// Set for Copyright Info (Apache)
-variable::set("year", "2022");
+// Set for Copyright Info
+variable::set("year", "2023");
 let name = variable::get("github-name").to_title_case();
 variable::set("copyright-owner", name);

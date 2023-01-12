@@ -6,29 +6,18 @@ ignore = [
 ]
 
 [hooks]
+init = ["init-msg.rhai"]
 pre = ["pre-script.rhai"]
-
-[placeholders.repo-name]
-type = "string"
-prompt = "Enter the name of the respository, which may be different from the project name."
+post = ["final-msg.rhai"]
 
 [placeholders.github-name]
 type = "string"
 prompt = "Enter your GitHub username or org."
 regex = "^[A-Za-z0-9][A-Za-z0-9-]{0,38}$"
 
-[placeholders.github-email]
-type = "string"
-prompt = "What is the email associated w/ the username or org?"
-
 [placeholders.github-codeowner]
 type = "string"
 prompt = "Who is the GitHub codeowner - GitHub user or org/team?"
-
-[placeholders.description]
-type = "string"
-prompt = "Enter a description of the project."
-default = ""
 
 [placeholders.github_actions]
 type = "bool"
@@ -51,21 +40,60 @@ type = "bool"
 prompt = "Set up a Nix flake?"
 default = true
 
-[placeholders.have_discord]
+[placeholders.contributing]
 type = "bool"
-prompt = "Link a discord community?"
+prompt = "Set up a Contributing guide?"
 default = true
 
-[placeholders.license]
-type = "string"
-prompt = "What license to use?"
-choices = ["Apache", "MIT", "dual"]
-default = "dual"
+[placeholders.templates]
+type = "bool"
+prompt = "Set up a GitHub Issue and PR templates?"
+default = true
 
 [placeholders.bench]
 type = "bool"
 prompt = "Set up Rust benchmarking?"
 default = false
+
+[conditional.'within_cargo_project == false || is_init == false'.placeholders.license]
+type = "string"
+prompt = "What license to use?"
+choices = ["Apache", "MIT", "dual"]
+default = "dual"
+
+[conditional.'within_cargo_project == true && is_init == true'.placeholders.license]
+type = "string"
+prompt = "What license to use?"
+choices = ["Apache", "MIT", "dual", "use existing"]
+default = "dual"
+
+[conditional.'(github_actions == true && bench == true) || readme'.placeholders.repo-name]
+type = "string"
+prompt = "Enter the name of the respository, which may be different from the project name."
+
+[conditional.'within_cargo_project == false || is_init == false'.placeholders.description]
+type = "string"
+prompt = "Enter a description of the project."
+default = ""
+
+[conditional.'within_cargo_project == true && is_init == true'.placeholders.coc]
+type = "bool"
+prompt = "Set up a Code of Conduct?"
+default = true
+
+[conditional.'within_cargo_project == true && is_init == true'.placeholders.readme]
+type = "bool"
+prompt = "Add a README.md?"
+default = true
+
+[conditional.'contributing == true || readme == true'.placeholders.have_discord]
+type = "bool"
+prompt = "Link a discord community?"
+default = true
+
+[conditional.'coc == true || contributing == true'.placeholders.github-email]
+type = "string"
+prompt = "What is the email associated w/ the username or org?"
 
 [conditional.'crate_type == "bin"'.placeholders.docker]
 type = "bool"
@@ -78,11 +106,6 @@ prompt = "For docker, do you want a glibc or musl build?"
 choices = ["glibc", "musl"]
 default = "musl"
 
-[conditional.'crate_type == "bin" && github_actions == true'.placeholders.auditable]
-type = "bool"
-prompt = "Embed dependency information into a binary and publish the artifact?"
-default = false
-
 [conditional.'docker == false']
 ignore = [
     "Dockerfile.musl",
@@ -90,13 +113,17 @@ ignore = [
     ".dockerignore",
     ".github/workflows/docker.yml"
 ]
+[conditional.'crate_type == "bin" && github_actions == true'.placeholders.auditable]
+type = "bool"
+prompt = "Embed dependency information into a binary and publish the artifact?"
+default = false
 
 [conditional.'github_actions == true'.placeholders.codecov]
 type = "bool"
 prompt = "Enable codecov coverage upload via GitHub Actions?"
 default = true
 
-[conditional.'have_discord'.placeholders.discordlink]
+[conditional.'have_discord == true'.placeholders.discordlink]
 type = "string"
 prompt = "Enter a discord invite link?"
 
@@ -119,7 +146,7 @@ ignore = [
 ignore = [
     "benches",
     "src/test_utils",
-    ".github/workflows/bench.yml",
+    ".github/workflows/bench.yml"
 ]
 
 [conditional.'nix == false']
@@ -128,18 +155,61 @@ ignore = [
     "flake.nix"
 ]
 
+[conditional.'contributing == false']
+ignore = [
+    "CONTRIBUTING.md"
+]
+
+[conditional.'templates == false']
+ignore = [
+    ".github/ISSUE_TEMPLATE",
+    ".github/PULL_REQUEST_TEMPLATE.md"
+]
+
+[conditional.'coc == false']
+ignore = [
+    "CODE_OF_CONDUCT.md"
+]
+
 [conditional.'github_actions == false']
 ignore = [
-   ".github/workflows",
+    ".github/workflows",
+    "release-please-config.json",
+    ".release-please-manifest.json",
+    "codecov.yml"
 ]
 
 [conditional.'dependabot == false']
 ignore = [
-   ".github/dependabot.yml",
+    ".github/dependabot.yml"
 ]
 
 [conditional.'codecov == false']
 ignore = [
-   ".github/workflows/coverage.yml",
-   "codecov.yml"
+    ".github/workflows/coverage.yml",
+    "codecov.yml"
+]
+
+[conditional.'within_cargo_project == true']
+ignore = [
+    ".gitignore"
+]
+
+[conditional.'within_cargo_project == true && is_init == true']
+ignore = [
+    "Cargo.toml",
+    "Cargo.lock",
+    "src",
+    "tests/integration_test.rs"
+]
+
+[conditional.'within_cargo_project == false || is_init == false']
+ignore = [
+    "tests/a_integration_test.rs"
+]
+
+[conditional.'within_cargo_project == true && is_init == true && readme == false']
+ignore = [
+    "README.md",
+    "assets"
 ]

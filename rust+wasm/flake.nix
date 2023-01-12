@@ -60,6 +60,7 @@
           rust-toolchain
           pre-commit
           direnv
+          geckodriver
           self.packages.${system}.irust
         ] ++ format-pkgs ++ cargo-installs;
 

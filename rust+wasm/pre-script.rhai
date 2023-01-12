@@ -20,12 +20,22 @@ while switch license.to_upper() {
     false
   }
   "DUAL" => false,
+  "USE EXISTING" => {
+    file::delete("LICENSE-MIT");
+    file::delete("LICENSE-APACHE");
+    file::delete("{{project-name}}/LICENSE-MIT");
+    file::delete("{{project-name}}-wasm/LICENSE-MIT");
+    file::delete("{{project-name}}/LICENSE-APACHE");
+    file::delete("{{project-name}}-wasm/LICENSE-APACHE");
+    false
+  },
   _ => true,
 } {
   license = variable::prompt("What license to use?", "dual", [
     "Apache",
     "MIT",
-    "dual"
+    "dual",
+    "use existing"
   ]);
 }
 variable::set("license", license);

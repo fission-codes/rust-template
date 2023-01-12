@@ -56,7 +56,7 @@ limited to the following:
 ### Contributing through Code
 
 In order to contribute through code follow the steps below. Note that you don't
-need to be the best programmer to contribute. Our discord is open for questions
+need to be the best programmer to contribute.{% if have_discord %} Our discord is open for questions.{% endif %}
 
  1. **Pick a feature** you would like to add or a bug you would like to fix
     - If you wish to contribute but what you want to fix/add is not already
@@ -120,7 +120,7 @@ need to be the best programmer to contribute. Our discord is open for questions
       is a courtesy to the programmers that come after you. The easier your code
       is to read, the easier it will be for the next person to make modifications.
     - If you find it difficult to follow the guidelines or if the guidelines or
-      unclear, please reach out to us through our discord linked above, or you
+      unclear, please reach out to us through our{% if have_discord %} discord{% else %} email{% endif %} linked above, or you
       can just continue and leave a comment at the pull request stage.
 
  10. **Commit and Push** your code

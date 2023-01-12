@@ -164,6 +164,24 @@ will still be generated.
 - [`web-sys`][web-sys] for bindings to Web APIs like `window.fetch`, WebGL,
   WebAudio, etc. (*optional*, via feature-flag)
 
+### Generation in an existing project
+
+The generator is also designed for templating within an existing project and
+prompts with this in mind. To generate in an existing project, run this command
+in the project root:
+
+  ``` console
+  cargo generate --git https://github.com/fission-codes/rust-template --init
+  ```
+
+When taking this approach, please be aware that some of the generated code,
+e.g. benches, relies on dependencies that may not be set in your existing
+Rust codebase, so please make the appropriate changes where needed.
+
+If the generator detects a conflict, it will not alter your project in any way,
+failing with an error. We can't cover all the cases when extending an existing
+project. If you run into problems, open an [issue][gh-issues].
+
 ### Notes for Post-Project Generation
 
 - If using `nix` via [Nix flake][nix-flake], please install [nix][nix] and
@@ -232,6 +250,7 @@ conditions.
 [bevy-template]: https://github.com/taurr/bevy-template-rs
 [cargo-bench]: https://doc.rust-lang.org/cargo/commands/cargo-bench.html
 [cargo-generate]: https://github.com/cargo-generate/cargo-generate
+[cargo-generate-init]: https://cargo-generate.github.io/cargo-generate/usage.html#generating-into-current-dir
 [cargo-generate-install]: https://github.com/cargo-generate/cargo-generate#installation
 [cargo-generate-issue]: https://github.com/cargo-generate/cargo-generate/issues/384
 [cargo-workspace]: https://doc.rust-lang.org/cargo/reference/workspaces.html
@@ -245,6 +264,7 @@ conditions.
 [dockerfile]: https://docs.docker.com/engine/reference/builder/
 [dockerhub]: https://hub.docker.com/
 [fission]: https://fission.codes/
+[gh-issues]: https://github.com/fission-codes/rust-template/issues
 [gh-registry]: https://github.com/features/packages
 [github-rsa]: https://github.blog/2021-09-01-improving-git-protocol-security-github/
 [gh-secrets]: https://docs.github.com/en/rest/actions/secrets
