@@ -45,6 +45,11 @@ type = "bool"
 prompt = "Set up a Contributing guide?"
 default = true
 
+[placeholders.security_policy]
+type = "bool"
+prompt = "Set up a Security policy for the project?"
+default = true
+
 [placeholders.templates]
 type = "bool"
 prompt = "Set up a GitHub Issue and PR templates?"
@@ -67,7 +72,7 @@ prompt = "What license to use?"
 choices = ["Apache", "MIT", "dual", "use existing"]
 default = "dual"
 
-[conditional.'(github_actions == true && bench == true) || readme'.placeholders.repo-name]
+[conditional.'(github_actions == true && bench == true) || within_cargo_project == false || is_init == false || security_policy == true || readme == true'.placeholders.repo-name]
 type = "string"
 prompt = "Enter the name of the respository, which may be different from the project name."
 
@@ -86,12 +91,12 @@ type = "bool"
 prompt = "Add a README.md?"
 default = true
 
-[conditional.'contributing == true || readme == true'.placeholders.have_discord]
+[conditional.'within_cargo_project == false || is_init == false || contributing == true || readme == true'.placeholders.have_discord]
 type = "bool"
 prompt = "Link a discord community?"
 default = true
 
-[conditional.'coc == true || contributing == true'.placeholders.github-email]
+[conditional.'within_cargo_project == false || is_init == false || security_policy == true || contributing == true'.placeholders.github-email]
 type = "string"
 prompt = "What is the email associated w/ the username or org?"
 
@@ -160,6 +165,11 @@ ignore = [
     "CONTRIBUTING.md"
 ]
 
+[conditional.'security_policy == false']
+ignore = [
+    "SECURITY.md"
+]
+
 [conditional.'templates == false']
 ignore = [
     ".github/ISSUE_TEMPLATE",
@@ -177,6 +187,11 @@ ignore = [
     "release-please-config.json",
     ".release-please-manifest.json",
     "codecov.yml"
+]
+
+[conditional.'github_actions == false && nix == false']
+ignore = [
+    "deny.toml"
 ]
 
 [conditional.'dependabot == false']
