@@ -64,6 +64,6 @@ if variable::is_set("docker") && variable::get("docker") {
 }
 
 // Set for Copyright Info (Apache)
-variable::set("year", "2022");
+variable::set("year", "2023");
 let name = variable::get("github-name").to_title_case();
 variable::set("copyright-owner", name);
