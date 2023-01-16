@@ -32,3 +32,21 @@ updates:
     target-branch: "main"
     schedule:
       interval: "weekly"
+
+  - package-ecosystem: "github-actions"
+    directory: "/rust"
+    commit-message:
+      prefix: "chore(ci)"
+      include: "scope"
+    target-branch: "main"
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "github-actions"
+    directory: "/rust+wasm"
+    commit-message:
+      prefix: "chore(ci)"
+      include: "scope"
+    target-branch: "main"
+    schedule:
+      interval: "weekly"

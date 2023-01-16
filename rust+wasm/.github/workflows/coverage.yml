@@ -15,7 +15,11 @@ jobs:
   coverage:
     runs-on: ubuntu-latest
 
-    steps:
+    steps:{% if axum %}
+      - name: Install Protoc
+        uses: arduino/setup-protoc@v1
+        with:
+          repo-token: {{ "${{ secrets.GITHUB_TOKEN " }}}}{% endif %}
       - name: Checkout Repository
         uses: actions/checkout@v3
 

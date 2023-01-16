@@ -63,6 +63,10 @@ if variable::is_set("docker") && variable::get("docker") {
   variable::set("dockerbuild", dockerbuild);
 }
 
+//
+let project = variable::get("project-name");
+variable::set("project", project);
+
 // Set for Copyright Info (Apache)
 variable::set("year", "2023");
 let name = variable::get("github-name").to_title_case();

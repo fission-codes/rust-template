@@ -64,7 +64,7 @@ Add the following to the `[dependencies]` section of your `Cargo.toml` file:
 ### Using `cargo`
 
 ```console
-$ cargo install {{project-name}}
+cargo install {{project-name}}
 ```
 {% endif %}
 ## Testing the Project
@@ -219,19 +219,21 @@ submitted for inclusion in the work by you, as defined in the Apache-2.0
 license, shall be dual licensed as above, without any additional terms or
 conditions.
 {% endif %}
-
-[apache]: https://www.apache.org/licenses/LICENSE-2.0{% if docker %}
+{% if license == "Apache" %}
+[apache]: https://www.apache.org/licenses/LICENSE-2.0{% endif %}{% if license == "dual" %}
+[apache]: https://www.apache.org/licenses/LICENSE-2.0{% endif %}{% if docker %}
 [buildx]: https://github.com/docker/buildx{% endif %}
 [cargo-expand]: https://github.com/dtolnay/cargo-expand
 [cargo-udeps]: https://github.com/est31/cargo-udeps
 [cargo-watch]: https://github.com/watchexec/cargo-watch
 [commit-spec]: https://www.conventionalcommits.org/en/v1.0.0/#specification
-[commit-spec-site]: https://www.conventionalcommits.org/{% if docker %}
+[commit-spec-site]: https://www.conventionalcommits.org/{% if bench %}
+[criterion]: https://github.com/bheisler/criterion.rs{% endif %}{% if docker %}
 [docker-engine]: https://docs.docker.com/engine/{% endif %}{% if nix %}
-[direnv]:https://direnv.net/{% endif %}{% if bench %}
-[criterion]: https://github.com/bheisler/criterion.rs{% endif %}
-[irust]: https://github.com/sigmaSd/IRust
-[mit]: http://opensource.org/licenses/MIT{% if nix %}
+[direnv]:https://direnv.net/{% endif %}
+[irust]: https://github.com/sigmaSd/IRust{% if license == "MIT" %}
+[mit]: http://opensource.org/licenses/MIT{% endif %}{% if license == "dual" %}
+[mit]: http://opensource.org/licenses/MIT{% endif %}{% if nix %}
 [nix]:https://nixos.org/download.html
 [nix-flake]: https://nixos.wiki/wiki/Flakes{% endif %}
 [pre-commit]: https://pre-commit.com/{% if bench %}

@@ -2,7 +2,7 @@
 ARG RUST_BUILD_IMG=rust:1.65-slim-bullseye
 ARG DEBIAN_TAG=bullseye-slim
 
-FROM  $RUST_BUILD_IMG as base
+FROM $RUST_BUILD_IMG as base
 
 # AMD64
 FROM --platform=$BUILDPLATFORM base as builder-amd64
@@ -15,7 +15,7 @@ ARG TARGET="aarch64-unknown-linux-gnu"
 FROM builder-$TARGETARCH as builder
 
 RUN adduser --disabled-password --disabled-login --gecos "" --no-create-home {{project-name}}
-RUN apt update && apt install -y g++
+RUN apt update && apt install -y g++{% if axum %} build-essential protobuf-compiler{% endif %}
 RUN rustup target add $TARGET
 
 RUN cargo init {{project-name}}
@@ -26,7 +26,7 @@ WORKDIR /{{project-name}}
 Run touch src/lib.rs
 
 # copy cargo.*
-COPY Cargo.lock ./Cargo.lock
+COPY ../Cargo.lock ./Cargo.lock
 COPY ../{{project-name}}/Cargo.toml ./Cargo.toml
 
 # cache depencies
@@ -34,21 +34,28 @@ RUN mkdir .cargo
 RUN cargo vendor > .cargo/config
 RUN --mount=type=cache,target=$CARGO_HOME/registry \
     --mount=type=cache,target=$CARGO_HOME/.git \
-    --mount=type=cache,target={{project-name}}/target,sharing=locked \
-    cargo build --target $TARGET --release
+    --mount=type=cache,target={{project-name}}/target,sharing=locked \{% if axum %}
+    cargo build --target $TARGET --bin {{project-name}}-app --release{% else %}
+    cargo build --target $TARGET --release{% endif %}
 
 # copy src
-COPY ../{{project-name}}/src ./src
-
+COPY ../{{project-name}}/src ./src{% if axum %}
+# copy config
+COPY ../{{project-name}}/config ./config
+{% endif %}
 # final build for release
 RUN rm ./target/$TARGET/release/deps/*{{crate_name}}*
 RUN --mount=type=cache,target=$CARGO_HOME/registry \
     --mount=type=cache,target=$CARGO_HOME/.git \
-    --mount=type=cache,target={{project-name}}/target,sharing=locked \
-    cargo build --target $TARGET --bin {{project-name}} --release
-
-RUN strip ./target/$TARGET/release/{{project-name}}
-RUN mv ./target/$TARGET/release/{{project-name}} /usr/local/bin
+    --mount=type=cache,target={{project-name}}/target,sharing=locked \{% if axum %}
+    cargo build --target $TARGET --bin {{project-name}}-app --release{% else %}
+    cargo build --target $TARGET --bin {{project-name}} --release{% endif %}
+{% if axum %}
+RUN strip ./target/$TARGET/release/{{project-name}}-app
+{% else %}
+RUN strip ./target/$TARGET/release/{{project-name}}{% endif %}
+RUN mv ./target/$TARGET/release/{{project-name}}* /usr/local/bin{% if axum %}
+RUN mv ./config /etc/config{% endif %}
 
 FROM debian:${DEBIAN_TAG}
 
@@ -58,10 +65,13 @@ ARG log_level=info
 ENV RUST_BACKTRACE=${backtrace} \
     RUST_LOG=${log_level}
 
-COPY --from=builder /usr/local/bin/{{project-name}} .
+COPY --from=builder /usr/local/bin/{{project-name}}* .{% if axum %}
+COPY --from=builder /etc/config ./config{% endif %}
 COPY --from=builder /etc/passwd /etc/passwd
 COPY --from=builder /etc/group /etc/group
 
 USER {{project-name}}:{{project-name}}
-
-ENTRYPOINT ["./{{project-name}}"]
+{% if axum %}
+EXPOSE {{port}}
+EXPOSE {{metricsport}}
+ENTRYPOINT ["./{{project-name}}-app"]{% else %}ENTRYPOINT ["./{{project-name}}"]{% endif %}

@@ -8,7 +8,9 @@ FROM --platform=$BUILDPLATFORM messense/rust-musl-cross:aarch64-musl as builder-
 
 ARG TARGETARCH
 FROM builder-$TARGETARCH as builder
-
+{% if axum %}
+RUN apt update && apt install -y protobuf-compiler
+{% endif %}
 RUN adduser --disabled-password --disabled-login --gecos "" --no-create-home {{project-name}}
 
 RUN cargo init
@@ -25,21 +27,28 @@ RUN mkdir .cargo
 RUN cargo vendor > .cargo/config
 RUN --mount=type=cache,target=$CARGO_HOME/registry \
     --mount=type=cache,target=$CARGO_HOME/.git \
-    --mount=type=cache,target={{project-name}}/target,sharing=locked \
-    cargo build --target $CARGO_BUILD_TARGET --release
+    --mount=type=cache,target={{project-name}}/target,sharing=locked \{% if axum %}
+    cargo build --target $CARGO_BUILD_TARGET --bin {{project-name}}-app --release{% else %}
+    cargo build --target $CARGO_BUILD_TARGET --release{% endif %}
 
 # copy src
-COPY ../{{project-name}}/src ./src
-
+COPY ../{{project-name}}/src ./src{% if axum %}
+# copy config
+COPY ../{{project-name}}/config ./config
+{% endif %}
 # final build for release
 RUN rm ./target/$CARGO_BUILD_TARGET/release/deps/*{{crate_name}}*
 RUN --mount=type=cache,target=$CARGO_HOME/registry \
     --mount=type=cache,target=$CARGO_HOME/.git \
-    --mount=type=cache,target={{project-name}}/target,sharing=locked \
-    cargo build --target $CARGO_BUILD_TARGET --bin {{project-name}} --release
-
-RUN musl-strip ./target/$CARGO_BUILD_TARGET/release/{{project-name}}
-RUN mv ./target/$CARGO_BUILD_TARGET/release/{{project-name}} /usr/local/bin
+    --mount=type=cache,target={{project-name}}/target,sharing=locked \{% if axum %}
+    cargo build --target $CARGO_BUILD_TARGET --bin {{project-name}}-app --release{% else %}
+    cargo build --target $CARGO_BUILD_TARGET --bin {{project-name}} --release{% endif %}
+{% if axum %}
+RUN musl-strip ./target/$CARGO_BUILD_TARGET/release/{{project-name}}-app
+{% else %}
+RUN musl-strip ./target/$CARGO_BUILD_TARGET/release/{{project-name}}{% endif %}
+RUN mv ./target/$CARGO_BUILD_TARGET/release/{{project-name}}* /usr/local/bin{% if axum %}
+RUN mv ./config /etc/config{% endif %}
 
 FROM scratch
 
@@ -49,10 +58,13 @@ ARG log_level=info
 ENV RUST_BACKTRACE=${backtrace} \
     RUST_LOG=${log_level}
 
-COPY --from=builder /usr/local/bin/{{project-name}} .
+COPY --from=builder /usr/local/bin/{{project-name}}* .{% if axum %}
+COPY --from=builder /etc/config ./config{% endif %}
 COPY --from=builder /etc/passwd /etc/passwd
 COPY --from=builder /etc/group /etc/group
 
 USER {{project-name}}:{{project-name}}
-
-ENTRYPOINT ["./{{project-name}}"]
+{% if axum %}
+EXPOSE {{port}}
+EXPOSE {{metricsport}}
+ENTRYPOINT ["./{{project-name}}-app"]{% else %}ENTRYPOINT ["./{{project-name}}"]{% endif %}
