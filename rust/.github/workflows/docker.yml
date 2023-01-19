@@ -42,10 +42,7 @@ jobs:
         with:{% if dockerbuild == "glibc" %}
           build-args: |
             RUST_BUILD_IMG=rust:1.65-slim-bullseye
-            DEBIAN_TAG=bullseye-slim
-          {% else %}
-          build-args: |
-            RUST_BUILD_IMG=rust:1.65-slim-bullseye{% endif %}
+            DEBIAN_TAG=bullseye-slim{% endif %}
           cache-from: type=registry,ref=ghcr.io/{{ "${{ github.repository_owner " }}}}/{{project-name}}:latest
           cache-to: type=registry,ref=ghcr.io/{{ "${{ github.repository_owner " }}}}/{{project-name}}:latest,mode=max
           context: .{% if dockerbuild == "glibc" %}
