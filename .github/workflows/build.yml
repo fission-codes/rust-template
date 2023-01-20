@@ -343,8 +343,7 @@ jobs:
           docker buildx build \
           --cache-from type=gha --cache-to type=gha,mode=max \
           --platform=linux/amd64,linux/arm64 \
-          --tag $PROJECT_NAME:latest \
-          --progress tty .
+          --tag $PROJECT_NAME:latest .
 
       - name: Docker Build MUSL - Rust+Wasm Template
         if: ${{ matrix.dockerbuild == 'musl' && matrix.templates == 'rust+wasm' }}
@@ -355,8 +354,7 @@ jobs:
           --cache-from type=gha --cache-to type=gha,mode=max \
           --platform=linux/amd64,linux/arm64 \
           --tag $PROJECT_NAME:latest \
-          --file docker/Dockerfile \
-          --progress tty .
+          --file docker/Dockerfile .
 
       - name: Docker Build GLIBC - Rust Template
         if: ${{ matrix.dockerbuild == 'glibc' && matrix.templates == 'rust' }}
@@ -366,8 +364,7 @@ jobs:
           docker buildx build \
           --cache-from type=gha --cache-to type=gha,mode=max \
           --platform=linux/amd64 \
-          --tag $PROJECT_NAME:latest \
-          --progress tty .
+          --tag $PROJECT_NAME:latest .
 
       - name: Docker Build GLIBC - Rust+Wasm Template
         if: ${{ matrix.dockerbuild == 'glibc' && matrix.templates == 'rust+wasm' }}
@@ -378,5 +375,4 @@ jobs:
           --cache-from type=gha --cache-to type=gha,mode=max \
           --platform=linux/amd64 \
           --tag $PROJECT_NAME:latest \
-          --file docker/Dockerfile \
-          --progress tty .
+          --file docker/Dockerfile .
