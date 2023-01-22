@@ -26,7 +26,7 @@ WORKDIR /{{project-name}}
 Run touch src/lib.rs
 
 # copy cargo.*
-COPY ../{{project-name}}/Cargo.lock ./Cargo.lock
+COPY Cargo.lock ./Cargo.lock
 COPY ../{{project-name}}/Cargo.toml ./Cargo.toml
 
 # cache depencies
