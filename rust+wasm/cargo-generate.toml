@@ -151,7 +151,7 @@ prompt = "Enter a discord invite link?"
 [conditional.'crate_type == "lib"']
 ignore = [
     "{{project-name}}/src/main.rs",
-    "{{project-name}}/Cargo.lock",
+    "Cargo.lock",
     "docker",
     ".dockerignore",
     ".github/workflows/docker.yml"
