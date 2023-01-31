@@ -260,11 +260,13 @@ among other sources.
 
 ### Generating a Rust+Wasm Workspace Project
 
-The `rust+wasm` template is designed for generating a workspace containing both
-a rust-native library, as well as one for compilation to Wasm and leveraging
-[wasm-pack][wasm-pack]. We don't currently support any Javascript examples
-or frameworks that can use Wasm npm package explicitly, but this is on our
-radar.
+The `rust+wasm` template is designed for generating a [workspace][cargo-workspace]
+containing both rust-native library or binary code, as well a library for
+compilation to Wasm and leveraging [wasm-pack][wasm-pack]. We don't currently
+support any Javascript examples or frameworks that can use Wasm npm package
+explicitly, but this is on our radar. Additionally, when using the `--bin` flag
+you have the option to generate our [axum][axum] template with
+all the 🔋's [mentioned above](#-batteries-included-web-framework).
 
 Generate a project just like before and choose the `rust+wasm` template:
 
