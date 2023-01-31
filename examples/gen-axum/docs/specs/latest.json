@@ -1,0 +1,99 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "gen-axum",
+    "description": "example-axum-project",
+    "contact": {
+      "name": "Zeeshan Lakhani",
+      "email": "zeeshan.lakhani@gmail.com"
+    },
+    "license": {
+      "name": "Apache-2.0 or MIT"
+    },
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/healthcheck": {
+      "get": {
+        "tags": [
+          "health"
+        ],
+        "summary": "GET handler for checking service health.",
+        "description": "GET handler for checking service health.",
+        "operationId": "healthcheck",
+        "responses": {
+          "200": {
+            "description": "gen-axum healthy"
+          },
+          "500": {
+            "description": "gen-axum not healthy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppError"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/ping": {
+      "get": {
+        "tags": [
+          "ping"
+        ],
+        "summary": "GET handler for internal pings and availability",
+        "description": "GET handler for internal pings and availability",
+        "operationId": "get",
+        "responses": {
+          "200": {
+            "description": "Ping successful"
+          },
+          "500": {
+            "description": "Ping not successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppError"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AppError": {
+        "type": "object",
+        "description": "Encodes [JSONAPI error object responses](https://jsonapi.org/examples/#error-objects).\n\nJSONAPI error object -  ALL Fields are technically optional.\n\nThis struct uses the following guidelines:\n\n1. Always encode the StatusCode of the response\n2. Set the title to the `canonical_reason` of the status code.\nAccording to spec, this should NOT change over time.\n3. For unrecoverable errors, encode the detail as the to_string of the error\n\nOther fields not currently captured (but can be added)\n\n- id - a unique identifier for the problem\n- links - a link object with further information about the problem\n- source - a JSON pointer indicating a problem in the request json OR\na parameter specifying a problematic query parameter\n- meta - a meta object containing arbitrary information about the error",
+        "required": [
+          "status"
+        ],
+        "properties": {
+          "detail": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "example": 200
+          },
+          "title": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "",
+      "description": "gen-axum service/middleware"
+    }
+  ]
+}

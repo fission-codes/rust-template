@@ -3,3 +3,6 @@ private
 *.tmp
 .history
 .DS_Store
+
+examples/Cargo.lock
+examples/target

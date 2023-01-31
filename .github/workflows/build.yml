@@ -22,6 +22,8 @@ jobs:
     outputs:
       axum: ${{ steps.filter.outputs.axum }}
       docker: ${{ steps.filter.outputs.docker }}
+      examples: ${{ steps.filter.outputs.examples }}
+      nix: ${{ steps.filter.outputs.nix }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -30,70 +32,21 @@ jobs:
         with:
           filters: |
             axum:
-            - 'rust/src.axum/**'
-            - 'rust+wasm/{{project-name}}/src.axum/**'
+              - 'rust/src.axum/**'
+              - 'rust+wasm/{{project-name}}/src.axum/**'
             docker:
-            - 'rust/Dockerfile.*'
-            - 'rust/Dockerfile.*'
-            - 'rust+wasm/docker/**'
-
-  generate-templates:
-    runs-on: ubuntu-latest
-    env:
-      PROJECT_NAME: fission-codes-rust-template
-    strategy:
-      fail-fast: false
-      matrix:
-        templates:
-          - rust
-          - rust+wasm
-        crate_type:
-          - lib
-          - bin
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
-      - name: Setup cargo-generate
-        uses: cargo-generate/cargo-generate-action@v0.17.5
-        with:
-          name: ${{ env.PROJECT_NAME }}
-          subfolder: ${{ matrix.templates }}
-          template_values_file: .github/workflows/template_values.toml
-          other: "--${{ matrix.crate_type }}"
-
-      - name: Install Rust Toolchain
-        uses: actions-rs/toolchain@v1
-        with:
-          override: true
-          profile: minimal
-          toolchain: stable
-
-      - name: Install Rust-Nighly Toolchain
-        uses: actions-rs/toolchain@v1
-        with:
-          override: true
-          profile: minimal
-          components: rustfmt
-          toolchain: nightly
-
-      - name: Install Cargo Audit
-        uses: actions-rs/cargo@v1
-        with:
-          args: --force cargo-deny
-          command: install
-
-      # move generated project to temp folder:
-      # https://github.com/rust-lang/cargo/issues/9922
-      - name: Check If Repository Formats, Lints, Checks
-        run: |
-          mv $PROJECT_NAME ${{ runner.temp }}/
-          cd ${{ runner.temp }}/$PROJECT_NAME
-          cargo clippy
-          cargo +nightly fmt --all -- --check
-          cargo deny check
+              - 'rust/Dockerfile.*'
+              - 'rust/Dockerfile.*'
+              - 'rust+wasm/docker/**'
+            examples:
+              - 'examples/**'
+            nix:
+              - 'rust/flake.nix'
+              - 'rust+wasm/flake.nix'
 
   nix-flake-check:
+    needs: changes
+    if: ${{ needs.changes.outputs.nix == 'true' || github.event_name != 'pull_request' }}
     runs-on: ubuntu-latest
     env:
       ## force it last for cargo-sort
@@ -163,7 +116,6 @@ jobs:
         crate_type:
           - lib
           - bin
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -193,6 +145,12 @@ jobs:
           components: rustfmt
           toolchain: nightly
 
+      - name: Install Cargo Audit
+        uses: actions-rs/cargo@v1
+        with:
+          args: --force cargo-deny
+          command: install
+
       - name: Setup Python
         uses: actions/setup-python@v4
 
@@ -208,7 +166,9 @@ jobs:
           extra_nix_config: |
             access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
 
-      - name: Run Cargo-check & Then pre-commit on All Files
+      # move generated project to temp folder:
+      # https://github.com/rust-lang/cargo/issues/9922
+      - name: Run Cargo-check & then pre-commit (Lint, Fmt, Deny) on All Files
         run: |
           mv $PROJECT_NAME ${{ runner.temp }}/
           cd ${{ runner.temp }}/$PROJECT_NAME
@@ -216,6 +176,7 @@ jobs:
           git add .
           nix profile install github:kamadorueda/alejandra/3.0.0
           cargo check
+          cargo deny check
           pre-commit run --all-files --show-diff-on-failure
 
   run-pre-commit-axum:
@@ -265,6 +226,12 @@ jobs:
           components: rustfmt
           toolchain: nightly
 
+      - name: Install Cargo Audit
+        uses: actions-rs/cargo@v1
+        with:
+          args: --force cargo-deny
+          command: install
+
       - name: Setup Python
         uses: actions/setup-python@v4
 
@@ -280,15 +247,15 @@ jobs:
           extra_nix_config: |
             access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
 
-      - name: Run Cargo-check & Then pre-commit on All Files
+      - name: Run Cargo-check & then pre-commit (Lint, Fmt, Deny) on All Files
         run: |
           mv $PROJECT_NAME ${{ runner.temp }}/
           cd ${{ runner.temp }}/$PROJECT_NAME
           git init
-          git config --global init.defaultBranch main
           git add .
           nix profile install github:kamadorueda/alejandra/3.0.0
           cargo check
+          cargo deny check
           pre-commit run --all-files --show-diff-on-failure
 
   test-rust-project:
@@ -690,3 +657,39 @@ jobs:
           --platform=linux/amd64 \
           --tag $PROJECT_NAME:latest \
           --file docker/Dockerfile .
+
+  run-examples:
+    needs: changes
+    if: ${{ needs.changes.outputs.examples == 'true' || github.event_name != 'pull_request' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        example:
+          - gen-axum
+    defaults:
+      run:
+        working-directory: examples
+    steps:
+      - name: Install Protoc
+        uses: arduino/setup-protoc@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Cache Project
+        uses: Swatinem/rust-cache@v2
+
+      - name: Install Rust Toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          override: true
+          toolchain: stable
+
+      - name: Run Examples
+        shell: bash
+        run: |
+          cargo build -p ${{ matrix.example }} --all-features
+          timeout 30s cargo run -p ${{ matrix.example }} --all-features || code=$?; if [[ $code -ne 124 && $code -ne 0 ]]; then exit $code; fi
