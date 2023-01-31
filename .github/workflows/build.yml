@@ -10,7 +10,33 @@ on:
   pull_request:
     branches: [ '*' ]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    outputs:
+      axum: ${{ steps.filter.outputs.axum }}
+      docker: ${{ steps.filter.outputs.docker }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            axum:
+            - 'rust/src.axum/**'
+            - 'rust+wasm/{{project-name}}/src.axum/**'
+            docker:
+            - 'rust/Dockerfile.*'
+            - 'rust/Dockerfile.*'
+            - 'rust+wasm/docker/**'
+
   generate-templates:
     runs-on: ubuntu-latest
     env:
@@ -110,6 +136,7 @@ jobs:
           nix develop --show-trace -c cargo udeps --version
           nix develop --show-trace -c irust --version
           nix develop --show-trace -c pre-commit --version
+          nix develop --show-trace -c alejandra --version
 
       - name: Nix Flake/Develop Checks - Rust+Wasm Template
         if: ${{ matrix.templates == 'rust+wasm' }}
@@ -136,6 +163,7 @@ jobs:
         crate_type:
           - lib
           - bin
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -174,12 +202,92 @@ jobs:
       - name: Install pre-commit Hooks
         run: pre-commit install
 
+      - name: Install Nix
+        uses: cachix/install-nix-action@v18
+        with:
+          extra_nix_config: |
+            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+
       - name: Run Cargo-check & Then pre-commit on All Files
         run: |
           mv $PROJECT_NAME ${{ runner.temp }}/
           cd ${{ runner.temp }}/$PROJECT_NAME
           git init
           git add .
+          nix profile install github:kamadorueda/alejandra/3.0.0
+          cargo check
+          pre-commit run --all-files --show-diff-on-failure
+
+  run-pre-commit-axum:
+    needs: changes
+    if: ${{ needs.changes.outputs.axum == 'true' || github.event_name != 'pull_request' }}
+    runs-on: ubuntu-latest
+    env:
+      ## force it last for cargo-sort
+      PROJECT_NAME: zzfission-codes-rust-template
+    strategy:
+      fail-fast: false
+      matrix:
+        templates:
+          - rust
+          - rust+wasm
+    steps:
+      - name: Install Protoc
+        uses: arduino/setup-protoc@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup cargo-generate
+        uses: cargo-generate/cargo-generate-action@v0.17.5
+        with:
+          name: ${{ env.PROJECT_NAME }}
+          subfolder: ${{ matrix.templates }}
+          template_values_file: .github/workflows/template_values.toml
+          other: "--bin -d axum=true"
+
+      - name: Install Rust Toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          override: true
+          profile: minimal
+          toolchain: stable
+
+      - name: Install Rust-Nighly Toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          override: true
+          profile: minimal
+          components: rustfmt
+          toolchain: nightly
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+
+      - name: Install pre-commit
+        run: pip install pre-commit
+
+      - name: Install pre-commit Hooks
+        run: pre-commit install
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v18
+        with:
+          extra_nix_config: |
+            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run Cargo-check & Then pre-commit on All Files
+        run: |
+          mv $PROJECT_NAME ${{ runner.temp }}/
+          cd ${{ runner.temp }}/$PROJECT_NAME
+          git init
+          git config --global init.defaultBranch main
+          git add .
+          nix profile install github:kamadorueda/alejandra/3.0.0
           cargo check
           pre-commit run --all-files --show-diff-on-failure
 
@@ -215,6 +323,42 @@ jobs:
         run: |
           mv $PROJECT_NAME ${{ runner.temp }}/
           cd ${{ runner.temp }}/$PROJECT_NAME
+          cargo test --all-features
+
+  test-rust-axum-project:
+    needs: changes
+    if: ${{ needs.changes.outputs.axum == 'true' || github.event_name != 'pull_request' }}
+    runs-on: ubuntu-latest
+    env:
+      PROJECT_NAME: fission-codes-rust-template
+    steps:
+      - name: Install Protoc
+        uses: arduino/setup-protoc@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup cargo-generate
+        uses: cargo-generate/cargo-generate-action@v0.17.5
+        with:
+          name: ${{ env.PROJECT_NAME }}
+          subfolder: rust
+          template_values_file: .github/workflows/template_values.toml
+          other: "--bin -d axum=true"
+
+      - name: Install Rust Toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          override: true
+          toolchain: stable
+
+      - name: Run Tests
+        run: |
+          mv $PROJECT_NAME ${{ runner.temp }}/
+          cd ${{ runner.temp }}/$PROJECT_NAME
+          cargo build --bin openapi
           cargo test --all-features
 
   test-rust-wasm-project:
@@ -253,6 +397,47 @@ jobs:
           mv $PROJECT_NAME ${{ runner.temp }}/
           cd ${{ runner.temp }}/$PROJECT_NAME/$PROJECT_NAME
           cargo test --all-features
+          cd ../$PROJECT_NAME-wasm
+          wasm-pack test --headless --firefox --chrome
+
+  test-rust-wasm-axum-project:
+    needs: changes
+    if: ${{ needs.changes.outputs.axum == 'true' || github.event_name != 'pull_request' }}
+    runs-on: ubuntu-latest
+    env:
+      PROJECT_NAME: fission-codes-rust-template
+    steps:
+      - name: Install Protoc
+        uses: arduino/setup-protoc@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup cargo-generate
+        uses: cargo-generate/cargo-generate-action@v0.17.5
+        with:
+          name: ${{ env.PROJECT_NAME }}
+          subfolder: rust+wasm
+          template_values_file: .github/workflows/template_values.toml
+          other: "--bin -d axum=true"
+
+      - name: Install Rust Toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          override: true
+          toolchain: stable
+
+      - name: Install wasm-pack
+        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+
+      - name: Run Tests
+        run: |
+          mv $PROJECT_NAME ${{ runner.temp }}/
+          cd ${{ runner.temp }}/$PROJECT_NAME/$PROJECT_NAME
+          cargo test --all-features
+          cargo build --bin openapi
           cd ../$PROJECT_NAME-wasm
           wasm-pack test --headless --firefox --chrome
 
@@ -301,7 +486,58 @@ jobs:
           cd ${{ runner.temp }}/$PROJECT_NAME
           cargo bench -p $PROJECT_NAME-benches -- --output-format bencher | tee output.txt
 
+  test-benchmark-axum:
+    needs: changes
+    if: ${{ needs.changes.outputs.axum == 'true' || github.event_name != 'pull_request' }}
+    runs-on: ubuntu-latest
+    env:
+      PROJECT_NAME: fission-codes-rust-template
+    strategy:
+      fail-fast: false
+      matrix:
+        templates:
+          - rust
+          - rust+wasm
+    steps:
+      - name: Install Protoc
+        uses: arduino/setup-protoc@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup cargo-generate
+        uses: cargo-generate/cargo-generate-action@v0.17.5
+        with:
+          name: ${{ env.PROJECT_NAME }}
+          subfolder: ${{ matrix.templates }}
+          template_values_file: .github/workflows/template_values.toml
+          other: "--bin -d axum=true"
+
+      - name: Install Rust Toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          override: true
+          toolchain: stable
+
+      - name: Run Benchmark - Rust Template
+        if: ${{ matrix.templates == 'rust' }}
+        run: |
+          mv $PROJECT_NAME ${{ runner.temp }}/
+          cd ${{ runner.temp }}/$PROJECT_NAME
+          cargo bench --all-features -- --output-format bencher | tee output.txt
+
+      - name: Run Benchmark - Rust+Wasm Template
+        if: ${{ matrix.templates == 'rust+wasm' }}
+        run: |
+          mv $PROJECT_NAME ${{ runner.temp }}/
+          cd ${{ runner.temp }}/$PROJECT_NAME
+          cargo bench -p $PROJECT_NAME-benches -- --output-format bencher | tee output.txt
+
   test-docker:
+    needs: changes
+    if: ${{ needs.changes.outputs.docker == 'true' || github.event_name != 'pull_request' }}
     runs-on: ubuntu-latest
     env:
       PROJECT_NAME: fission-codes-rust-template
@@ -326,6 +562,84 @@ jobs:
           subfolder: ${{ matrix.templates }}
           template_values_file: .github/workflows/template_values.toml
           other: "--bin -d docker=true -d dockerbuild=${{ matrix.dockerbuild }}"
+
+      - name: Setup QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Setup Buildx
+        uses: docker/setup-buildx-action@v2
+        with:
+          buildkitd-flags: "--debug"
+
+      - name: Docker Build MUSL - Rust Template
+        if: ${{ matrix.dockerbuild == 'musl' && matrix.templates == 'rust' }}
+        run: |
+          mv $PROJECT_NAME ${{ runner.temp }}/
+          cd ${{ runner.temp }}/$PROJECT_NAME
+          docker buildx build \
+          --cache-from type=gha --cache-to type=gha,mode=max \
+          --platform=linux/amd64,linux/arm64 \
+          --tag $PROJECT_NAME:latest .
+
+      - name: Docker Build MUSL - Rust+Wasm Template
+        if: ${{ matrix.dockerbuild == 'musl' && matrix.templates == 'rust+wasm' }}
+        run: |
+          mv $PROJECT_NAME ${{ runner.temp }}/
+          cd ${{ runner.temp }}/$PROJECT_NAME
+          docker buildx build \
+          --cache-from type=gha --cache-to type=gha,mode=max \
+          --platform=linux/amd64,linux/arm64 \
+          --tag $PROJECT_NAME:latest \
+          --file docker/Dockerfile .
+
+      - name: Docker Build GLIBC - Rust Template
+        if: ${{ matrix.dockerbuild == 'glibc' && matrix.templates == 'rust' }}
+        run: |
+          mv $PROJECT_NAME ${{ runner.temp }}/
+          cd ${{ runner.temp }}/$PROJECT_NAME
+          docker buildx build \
+          --cache-from type=gha --cache-to type=gha,mode=max \
+          --platform=linux/amd64 \
+          --tag $PROJECT_NAME:latest .
+
+      - name: Docker Build GLIBC - Rust+Wasm Template
+        if: ${{ matrix.dockerbuild == 'glibc' && matrix.templates == 'rust+wasm' }}
+        run: |
+          mv $PROJECT_NAME ${{ runner.temp }}/
+          cd ${{ runner.temp }}/$PROJECT_NAME
+          docker buildx build \
+          --cache-from type=gha --cache-to type=gha,mode=max \
+          --platform=linux/amd64 \
+          --tag $PROJECT_NAME:latest \
+          --file docker/Dockerfile .
+
+  test-docker-axum:
+    needs: changes
+    if: ${{ needs.changes.outputs.docker == 'true' || github.event_name != 'pull_request' }}
+    runs-on: ubuntu-latest
+    env:
+      PROJECT_NAME: fission-codes-rust-template
+    strategy:
+      fail-fast: false
+      matrix:
+        templates:
+          - rust
+          - rust+wasm
+        dockerbuild:
+          - glibc
+          - musl
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup cargo-generate
+        uses: cargo-generate/cargo-generate-action@v0.17.5
+        with:
+          name: ${{ env.PROJECT_NAME }}
+          subfolder: ${{ matrix.templates }}
+          template_values_file: .github/workflows/template_values.toml
+          other: "--bin -d docker=true -d dockerbuild=${{ matrix.dockerbuild }} -d axum=true"
 
       - name: Setup QEMU
         uses: docker/setup-qemu-action@v2

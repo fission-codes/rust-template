@@ -68,7 +68,11 @@ jobs:
           - target: x86_64-pc-windows-msvc
             os: windows-latest
 
-    steps:
+    steps:{% if axum %}
+      - name: Install Protoc
+        uses: arduino/setup-protoc@v1
+        with:
+          repo-token: {{ "${{ secrets.GITHUB_TOKEN " }}}}{% endif %}
       - name: Checkout Repository
         uses: actions/checkout@v3
 
@@ -116,7 +120,11 @@ jobs:
     permissions:
       contents: write
 
-    steps:
+    steps:{% if axum %}
+      - name: Install Protoc
+        uses: arduino/setup-protoc@v1
+        with:
+          repo-token: {{ "${{ secrets.GITHUB_TOKEN " }}}}{% endif %}
       - name: Checkout Repository
         uses: actions/checkout@v3
 
@@ -235,7 +243,7 @@ jobs:
           password: {{ "${{ secrets.GITHUB_TOKEN " }}}}
 
       - name: Docker Build and Push
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:{% if dockerbuild == "glibc" %}
           build-args: |
             RUST_BUILD_IMG=rust:1.65-slim-bullseye

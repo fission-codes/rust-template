@@ -2,9 +2,8 @@
 
 !**/Cargo.toml
 !**/Cargo.lock
-!**/src
-{% if bench %}
-{{project-name}}-benches
-{% endif %}
+!**/src{% if bench %}
+{{project-name}}-benches{% endif %}{% if axum %}
+!**/config{% endif %}
 # for now, only include {{project-name}} binary
 {{project-name}}-wasm

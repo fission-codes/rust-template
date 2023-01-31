@@ -8,7 +8,7 @@ ignore = [
 [hooks]
 init = ["init-msg.rhai"]
 pre = ["pre-script.rhai"]
-post = ["final-msg.rhai"]
+post = ["final-script.rhai", "final-msg.rhai"]
 
 [placeholders.github-name]
 type = "string"
@@ -74,7 +74,8 @@ default = "dual"
 
 [conditional.'(github_actions == true && bench == true) || within_cargo_project == false || is_init == false || security_policy == true || readme == true'.placeholders.repo-name]
 type = "string"
-prompt = "Enter the name of the respository, which may be different from the project name."
+prompt = "Enter the name of the repository without username or org, which may be different from the project name."
+regex = "^[A-Za-z0-9][A-Za-z0-9-]{0,100}$"
 
 [conditional.'within_cargo_project == false || is_init == false'.placeholders.description]
 type = "string"
@@ -99,6 +100,23 @@ default = true
 [conditional.'within_cargo_project == false || is_init == false || security_policy == true || contributing == true'.placeholders.github-email]
 type = "string"
 prompt = "What is the email associated w/ the username or org?"
+
+[conditional.'crate_type == "bin"'.placeholders.axum]
+type = "bool"
+prompt = "Want to set up an axum webserver as your Rust binary application?"
+default = true
+
+[conditional.'crate_type == "bin" && axum == true'.placeholders.port]
+type = "string"
+prompt = "Which port do you want use to server the application/API?"
+default = "3000"
+regex = "^((6553[0-5])|(655[0-2][0-9])|(65[0-4][0-9]{2})|(6[0-4][0-9]{3})|([1-5][0-9]{4})|([0-5]{0,5})|([0-9]{1,4}))$"
+
+[conditional.'crate_type == "bin" && axum == true'.placeholders.metricsport]
+type = "string"
+prompt = "Which port do you want to serve metrics?"
+default = "4000"
+regex = "^((6553[0-5])|(655[0-2][0-9])|(65[0-4][0-9]{2})|(6[0-4][0-9]{3})|([1-5][0-9]{4})|([0-5]{0,5})|([0-9]{1,4}))$"
 
 [conditional.'crate_type == "bin"'.placeholders.docker]
 type = "bool"
@@ -213,9 +231,14 @@ ignore = [
 [conditional.'within_cargo_project == true && is_init == true']
 ignore = [
     "Cargo.toml",
+    "Cargo.axum.toml",
     "Cargo.lock",
     "src",
-    "tests/integration_test.rs"
+    "src.axum",
+    "docs",
+    "config",
+    "tests/integration_test.rs",
+    "tests/integration_test.axum.rs"
 ]
 
 [conditional.'within_cargo_project == false || is_init == false']
@@ -226,5 +249,24 @@ ignore = [
 [conditional.'within_cargo_project == true && is_init == true && readme == false']
 ignore = [
     "README.md",
+    "README.axum.md",
     "assets"
+]
+
+[conditional.'crate_type == "bin" && axum == true']
+ignore = [
+    "src",
+    "tests/integration_test.rs",
+    "Cargo.toml",
+    "README.md"
+]
+
+[conditional.'crate_type == "lib" || axum == false']
+ignore = [
+    "src.axum",
+    "tests/integration_test.axum.rs",
+    "Cargo.axum.toml",
+    "README.axum.md",
+    "config",
+    "docs"
 ]

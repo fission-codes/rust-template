@@ -24,7 +24,7 @@ path = "src/lib.rs"
 {% else %}
 [lib]
 path = "src/lib.rs"
-doctest = false
+doctest = true
 
 [[bin]]
 name = "{{project-name}}"
@@ -45,3 +45,8 @@ proptest = "1.0"
 [features]
 default = []{% if bench %}
 test_utils = ["proptest"]{% endif %}
+
+[package.metadata.docs.rs]
+all-features = true
+# defines the configuration attribute `docsrs`
+rustdoc-args = ["--cfg", "docsrs"]

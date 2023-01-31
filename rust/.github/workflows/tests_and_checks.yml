@@ -8,7 +8,7 @@ on:
     branches: [ '**' ]
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: {{ "${{ github.workflow " }}}}-{{ "${{ github.ref " }}}}
   cancel-in-progress: true
 
 jobs:
@@ -22,7 +22,11 @@ jobs:
           - nightly
           # minimum version
           - 1.64
-    steps:
+    steps:{% if axum %}
+      - name: Install Protoc
+        uses: arduino/setup-protoc@v1
+        with:
+          repo-token: {{ "${{ secrets.GITHUB_TOKEN " }}}}{% endif %}
       - name: Checkout Repository
         uses: actions/checkout@v3
 
@@ -38,25 +42,25 @@ jobs:
         with:
           override: true
           components: rustfmt, clippy
-          toolchain: ${{ matrix.rust-toolchain }}
+          toolchain: {{ "${{ matrix.rust-toolchain "}}}}
 
       - name: Check Format
         uses: actions-rs/cargo@v1
         with:
           args: --all -- --check
           command: fmt
-          toolchain: ${{ matrix.rust-toolchain }}
+          toolchain: {{ "${{ matrix.rust-toolchain "}}}}
 
       - name: Run Linter
         uses: actions-rs/cargo@v1
         with:
           args: --all -- -D warnings
           command: clippy
-          toolchain: ${{ matrix.rust-toolchain }}
+          toolchain: {{ "${{ matrix.rust-toolchain "}}}}
 
       # Check for security advisories
       - name: Check Advisories
-        if: ${{ matrix.rust-toolchain == 'stable' }}
+        if: {{ "${{ matrix.rust-toolchain == 'stable' "}}}}
         uses: EmbarkStudios/cargo-deny-action@v1
         with:
           command: check advisories
@@ -64,14 +68,14 @@ jobs:
 
       # Audit licenses, unreleased crates, and unexpected duplicate versions.
       - name: Check Bans, Licenses, and Sources
-        if: ${{ matrix.rust-toolchain == 'stable' }}
+        if: {{ "${{ matrix.rust-toolchain == 'stable' "}}}}
         uses: EmbarkStudios/cargo-deny-action@v1
         with:
           command: check bans licenses sources
 
       # Only "test" release build on push event.
       - name: Test Release
-        if: ${{ matrix.rust-toolchain == 'stable' && github.event_name == 'push' }}
+        if: {{ "${{ matrix.rust-toolchain == 'stable' " }} && github.event_name == 'push' }}
         run: cargo build --release
 
   run-tests:
@@ -82,7 +86,11 @@ jobs:
         rust-toolchain:
           - stable
           - nightly
-    steps:
+    steps:{% if axum %}
+      - name: Install Protoc
+        uses: arduino/setup-protoc@v1
+        with:
+          repo-token: {{ "${{ secrets.GITHUB_TOKEN " }}}}{% endif %}
       - name: Checkout Repository
         uses: actions/checkout@v3
 
@@ -98,7 +106,7 @@ jobs:
         uses: actions-rs/toolchain@v1
         with:
           override: true
-          toolchain: ${{ matrix.rust-toolchain }}
+          toolchain: {{ "${{ matrix.rust-toolchain "}}}}
 
       - name: Run Tests
         run: cargo test --all-features

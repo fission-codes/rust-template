@@ -84,7 +84,7 @@
 This is just for the rust-only `{{project-name}}` binary application:
 
 ```console
-$ cargo install {{project-name}}
+cargo install {{project-name}}
 ```
 
 ### {{project-name}}-wasm Usage
@@ -276,8 +276,9 @@ submitted for inclusion in the work by you, as defined in the Apache-2.0
 license, shall be dual licensed as above, without any additional terms or
 conditions.
 {% endif %}
-
-[apache]: https://www.apache.org/licenses/LICENSE-2.0{% if docker %}
+{% if license == "Apache" %}
+[apache]: https://www.apache.org/licenses/LICENSE-2.0{% endif %}{% if license == "dual" %}
+[apache]: https://www.apache.org/licenses/LICENSE-2.0{% endif %}{% if docker %}
 [buildx]: https://github.com/docker/buildx{% endif %}
 [cargo-expand]: https://github.com/dtolnay/cargo-expand
 [cargo-udeps]: https://github.com/est31/cargo-udeps
@@ -285,18 +286,19 @@ conditions.
 [commit-spec]: https://www.conventionalcommits.org/en/v1.0.0/#specification
 [commit-spec-site]: https://www.conventionalcommits.org/{% if bench %}
 [criterion]: https://github.com/bheisler/criterion.rs
-[criterion-bindgen]: https://github.com/bheisler/criterion.rs/issues/270{% endif %}{% if docker%}
+[criterion-bindgen]: https://github.com/bheisler/criterion.rs/issues/270
+[criterion-user-guide]: https://github.com/bheisler/criterion.rs/blob/version-0.4/book/src/user_guide/wasi.md{% endif %}{% if docker%}
 [docker-engine]: https://docs.docker.com/engine/{% endif %}{% if nix %}
 [direnv]:https://direnv.net/{% endif %}
-[irust]: https://github.com/sigmaSd/IRust
-[mit]: http://opensource.org/licenses/MIT{% if nix %}
+[irust]: https://github.com/sigmaSd/IRust{% if license == "MIT" %}
+[mit]: http://opensource.org/licenses/MIT{% endif %}{% if license == "dual" %}
+[mit]: http://opensource.org/licenses/MIT{% endif %}{% if nix %}
 [nix]:https://nixos.org/download.html
 [nix-flake]: https://nixos.wiki/wiki/Flakes{% endif %}
 [node-js]: https://nodejs.dev/en/
 [pre-commit]: https://pre-commit.com/{% if bench %}
 [proptest]: https://github.com/proptest-rs/proptest
 [strategies]: https://docs.rs/proptest/latest/proptest/strategy/trait.Strategy.html
-[criterion-user-guide]: https://github.com/bheisler/criterion.rs/blob/version-0.4/book/src/user_guide/wasi.md
 [wasi]: https://wasi.dev/
 [wasmer]: https://wasmer.io/
 [wasmtime]: https://docs.wasmtime.dev/

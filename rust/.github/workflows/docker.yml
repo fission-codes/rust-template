@@ -38,7 +38,7 @@ jobs:
           password: {{ "${{ secrets.GITHUB_TOKEN " }}}}
 
       - name: Docker Build
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:{% if dockerbuild == "glibc" %}
           build-args: |
             RUST_BUILD_IMG=rust:1.65-slim-bullseye

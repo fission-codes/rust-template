@@ -1,5 +1,6 @@
 [values]
 auditable = true
+axum = false
 bench = true
 codecov = true
 contributing = true
@@ -15,6 +16,8 @@ have_discord = true
 license = "dual"
 nix = true
 node-or-web = "web"
+port = "3000"
+metricsport = "4000"
 readme = true
 repo-name = "fission-codes"
 rust_project = false

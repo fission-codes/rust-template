@@ -140,9 +140,11 @@ submitted for inclusion in the work by you, as defined in the Apache-2.0
 license, shall be dual licensed as above, without any additional terms or
 conditions.
 {% endif %}
-
-[apache]: https://www.apache.org/licenses/LICENSE-2.0
-[mit]: http://opensource.org/licenses/MIT
+{% if license == "Apache" %}
+[apache]: https://www.apache.org/licenses/LICENSE-2.0{% endif %}{% if license == "dual" %}
+[apache]: https://www.apache.org/licenses/LICENSE-2.0{% endif %}{% if license == "MIT" %}
+[mit]: http://opensource.org/licenses/MIT{% endif %}{% if license == "dual" %}
+[mit]: http://opensource.org/licenses/MIT{% endif %}
 [node-js]: https://nodejs.dev/en/
 [npm]: https://www.npmjs.com/
 [wasm-pack]: https://rustwasm.github.io/docs/wasm-pack/
