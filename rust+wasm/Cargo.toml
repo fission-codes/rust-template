@@ -6,6 +6,7 @@ members = [
 	"{{project-name}}-wasm"
 ]
 
+# See https://doc.rust-lang.org/cargo/reference/profiles.html for more info.
 [profile.release.{{project-name}}-wasm]
 # Do not perform backtrace for panic on release builds.
 panic = 'abort'
@@ -15,6 +16,12 @@ codegen-units = 1
 opt-level = "s" # or 'z' to optimize "aggressively" for size
 # Enable link time optimization.
 lto = true
+# Strip debug symbols
+# "symbols" issue: https://github.com/rust-lang/rust/issues/93294
+## strip = "debuginfo"
+# Amount of debug information.
+# 0/false: no debug info at all; 1: line tables only; 2/true: full debug info
+## debug = false
 
 # Speedup build on macOS
 # See https://blog.rust-lang.org/2021/03/25/Rust-1.51.0.html#splitting-debug-information
