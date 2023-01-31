@@ -24,6 +24,15 @@ updates:
     schedule:
       interval: "weekly"
 
+  - package-ecosystem: "cargo"
+    directory: "/examples/gen-axum"
+    commit-message:
+      prefix: "chore(examples)"
+      include: "scope"
+    target-branch: "main"
+    schedule:
+      interval: "weekly"
+
   - package-ecosystem: "github-actions"
     directory: "/"
     commit-message:

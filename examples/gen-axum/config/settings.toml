@@ -1,0 +1,11 @@
+[monitoring]
+process_collector_interval = 10
+
+[otel]
+exporter_otlp_endpoint = "http://localhost:4317"
+
+[server]
+environment = "local"
+metrics_port = 4000
+port = 3000
+timeout_ms = 30000
