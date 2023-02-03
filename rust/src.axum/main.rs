@@ -80,7 +80,6 @@ async fn main() -> Result<()> {
     let app = async {
         let req_id = HeaderName::from_static(REQUEST_ID);
         let router = router::setup_app_router()
-            .merge(SwaggerUi::new("/swagger-ui").url("/api-doc/openapi.json", ApiDoc::openapi()))
             .route_layer(axum::middleware::from_fn(middleware::metrics::track))
             .layer(Extension(env))
             // Include trace context as header into the response.
@@ -104,7 +103,8 @@ async fn main() -> Result<()> {
             // `500 Internal Server` responses.
             .layer(CatchPanicLayer::custom(runtime::catch_panic))
             // Mark headers as sensitive on both requests and responses.
-            .layer(SetSensitiveHeadersLayer::new([header::AUTHORIZATION]));
+            .layer(SetSensitiveHeadersLayer::new([header::AUTHORIZATION]))
+            .merge(SwaggerUi::new("/swagger-ui").url("/api-doc/openapi.json", ApiDoc::openapi()));
 
         serve("Application", router, settings.server().port).await
     };
