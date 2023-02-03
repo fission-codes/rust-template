@@ -3,6 +3,20 @@
 use anyhow::Result;
 use axum::{extract::Extension, headers::HeaderName, routing::get, Router};
 use axum_tracing_opentelemetry::{opentelemetry_tracing_layer, response_with_trace_layer};
+use gen_axum::{
+    docs::ApiDoc,
+    metrics::{process, prom::setup_metrics_recorder},
+    middleware::{self, request_ulid::MakeRequestUlid, runtime},
+    router,
+    routes::fallback::notfound_404,
+    settings::{Otel, Settings},
+    tracer::init_tracer,
+    tracing_layers::{
+        format_layer::LogFmtLayer,
+        metrics_layer::{MetricsLayer, METRIC_META_PREFIX},
+        storage_layer::StorageLayer,
+    },
+};
 use http::header;
 use std::{
     future::ready,
@@ -27,20 +41,6 @@ use tracing_subscriber::{
 };
 use utoipa::OpenApi;
 use utoipa_swagger_ui::SwaggerUi;
-use gen_axum::{
-    docs::ApiDoc,
-    metrics::{process, prom::setup_metrics_recorder},
-    middleware::{self, request_ulid::MakeRequestUlid, runtime},
-    router,
-    routes::fallback::notfound_404,
-    settings::{Otel, Settings},
-    tracer::init_tracer,
-    tracing_layers::{
-        format_layer::LogFmtLayer,
-        metrics_layer::{MetricsLayer, METRIC_META_PREFIX},
-        storage_layer::StorageLayer,
-    },
-};
 
 /// Request identifier field.
 const REQUEST_ID: &str = "request_id";
@@ -80,7 +80,6 @@ async fn main() -> Result<()> {
     let app = async {
         let req_id = HeaderName::from_static(REQUEST_ID);
         let router = router::setup_app_router()
-            .merge(SwaggerUi::new("/swagger-ui").url("/api-doc/openapi.json", ApiDoc::openapi()))
             .route_layer(axum::middleware::from_fn(middleware::metrics::track))
             .layer(Extension(env))
             // Include trace context as header into the response.
@@ -104,7 +103,8 @@ async fn main() -> Result<()> {
             // `500 Internal Server` responses.
             .layer(CatchPanicLayer::custom(runtime::catch_panic))
             // Mark headers as sensitive on both requests and responses.
-            .layer(SetSensitiveHeadersLayer::new([header::AUTHORIZATION]));
+            .layer(SetSensitiveHeadersLayer::new([header::AUTHORIZATION]))
+            .merge(SwaggerUi::new("/swagger-ui").url("/api-doc/openapi.json", ApiDoc::openapi()));
 
         serve("Application", router, settings.server().port).await
     };
