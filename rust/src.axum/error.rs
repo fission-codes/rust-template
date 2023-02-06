@@ -8,8 +8,8 @@ use axum::{
 
 use serde::{Deserialize, Serialize};
 use tracing::warn;
+use ulid::Ulid;
 use utoipa::ToSchema;
-use uuid::Uuid;
 
 /// Standard return type out of routes / handlers
 pub type AppResult<T> = std::result::Result<T, AppError>;
@@ -52,7 +52,7 @@ impl AppError {
     }
 
     /// [AppError] for [StatusCode::NOT_FOUND].
-    pub fn not_found(id: Uuid) -> AppError {
+    pub fn not_found(id: Ulid) -> AppError {
         Self::new(
             StatusCode::NOT_FOUND,
             Some(format!("Entity with id {id} not found")),
@@ -156,10 +156,8 @@ pub async fn parse_error(response: Response) -> AppError {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use axum::response::IntoResponse;
-    use uuid::Uuid;
-
-    use axum::http::StatusCode;
+    use axum::{http::StatusCode, response::IntoResponse};
+    use ulid::Ulid;
 
     #[test]
     fn test_from_anyhow_error() {
@@ -177,7 +175,7 @@ mod tests {
 
     #[test]
     fn test_not_found() {
-        let id = Uuid::new_v4();
+        let id = Ulid::new();
         let err = AppError::not_found(id);
 
         assert_eq!(err.status, StatusCode::NOT_FOUND);
@@ -196,7 +194,7 @@ mod tests {
     #[tokio::test]
     async fn test_json_api_error_response() {
         // verify that our json api response complies with the standard
-        let id = Uuid::new_v4();
+        let id = Ulid::new();
         let err = AppError::not_found(id);
         let response = err.into_response();
         assert_eq!(response.status(), StatusCode::NOT_FOUND);
