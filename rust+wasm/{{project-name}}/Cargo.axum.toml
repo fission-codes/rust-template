@@ -41,7 +41,7 @@ ansi_term = { version = "0.12", optional = true, default-features = false }
 anyhow = { version = "1.0", features = ["backtrace"] }
 async-trait = "0.1"
 axum = { version = "0.6", features = ["headers"] }
-axum-tracing-opentelemetry = { version = "0.8", features = ["otlp"] }
+axum-tracing-opentelemetry = { version = "0.9", features = ["otlp"] }
 base64 = "0.21"
 chrono = "0.4"
 config = "0.13"
@@ -90,7 +90,6 @@ ulid = { version = "1.0", features = ["serde"] }
 url = "2.3"
 utoipa = { version = "3.0", features = ["uuid", "axum_extras"] }
 utoipa-swagger-ui = { version = "3.0", features = ["axum"] }
-uuid = { version = "1.0", features = ["serde", "v4"] }
 
 [dev-dependencies]
 assert-json-diff = "2.0"{% if bench %}
