@@ -47,9 +47,8 @@ yanked = "deny"
 notice = "warn"
 # A list of advisory IDs to ignore. Note that ignored advisories will still
 # output a note when they are encountered.
-ignore = [
-    "RUSTSEC-2020-0071" # time 0.1 w/ chrono
-]
+#ignore = [
+#]
 # Threshold for security vulnerabilities, any vulnerability with a CVSS score
 # lower than the range specified will be ignored. Note that ignored advisories
 # will still output a note when they are encountered.
