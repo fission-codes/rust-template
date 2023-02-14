@@ -179,6 +179,7 @@ ignore = [
 ignore = [
     "{{project-name}}-benches",
     "{{project-name}}/src/test_utils",
+    "{{project-name}}/src.axum/test_utils",
     ".github/workflows/bench.yml"
 ]
 
