@@ -50,7 +50,7 @@ async-trait = "0.1"
 axum = { version = "0.6", features = ["headers"] }
 axum-tracing-opentelemetry = { version = "0.9", features = ["otlp"] }
 base64 = "0.21"
-chrono = "0.4"
+chrono = { version = "0.4", default-features = false, features = ["clock"] }
 config = "0.13"
 console-subscriber = { version = "0.1", default-features = false, features = [ "parking_lot" ], optional = true }
 const_format = "0.2"
