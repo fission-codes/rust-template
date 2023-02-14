@@ -33,14 +33,14 @@ doc = true
 {% endif %}
 [dependencies]{% if crate_type == "bin" %}
 anyhow = "1.0"{% endif %}{% if bench %}
-proptest = { version = "1.0", optional = true }{% endif %}{% if crate_type == "lib" %}
+proptest = { version = "1.1", optional = true }{% endif %}{% if crate_type == "lib" %}
 thiserror = "1.0"
 tracing = "0.1"{% else %}
 tracing = "0.1"
 tracing-subscriber = "0.3"
 {% endif %}{% if bench %}
 [dev-dependencies]
-proptest = "1.0"
+proptest = "1.1"
 {% endif %}
 [features]
 default = []{% if bench %}

@@ -169,6 +169,7 @@ ignore = [
 ignore = [
     "benches",
     "src/test_utils",
+    "src.axum/test_utils",
     ".github/workflows/bench.yml"
 ]
 
