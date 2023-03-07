@@ -41,7 +41,7 @@ ansi_term = { version = "0.12", optional = true, default-features = false }
 anyhow = { version = "1.0", features = ["backtrace"] }
 async-trait = "0.1"
 axum = { version = "0.6", features = ["headers"] }
-axum-tracing-opentelemetry = { version = "0.9", features = ["otlp"] }
+axum-tracing-opentelemetry = { version = "0.10", features = ["otlp"] }
 base64 = "0.21"
 chrono = { version = "0.4", default-features = false, features = ["clock"] }
 config = "0.13"
@@ -77,11 +77,11 @@ sysinfo = "0.28"
 task-local-extensions = "0.1"
 thiserror = "1.0"
 time = { version = "0.3", features = ["serde-well-known", "serde-human-readable"] }
-tokio = { version = "1.25", features = ["full", "parking_lot"] }
+tokio = { version = "1.26", features = ["full", "parking_lot"] }
 ## Tied to opentelemetry-otlp dependency
 tonic = { version = "0.8" }
 tower = "0.4"
-tower-http = { version = "0.3", features = ["catch-panic", "request-id", "sensitive-headers", "timeout", "trace", "util"] }
+tower-http = { version = "0.4", features = ["catch-panic", "request-id", "sensitive-headers", "timeout", "trace", "util"] }
 tracing = "0.1"
 tracing-appender = "0.2"
 tracing-opentelemetry = "0.18"
