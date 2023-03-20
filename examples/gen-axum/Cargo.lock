@@ -2350,11 +2350,12 @@ dependencies = [
 
 [[package]]
 name = "reqwest-tracing"
-version = "0.4.0"
+version = "0.4.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b739d87a6b2cf4743968ad2b4cef648fbe0204c19999509824425babb2097bce"
+checksum = "8a71d77945a1c5ae9604f0504901e77a1e2e71f2932b1cb8103078179ca62ff8"
 dependencies = [
  "async-trait",
+ "getrandom 0.2.8",
  "opentelemetry 0.17.0",
  "reqwest",
  "reqwest-middleware",
