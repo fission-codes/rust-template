@@ -195,8 +195,8 @@ according to your preference.
 
 ### Formatting
 
-For formatting Rust in particular, please use `cargo +nightly fmt` as it uses
-specific nightly features we recommend by default.
+For formatting Rust in particular, we automatically format on `nightly`, as it
+uses specific nightly features we recommend by default.
 {% else %}
 ### Formatting
 
