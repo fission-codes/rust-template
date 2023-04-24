@@ -55,7 +55,7 @@ once_cell = "1.17"
 openssl = { version = "0.10", features = ["vendored"], default-features = false }
 opentelemetry = { version = "0.18", features = ["rt-tokio", "trace"] }
 opentelemetry-otlp = { version = "0.11", features = ["metrics", "grpc-tonic", "tls-roots"], default-features = false }
-opentelemetry-semantic-conventions = "0.10"
+opentelemetry-semantic-conventions = "0.11"
 parking_lot = "0.12"
 reqwest = { version = "0.11", features = ["json"] }
 reqwest-middleware = "0.2"
