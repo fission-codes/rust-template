@@ -72,7 +72,7 @@ retry-policies = "0.1"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 serde_path_to_error = "0.1"
-serde_with = "2.0"
+serde_with = "3.0"
 sysinfo = "0.28"
 task-local-extensions = "0.1"
 thiserror = "1.0"
@@ -88,7 +88,7 @@ tracing-opentelemetry = "0.18"
 tracing-subscriber = { version = "0.3", features = ["env-filter", "json", "parking_lot", "registry"] }
 ulid = { version = "1.0", features = ["serde"] }
 url = "2.3"
-utoipa = { version = "3.1", features = ["uuid", "axum_extras"] }
+utoipa = { version = "3.3", features = ["uuid", "axum_extras"] }
 utoipa-swagger-ui = { version = "3.1", features = ["axum"] }
 
 [dev-dependencies]
