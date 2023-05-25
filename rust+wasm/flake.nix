@@ -58,6 +58,7 @@
               # the rustfmt provided by `rust-toolchain`, it must appear first in the list. This is
               # because native build inputs are added to $PATH in the order they're listed here.
               nightly-rustfmt
+              binaryen
               rust-toolchain
               pre-commit
               protobuf
