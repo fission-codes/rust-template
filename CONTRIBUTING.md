@@ -14,7 +14,7 @@ designed for those who are new so please don't let length intimidate you.
 
 ## Code of Conduct
 
-Please be kind, inclusive, and considerate when interacting when interacting
+Please be kind, inclusive, and considerate when interacting
 with others and follow our [code of conduct](./CODE_OF_CONDUCT.md).
 
 ## How to Contribute
