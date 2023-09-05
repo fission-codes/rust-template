@@ -29,9 +29,9 @@ COPY Cargo.toml ./Cargo.toml
 # cache depencies
 RUN mkdir .cargo
 RUN cargo vendor > .cargo/config
-RUN --mount=type=cache,target=$CARGO_HOME/registry \
-    --mount=type=cache,target=$CARGO_HOME/.git \
-    --mount=type=cache,target={{project-name}}/target,sharing=locked \{% if axum %}
+RUN --mount=type=cache,id=cargo,target=$CARGO_HOME/registry \
+    --mount=type=cache,id=git,target=$CARGO_HOME/.git \
+    --mount=type=cache,id=target,target=./{{project-name}}/target,sharing=locked \{% if axum %}
     cargo build --target $CARGO_BUILD_TARGET --bin {{project-name}}-app --release{% else %}
     cargo build --target $CARGO_BUILD_TARGET --release{% endif %}
 
@@ -45,11 +45,7 @@ COPY config ./config
 {% endif %}
 # final build for release
 RUN rm ./target/$CARGO_BUILD_TARGET/release/deps/*{{crate_name}}*
-RUN --mount=type=cache,target=$CARGO_HOME/registry \
-    --mount=type=cache,target=$CARGO_HOME/.git \
-    --mount=type=cache,target={{project-name}}/target,sharing=locked \{% if axum %}
-    cargo build --target $CARGO_BUILD_TARGET --bin {{project-name}}-app --release{% else %}
-    cargo build --target $CARGO_BUILD_TARGET --bin {{project-name}} --release{% endif %}
+RUN{% if axum %} cargo build --target $CARGO_BUILD_TARGET --bin {{project-name}}-app --release{% else %}cargo build --target $CARGO_BUILD_TARGET --bin {{project-name}} --release{% endif %}
 {% if axum %}
 RUN musl-strip ./target/$CARGO_BUILD_TARGET/release/{{project-name}}-app
 {% else %}

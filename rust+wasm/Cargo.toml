@@ -5,13 +5,14 @@ members = [
 	"{{project-name}}-benches",{% endif %}
 	"{{project-name}}-wasm"
 ]
+resolver = "2"
 
 # See https://doc.rust-lang.org/cargo/reference/profiles.html for more info.
 [profile.release.package.{{project-name}}-wasm]
 # Perform optimizations on all codegen units.
 codegen-units = 1
 # Tell `rustc` to optimize for small code size.
-opt-level = "s" # or 'z' to optimize "aggressively" for size
+opt-level = "z" # or 'z' to optimize "aggressively" for size
 # Strip debug symbols
 # "symbols" issue: https://github.com/rust-lang/rust/issues/93294
 ## strip = "debuginfo"
