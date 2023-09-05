@@ -2,8 +2,13 @@
   description = "{{project-name}}";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-22.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+
+    flake-compat = {
+      url = "github:edolstra/flake-compat";
+      flake = false;
+    };
 
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
@@ -15,6 +20,7 @@
   outputs = {
     self,
     nixpkgs,
+    flake-compat,
     flake-utils,
     rust-overlay,
   } @ inputs:
@@ -41,12 +47,16 @@
           cargo-auditable{% endif %}
           cargo-deny
           cargo-expand
+          cargo-nextest
           cargo-outdated
           cargo-sort
+          cargo-spellcheck
           cargo-udeps
           cargo-watch
+          twiggy
           wasm-pack
           wasm-bindgen-cli
+          wasm-tools
         ];
       in rec
       {
@@ -81,17 +91,19 @@
 
         packages.irust = pkgs.rustPlatform.buildRustPackage rec {
           pname = "irust";
-          version = "1.65.1";
+          version = "1.70.0";
           src = pkgs.fetchFromGitHub {
             owner = "sigmaSd";
             repo = "IRust";
             rev = "v${version}";
-            sha256 = "sha256-AMOND5q1XzNhN5smVJp+2sGl/OqbxkGPGuPBCE48Hik=";
+            sha256 = "sha256-chZKesbmvGHXwhnJRZbXyX7B8OwJL9dJh0O1Axz/n2E=";
           };
 
           doCheck = false;
-          cargoSha256 = "sha256-A24O3p85mCRVZfDyyjQcQosj/4COGNnqiQK2a7nCP6I=";
+          cargoSha256 = "sha256-FmsD3ajMqpPrTkXCX2anC+cmm0a2xuP+3FHqzj56Ma4=";
         };
+
+        formatter = pkgs.alejandra;
       }
     );
 }

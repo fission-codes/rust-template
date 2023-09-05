@@ -26,7 +26,7 @@ jobs:
       nix: ${{ steps.filter.outputs.nix }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - uses: dorny/paths-filter@v2
         id: filter
         with:
@@ -59,7 +59,7 @@ jobs:
           - rust+wasm
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -118,7 +118,7 @@ jobs:
           - bin
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -199,7 +199,7 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -270,7 +270,7 @@ jobs:
           - bin
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup cargo-generate
         uses: cargo-generate/cargo-generate-action@v0.18.3
@@ -305,7 +305,7 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup cargo-generate
         uses: cargo-generate/cargo-generate-action@v0.18.3
@@ -340,7 +340,7 @@ jobs:
           - bin
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup cargo-generate
         uses: cargo-generate/cargo-generate-action@v0.18.3
@@ -380,7 +380,7 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup cargo-generate
         uses: cargo-generate/cargo-generate-action@v0.18.3
@@ -423,7 +423,7 @@ jobs:
           - bin
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup cargo-generate
         uses: cargo-generate/cargo-generate-action@v0.18.3
@@ -472,7 +472,7 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup cargo-generate
         uses: cargo-generate/cargo-generate-action@v0.18.3
@@ -520,7 +520,7 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup cargo-generate
         uses: cargo-generate/cargo-generate-action@v0.18.3
@@ -598,7 +598,7 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup cargo-generate
         uses: cargo-generate/cargo-generate-action@v0.18.3
@@ -677,7 +677,7 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Cache Project
         uses: Swatinem/rust-cache@v2

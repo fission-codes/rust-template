@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-ARG RUST_BUILD_IMG=rust:1.65-slim-bullseye
+ARG RUST_BUILD_IMG=rust:1.67-slim-bullseye
 ARG DEBIAN_TAG=bullseye-slim
 
 FROM $RUST_BUILD_IMG as base
@@ -53,11 +53,7 @@ COPY config ./config
 {% endif %}
 # final build for release
 RUN rm ./target/$TARGET/release/deps/*{{crate_name}}*
-RUN --mount=type=cache,target=$CARGO_HOME/registry \
-    --mount=type=cache,target=$CARGO_HOME/.git \
-    --mount=type=cache,target={{project-name}}/target,sharing=locked \{% if axum %}
-    cargo build --target $TARGET --bin {{project-name}}-app --release{% else %}
-    cargo build --target $TARGET --bin {{project-name}} --release{% endif %}
+RUN{% if axum %} cargo build --target $TARGET --bin {{project-name}}-app --release{% else %} cargo build --target $TARGET --bin {{project-name}} --release{% endif %}
 {% if axum %}
 RUN strip ./target/$TARGET/release/{{project-name}}-app
 {% else %}

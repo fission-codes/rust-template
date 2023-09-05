@@ -7,9 +7,9 @@ version: 2
 
 updates:
   - package-ecosystem: "cargo"
-    directory: "/{{project-name}}"
+    directory: "/"
     commit-message:
-      prefix: "chore(rust)"
+      prefix: "chore(cargo)"
       include: "scope"
     target-branch: "main"
     schedule:
