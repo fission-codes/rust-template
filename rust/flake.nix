@@ -2,8 +2,13 @@
   description = "{{project-name}}";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-22.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+
+    flake-compat = {
+      url = "github:edolstra/flake-compat";
+      flake = false;
+    };
 
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
@@ -15,6 +20,7 @@
   outputs = {
     self,
     nixpkgs,
+    flake-compat,
     flake-utils,
     rust-overlay,
   } @ inputs:

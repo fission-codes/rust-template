@@ -45,7 +45,7 @@ COPY config ./config
 {% endif %}
 # final build for release
 RUN rm ./target/$CARGO_BUILD_TARGET/release/deps/*{{crate_name}}*
-RUN{% if axum %} cargo build --target $CARGO_BUILD_TARGET --bin {{project-name}}-app --release{% else %}cargo build --target $CARGO_BUILD_TARGET --bin {{project-name}} --release{% endif %}
+RUN{% if axum %} cargo build --target $CARGO_BUILD_TARGET --bin {{project-name}}-app --release{% else %} cargo build --target $CARGO_BUILD_TARGET --bin {{project-name}} --release{% endif %}
 {% if axum %}
 RUN musl-strip ./target/$CARGO_BUILD_TARGET/release/{{project-name}}-app
 {% else %}
