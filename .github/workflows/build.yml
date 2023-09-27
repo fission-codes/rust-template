@@ -531,7 +531,7 @@ jobs:
           other: "--bin -d docker=true -d dockerbuild=${{ matrix.dockerbuild }}"
 
       - name: Setup QEMU
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
 
       - name: Setup Buildx
         uses: docker/setup-buildx-action@v2
@@ -609,7 +609,7 @@ jobs:
           other: "--bin -d docker=true -d dockerbuild=${{ matrix.dockerbuild }} -d axum=true"
 
       - name: Setup QEMU
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
 
       - name: Setup Buildx
         uses: docker/setup-buildx-action@v2
