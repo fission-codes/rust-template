@@ -64,7 +64,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup cargo-generate
-        uses: cargo-generate/cargo-generate-action@v0.18.3
+        uses: cargo-generate/cargo-generate-action@v0.18.4
         with:
           name: ${{ env.PROJECT_NAME }}
           subfolder: ${{ matrix.templates }}
@@ -123,7 +123,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup cargo-generate
-        uses: cargo-generate/cargo-generate-action@v0.18.3
+        uses: cargo-generate/cargo-generate-action@v0.18.4
         with:
           name: ${{ env.PROJECT_NAME }}
           subfolder: ${{ matrix.templates }}
@@ -204,7 +204,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup cargo-generate
-        uses: cargo-generate/cargo-generate-action@v0.18.3
+        uses: cargo-generate/cargo-generate-action@v0.18.4
         with:
           name: ${{ env.PROJECT_NAME }}
           subfolder: ${{ matrix.templates }}
@@ -273,7 +273,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup cargo-generate
-        uses: cargo-generate/cargo-generate-action@v0.18.3
+        uses: cargo-generate/cargo-generate-action@v0.18.4
         with:
           name: ${{ env.PROJECT_NAME }}
           subfolder: rust
@@ -308,7 +308,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup cargo-generate
-        uses: cargo-generate/cargo-generate-action@v0.18.3
+        uses: cargo-generate/cargo-generate-action@v0.18.4
         with:
           name: ${{ env.PROJECT_NAME }}
           subfolder: rust
@@ -343,7 +343,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup cargo-generate
-        uses: cargo-generate/cargo-generate-action@v0.18.3
+        uses: cargo-generate/cargo-generate-action@v0.18.4
         with:
           name: ${{ env.PROJECT_NAME }}
           subfolder: rust+wasm
@@ -383,7 +383,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup cargo-generate
-        uses: cargo-generate/cargo-generate-action@v0.18.3
+        uses: cargo-generate/cargo-generate-action@v0.18.4
         with:
           name: ${{ env.PROJECT_NAME }}
           subfolder: rust+wasm
@@ -426,7 +426,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup cargo-generate
-        uses: cargo-generate/cargo-generate-action@v0.18.3
+        uses: cargo-generate/cargo-generate-action@v0.18.4
         with:
           name: ${{ env.PROJECT_NAME }}
           subfolder: ${{ matrix.templates }}
@@ -475,7 +475,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup cargo-generate
-        uses: cargo-generate/cargo-generate-action@v0.18.3
+        uses: cargo-generate/cargo-generate-action@v0.18.4
         with:
           name: ${{ env.PROJECT_NAME }}
           subfolder: ${{ matrix.templates }}
@@ -523,7 +523,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup cargo-generate
-        uses: cargo-generate/cargo-generate-action@v0.18.3
+        uses: cargo-generate/cargo-generate-action@v0.18.4
         with:
           name: ${{ env.PROJECT_NAME }}
           subfolder: ${{ matrix.templates }}
@@ -601,7 +601,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup cargo-generate
-        uses: cargo-generate/cargo-generate-action@v0.18.3
+        uses: cargo-generate/cargo-generate-action@v0.18.4
         with:
           name: ${{ env.PROJECT_NAME }}
           subfolder: ${{ matrix.templates }}
