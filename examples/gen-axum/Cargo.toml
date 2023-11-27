@@ -86,7 +86,7 @@ utoipa-swagger-ui = { version = "3.1", features = ["axum"] }
 
 [dev-dependencies]
 assert-json-diff = "2.0"
-rsa = { version = "0.8" }
+rsa = { version = "0.9" }
 tokio-test = "0.4"
 wiremock = "0.5"
 
