@@ -47,7 +47,7 @@ http = "0.2"
 http-serde = "1.1"
 hyper = "0.14"
 metrics = "0.20"
-metrics-exporter-prometheus = "0.11"
+metrics-exporter-prometheus = "0.13"
 metrics-util = { version = "0.14", default-features = true }
 mime = "0.3"
 num_cpus = "1.0"
