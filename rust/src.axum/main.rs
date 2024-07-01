@@ -10,8 +10,9 @@ use std::{
     net::{IpAddr, Ipv4Addr, SocketAddr},
     time::Duration,
 };
+use tokio::signal;
+#[cfg(unix)]
 use tokio::signal::{
-    self,
     unix::{signal, SignalKind},
 };
 use tower::ServiceBuilder;
