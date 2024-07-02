@@ -1,11 +1,10 @@
 //! Generic result/error resprentation(s).
 
 use axum::{
-    http::StatusCode,
     response::{IntoResponse, Response},
     Json,
 };
-
+use http::StatusCode;
 use serde::{Deserialize, Serialize};
 use tracing::warn;
 use ulid::Ulid;
@@ -85,6 +84,10 @@ impl From<AppError> for (StatusCode, Json<ErrorResponse>) {
 impl IntoResponse for AppError {
     fn into_response(self) -> Response {
         let error_response: (StatusCode, Json<ErrorResponse>) = self.into();
+        let error_response: (axum::http::StatusCode, Json<ErrorResponse>) = (
+            axum::http::StatusCode::from_u16(error_response.0.as_u16()).unwrap(),
+            error_response.1
+        );
         error_response.into_response()
     }
 }
@@ -148,7 +151,7 @@ impl std::fmt::Display for AppError {
 #[cfg(test)]
 /// Parse the app error out of the json body
 pub async fn parse_error(response: Response) -> AppError {
-    let body_bytes = hyper::body::to_bytes(response.into_body()).await.unwrap();
+    let body_bytes = axum::body::to_bytes(response.into_body(),usize::MAX).await.unwrap();
     let mut err_response: ErrorResponse = serde_json::from_slice(&body_bytes).unwrap();
     err_response.errors.remove(0)
 }
@@ -170,7 +173,7 @@ mod tests {
                 .map(|r| r.to_string())
         );
 
-        assert_eq!(err.status, StatusCode::INTERNAL_SERVER_ERROR);
+        assert_eq!(err.status, http::StatusCode::INTERNAL_SERVER_ERROR);
     }
 
     #[test]
@@ -178,7 +181,7 @@ mod tests {
         let id = Ulid::new();
         let err = AppError::not_found(id);
 
-        assert_eq!(err.status, StatusCode::NOT_FOUND);
+        assert_eq!(err.status, http::StatusCode::NOT_FOUND);
         assert_eq!(
             err.title,
             StatusCode::NOT_FOUND
@@ -202,7 +205,7 @@ mod tests {
         let err = parse_error(response).await;
 
         // Check that the result is all good
-        assert_eq!(err.status, StatusCode::NOT_FOUND);
+        assert_eq!(err.status, http::StatusCode::NOT_FOUND);
         assert_eq!(
             err.title,
             StatusCode::NOT_FOUND

@@ -26,7 +26,7 @@ mod test {
     use crate::error::{parse_error, AppError};
     use axum::{
         body::Body,
-        http::{Request, StatusCode},
+        http::Request,
         routing::get,
         Router,
     };
@@ -50,7 +50,7 @@ mod test {
 
         assert_eq!(
             err,
-            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, Some("hi"))
+            AppError::new(http::StatusCode::INTERNAL_SERVER_ERROR, Some("hi"))
         );
     }
 }

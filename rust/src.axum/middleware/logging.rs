@@ -4,12 +4,11 @@ use crate::{error::AppError, middleware::request_ext::RequestExt, settings::AppE
 use anyhow::{anyhow, Result};
 use async_trait::async_trait;
 use axum::{
-    body::{Body, BoxBody, Bytes},
-    http::{Request, StatusCode},
+    body::{Body, Bytes},
+    http::Request,
     middleware::Next,
     response::{IntoResponse, Response},
 };
-use http::header;
 use reqwest_middleware::Middleware as ReqwestMiddleware;
 use task_local_extensions::Extensions;
 use tracing::{debug, info, warn};
@@ -24,7 +23,7 @@ const REQUEST_ID: &str = "request_id";
 /// Middleware function for logging request and response body data.
 pub async fn log_request_response<L: RequestResponseLogger>(
     request: Request<Body>,
-    next: Next<Body>,
+    next: Next,
 ) -> Result<impl IntoResponse, AppError> {
     let req = L::log_request(request).await?;
     let path = req.path();
@@ -68,7 +67,7 @@ pub trait RequestResponseLogger {
 
     /// Log responses at different levels based on [StatusCode].
     async fn log_response(
-        response: Response<BoxBody>,
+        response: Response<Body>,
         path: String,
     ) -> Result<Response<Body>, AppError> {
         let status_code = response.status().as_u16();
@@ -134,7 +133,7 @@ impl RequestResponseLogger for Logger {
                     query_string = parts.uri.query(),
                     authorization = parts
                         .headers
-                        .get(header::AUTHORIZATION)
+                        .get(http::header::AUTHORIZATION.as_str())
                         .map(|h| h.to_str().unwrap_or(NULL))
                     .unwrap_or(NULL)),
             _ => {
@@ -150,7 +149,7 @@ impl RequestResponseLogger for Logger {
                     query_string = parts.uri.query(),
                     authorization= parts
                         .headers
-                        .get(header::AUTHORIZATION)
+                        .get(http::header::AUTHORIZATION.as_str())
                         .map(|h| if h.is_sensitive() {
                             "<redacted>"
                         }  else {
@@ -202,13 +201,13 @@ impl ReqwestMiddleware for Logger {
 fn log_reqwest(request: &reqwest::Request, extensions: &mut Extensions) {
     let user_agent = request
         .headers()
-        .get(header::USER_AGENT)
+        .get(http::header::USER_AGENT)
         .map(|h| h.to_str().unwrap_or(NULL))
         .unwrap_or(NULL);
 
     let host_hdr = request
         .headers()
-        .get(header::HOST)
+        .get(http::header::HOST)
         .map(|h| h.to_str().unwrap_or(NULL))
         .unwrap_or(NULL);
     let host = request.url().host_str().unwrap_or(host_hdr);
@@ -227,7 +226,7 @@ fn log_reqwest(request: &reqwest::Request, extensions: &mut Extensions) {
                 client.version = ?request.version(),
                 client.authorization= request
                     .headers()
-                    .get(header::AUTHORIZATION)
+                    .get(http::header::AUTHORIZATION.as_str())
                     .map(|h| h.to_str().unwrap_or(NULL))
                     .unwrap_or(NULL),
                 "started processing client request")
@@ -245,7 +244,7 @@ fn log_reqwest(request: &reqwest::Request, extensions: &mut Extensions) {
                 client.version = ?request.version(),
                 client.authorization= request
                     .headers()
-                    .get(header::AUTHORIZATION)
+                    .get(http::header::AUTHORIZATION.as_str())
                     .map(|_h| "<redacted>")
                     .unwrap_or(NULL),
                 "started processing client request")
@@ -271,7 +270,7 @@ async fn log_reqwest_response(
         version: reqwest::Version,
     ) -> Result<reqwest::Response> {
         let mut builder = http::Response::builder()
-            .status(StatusCode::from_u16(status_code)?)
+            .status(status_code)
             .version(version);
 
         let headers_iter = headers.into_iter();
@@ -351,15 +350,12 @@ fn log_middleware_error(error: &anyhow::Error, extensions: &mut Extensions) -> R
     Ok(())
 }
 
-async fn buffer<B>(direction: &str, body: B) -> Result<Bytes, anyhow::Error>
-where
-    B: axum::body::HttpBody<Data = Bytes>,
-    B::Error: std::fmt::Display,
+async fn buffer(direction: &str, body: Body) -> Result<Bytes, anyhow::Error>
 {
-    let bytes = match hyper::body::to_bytes(body).await {
+    let bytes = match axum::body::to_bytes(body,usize::MAX).await {
         Ok(bytes) => bytes,
         Err(err) => anyhow::bail!(AppError::new(
-            StatusCode::BAD_REQUEST,
+            http::StatusCode::BAD_REQUEST,
             Some(format!("failed to read {direction} body: {err}")),
         )),
     };

@@ -1,12 +1,13 @@
 //! Middleware for tracking metrics on each [axum::http::Request].
 
 use crate::middleware::request_ext::RequestExt;
+use axum::body::Body;
 use axum::{http::Request, middleware::Next, response::IntoResponse};
 use std::time::Instant;
 
 /// Middleware function called to track (and update) http metrics when a route
 /// is requested.
-pub async fn track<B>(req: Request<B>, next: Next<B>) -> impl IntoResponse {
+pub async fn track(req: Request<Body>, next: Next) -> impl IntoResponse {
     let start = Instant::now();
 
     let method = req.method().clone();

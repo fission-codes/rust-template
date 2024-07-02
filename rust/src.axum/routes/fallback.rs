@@ -1,7 +1,7 @@
 //! Fallback routes.
 
 use crate::error::AppError;
-use axum::http::StatusCode;
+use http::StatusCode;
 
 /// 404 fallback.
 pub async fn notfound_404() -> AppError {

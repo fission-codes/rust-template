@@ -1,15 +1,18 @@
 //! {{project-name}}
 
 use anyhow::Result;
-use axum::{extract::Extension, headers::HeaderName, routing::get, Router};
-use axum_tracing_opentelemetry::{opentelemetry_tracing_layer, response_with_trace_layer};
-use http::header;
+use axum::{extract::Extension, routing::get, Router};
+use axum_tracing_opentelemetry::middleware::{OtelAxumLayer, OtelInResponseLayer};
 use std::{
     future::ready,
     io,
-    net::{IpAddr, Ipv4Addr, SocketAddr},
+    net::SocketAddr,
     time::Duration,
 };
+use std::iter::once;
+use headers::HeaderName;
+use http::header;
+use tokio::net::TcpListener;
 use tokio::signal;
 #[cfg(unix)]
 use tokio::signal::unix::{signal, SignalKind};
@@ -82,11 +85,11 @@ async fn main() -> Result<()> {
             .route_layer(axum::middleware::from_fn(middleware::metrics::track))
             .layer(Extension(env))
             // Include trace context as header into the response.
-            .layer(response_with_trace_layer())
+            .layer(OtelInResponseLayer::default())
             // Opentelemetry tracing middleware.
             // This returns a `TraceLayer` configured to use
             // OpenTelemetry’s conventional span field names.
-            .layer(opentelemetry_tracing_layer())
+            .layer(OtelAxumLayer::default())
             // Set and propagate "request_id" (as a ulid) per request.
             .layer(
                 ServiceBuilder::new()
@@ -102,7 +105,7 @@ async fn main() -> Result<()> {
             // `500 Internal Server` responses.
             .layer(CatchPanicLayer::custom(runtime::catch_panic))
             // Mark headers as sensitive on both requests and responses.
-            .layer(SetSensitiveHeadersLayer::new([header::AUTHORIZATION]))
+            .layer(SetSensitiveHeadersLayer::new(once(HeaderName::from_static(header::AUTHORIZATION.as_str()))))
             .merge(SwaggerUi::new("/swagger-ui").url("/api-doc/openapi.json", ApiDoc::openapi()));
 
         serve("Application", router, settings.server().port).await
@@ -113,19 +116,20 @@ async fn main() -> Result<()> {
 }
 
 async fn serve(name: &str, app: Router, port: u16) -> Result<()> {
-    let bind_addr: SocketAddr = SocketAddr::new(IpAddr::V4(Ipv4Addr::UNSPECIFIED), port);
+    // let bind_addr: SocketAddr = SocketAddr::new(IpAddr::V4(Ipv4Addr::UNSPECIFIED), port);
+    let listener = TcpListener::bind(format!("0.0.0.0:{port}")).await.unwrap();
     info!(
         subject = "app_start",
         category = "init",
         "{} server listening on {}",
         name,
-        bind_addr
+        port
     );
 
-    axum::Server::bind(&bind_addr)
-        .serve(app.into_make_service_with_connect_info::<SocketAddr>())
+    axum::serve(listener, app.into_make_service_with_connect_info::<SocketAddr>())
         .with_graceful_shutdown(shutdown())
-        .await?;
+        .await
+        .unwrap();
 
     Ok(())
 }
