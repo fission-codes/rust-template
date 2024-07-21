@@ -1,6 +1,9 @@
 #![cfg_attr(docsrs, feature(doc_cfg))]
 #![warn(missing_debug_implementations, missing_docs, rust_2018_idioms)]
 #![deny(unreachable_pub)]
+#![deny(private_bounds)]
+#![deny(rustdoc::private_intra_doc_links)]
+#![deny(private_interfaces)]
 
 //! {{project-name}}
 
