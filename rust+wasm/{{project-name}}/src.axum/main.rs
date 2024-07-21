@@ -78,7 +78,7 @@ async fn main() -> Result<()> {
             .route_layer(axum::middleware::from_fn(middleware::metrics::track))
             .layer(Extension(env))
             // Include trace context as header into the response.
-            .layer(OtelInResponseLayer::default())
+            .layer(OtelInResponseLayer)
             // Opentelemetry tracing middleware.
             // This returns a `TraceLayer` configured to use
             // OpenTelemetry’s conventional span field names.
