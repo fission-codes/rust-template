@@ -118,6 +118,7 @@ exceptions = [
     # this is not a problem for us. See https://github.com/dtolnay/unicode-ident/pull/9/files
     { allow = ["Unicode-DFS-2016"], name = "unicode-ident", version = "*"},
     { allow = ["OpenSSL"], name = "ring", version = "*" },
+    { allow = ["MPL-2.0"], name = "webpki-roots", version = "*"},
 ]
 
 # Some crates don't have (easily) machine readable licensing information,
