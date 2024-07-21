@@ -86,7 +86,7 @@ impl IntoResponse for AppError {
         let error_response: (StatusCode, Json<ErrorResponse>) = self.into();
         let error_response: (axum::http::StatusCode, Json<ErrorResponse>) = (
             axum::http::StatusCode::from_u16(error_response.0.as_u16()).unwrap(),
-            error_response.1
+            error_response.1,
         );
         error_response.into_response()
     }
@@ -151,7 +151,9 @@ impl std::fmt::Display for AppError {
 #[cfg(test)]
 /// Parse the app error out of the json body
 pub async fn parse_error(response: Response) -> AppError {
-    let body_bytes = axum::body::to_bytes(response.into_body(),usize::MAX).await.unwrap();
+    let body_bytes = axum::body::to_bytes(response.into_body(), usize::MAX)
+        .await
+        .unwrap();
     let mut err_response: ErrorResponse = serde_json::from_slice(&body_bytes).unwrap();
     err_response.errors.remove(0)
 }

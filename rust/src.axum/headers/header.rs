@@ -1,5 +1,4 @@
-use axum_extra::headers::Header;
-use axum_extra::TypedHeader;
+use axum_extra::{headers::Header, TypedHeader};
 
 /// Generate String-focused, generic, custom typed [`Header`]'s.
 #[allow(unused)]

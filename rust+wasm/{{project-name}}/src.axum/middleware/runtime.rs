@@ -24,12 +24,7 @@ pub fn catch_panic(err: Box<dyn Any + Send + 'static>) -> Response {
 mod test {
     use super::*;
     use crate::error::{parse_error, AppError};
-    use axum::{
-        body::Body,
-        http::Request,
-        routing::get,
-        Router,
-    };
+    use axum::{body::Body, http::Request, routing::get, Router};
     use tower::{ServiceBuilder, ServiceExt};
     use tower_http::catch_panic::CatchPanicLayer;
 

@@ -3,20 +3,12 @@
 use anyhow::Result;
 use axum::{extract::Extension, routing::get, Router};
 use axum_tracing_opentelemetry::middleware::{OtelAxumLayer, OtelInResponseLayer};
-use std::{
-    future::ready,
-    io,
-    net::SocketAddr,
-    time::Duration,
-};
-use std::iter::once;
 use headers::HeaderName;
 use http::header;
-use tokio::net::TcpListener;
-use tokio::signal::{
-    self,
-    unix::{signal, SignalKind},
-};
+use std::{future::ready, io, iter::once, net::SocketAddr, time::Duration};
+#[cfg(unix)]
+use tokio::signal::unix::{signal, SignalKind};
+use tokio::{net::TcpListener, signal};
 use tower::ServiceBuilder;
 use tower_http::{
     catch_panic::CatchPanicLayer, sensitive_headers::SetSensitiveHeadersLayer,
@@ -106,7 +98,9 @@ async fn main() -> Result<()> {
             // `500 Internal Server` responses.
             .layer(CatchPanicLayer::custom(runtime::catch_panic))
             // Mark headers as sensitive on both requests and responses.
-            .layer(SetSensitiveHeadersLayer::new(once(HeaderName::from_static(header::AUTHORIZATION.as_str()))))
+            .layer(SetSensitiveHeadersLayer::new(once(
+                HeaderName::from_static(header::AUTHORIZATION.as_str()),
+            )))
             .merge(SwaggerUi::new("/swagger-ui").url("/api-doc/openapi.json", ApiDoc::openapi()));
 
         serve("Application", router, settings.server().port).await
@@ -127,10 +121,13 @@ async fn serve(name: &str, app: Router, port: u16) -> Result<()> {
         port
     );
 
-    axum::serve(listener, app.into_make_service_with_connect_info::<SocketAddr>())
-        .with_graceful_shutdown(shutdown())
-        .await
-        .unwrap();
+    axum::serve(
+        listener,
+        app.into_make_service_with_connect_info::<SocketAddr>(),
+    )
+    .with_graceful_shutdown(shutdown())
+    .await
+    .unwrap();
 
     Ok(())
 }

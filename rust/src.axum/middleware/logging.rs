@@ -350,9 +350,8 @@ fn log_middleware_error(error: &anyhow::Error, extensions: &mut Extensions) -> R
     Ok(())
 }
 
-async fn buffer(direction: &str, body: Body) -> Result<Bytes, anyhow::Error>
-{
-    let bytes = match axum::body::to_bytes(body,usize::MAX).await {
+async fn buffer(direction: &str, body: Body) -> Result<Bytes, anyhow::Error> {
+    let bytes = match axum::body::to_bytes(body, usize::MAX).await {
         Ok(bytes) => bytes,
         Err(err) => anyhow::bail!(AppError::new(
             http::StatusCode::BAD_REQUEST,

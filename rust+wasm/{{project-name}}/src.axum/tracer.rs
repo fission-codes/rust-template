@@ -5,8 +5,10 @@ use anyhow::{anyhow, Result};
 use const_format::formatcp;
 use http::Uri;
 use opentelemetry::{global, KeyValue};
-use opentelemetry_sdk::{self, propagation::TraceContextPropagator, trace::Tracer, Resource, runtime};
 use opentelemetry_otlp::{TonicExporterBuilder, WithExportConfig};
+use opentelemetry_sdk::{
+    self, propagation::TraceContextPropagator, runtime, trace::Tracer, Resource,
+};
 use opentelemetry_semantic_conventions as otel_semcov;
 use tonic::{metadata::MetadataMap, transport::ClientTlsConfig};
 
@@ -22,9 +24,9 @@ pub fn init_tracer(settings: &Otel) -> Result<Tracer> {
     global::set_text_map_propagator(TraceContextPropagator::new());
 
     let resource = Resource::new(vec![
-        KeyValue::new(otel_semcov::resource::SERVICE_NAME,PKG_NAME),
-        KeyValue::new(otel_semcov::resource::SERVICE_VERSION,VERSION),
-        KeyValue::new(otel_semcov::resource::TELEMETRY_SDK_LANGUAGE,LANG),
+        KeyValue::new(otel_semcov::resource::SERVICE_NAME, PKG_NAME),
+        KeyValue::new(otel_semcov::resource::SERVICE_VERSION, VERSION),
+        KeyValue::new(otel_semcov::resource::TELEMETRY_SDK_LANGUAGE, LANG),
     ]);
 
     let endpoint = &settings.exporter_otlp_endpoint;

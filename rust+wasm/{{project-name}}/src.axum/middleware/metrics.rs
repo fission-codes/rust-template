@@ -1,8 +1,7 @@
 //! Middleware for tracking metrics on each [axum::http::Request].
 
 use crate::middleware::request_ext::RequestExt;
-use axum::body::Body;
-use axum::{http::Request, middleware::Next, response::IntoResponse};
+use axum::{body::Body, http::Request, middleware::Next, response::IntoResponse};
 use std::time::Instant;
 
 /// Middleware function called to track (and update) http metrics when a route

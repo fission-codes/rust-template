@@ -2,15 +2,14 @@
 
 use async_trait::async_trait;
 use axum::{
-    body::{Bytes},
-    extract::FromRequest,
+    body::Bytes,
+    extract::{FromRequest, Request},
+    http::{header, StatusCode},
     response::{IntoResponse, Response},
 };
+use axum_extra::headers::{HeaderMap, HeaderValue};
 use serde::{de::DeserializeOwned, Serialize};
 use std::ops::{Deref, DerefMut};
-use axum::extract::Request;
-use axum::http::{header, StatusCode};
-use axum_extra::headers::{HeaderMap, HeaderValue};
 use tracing::warn;
 
 use crate::error::AppError;
@@ -203,10 +202,12 @@ where
 
 #[cfg(test)]
 mod tests {
-    use axum::body::Body;
     use super::*;
-    use axum::routing::{get, Router};
-    use axum::http::Request;
+    use axum::{
+        body::Body,
+        http::Request,
+        routing::{get, Router},
+    };
     use serde::Deserialize;
     use tower::ServiceExt;
 
@@ -234,7 +235,9 @@ mod tests {
             .await
             .unwrap();
 
-        let body = axum::body::to_bytes(response.into_body(),usize::MAX).await.unwrap();
+        let body = axum::body::to_bytes(response.into_body(), usize::MAX)
+            .await
+            .unwrap();
         let body_text = std::str::from_utf8(&body[..]).unwrap();
         dbg!(body_text);
         assert_eq!(body_text, "bar");
