@@ -7,11 +7,12 @@
 use crate::middleware::client;
 use anyhow::anyhow;
 use chrono::Utc;
+use http::Extensions;
 use reqwest::{Request, Response};
 use reqwest_middleware::{Error, Middleware, Next, Result};
 use reqwest_retry::{RetryPolicy, Retryable};
 use retry_policies::RetryDecision;
-use task_local_extensions::Extensions;
+use std::time::SystemTime;
 use tracing::warn;
 
 /// We limit the number of retries to a maximum of `10` to avoid stack-overflow issues due to the recursion.
@@ -98,6 +99,8 @@ impl<T: RetryPolicy + Send + Sync> RetryTransientMiddleware<T> {
         extensions: &'a mut Extensions,
     ) -> Result<Response> {
         let mut n_past_retries = 0;
+        let start_time = SystemTime::now();
+
         loop {
             // Cloning the request object before-the-fact is not ideal..
             // However, if the body of the request is not static, e.g of type `Bytes`,
@@ -127,9 +130,9 @@ impl<T: RetryPolicy + Send + Sync> RetryTransientMiddleware<T> {
                 {
                     // If the response failed and the error type was transient
                     // we can safely try to retry the request.
-                    let retry_decicion = self.retry_policy.should_retry(n_past_retries);
+                    let retry_decicion = self.retry_policy.should_retry(start_time, n_past_retries);
                     if let RetryDecision::Retry { execute_after } = retry_decicion {
-                        let duration = (execute_after - Utc::now())
+                        let duration = (chrono::DateTime::from(execute_after) - Utc::now())
                             .to_std()
                             .map_err(Error::middleware)?;
                         warn!(

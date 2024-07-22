@@ -1,8 +1,8 @@
 //! Middleware for tracking metrics on each client [reqwest::Request].
 
+use http::Extensions;
 use reqwest_middleware::Middleware as ReqwestMiddleware;
 use std::time::Instant;
-use task_local_extensions::Extensions;
 
 const OK: &str = "ok";
 const ERROR: &str = "error";

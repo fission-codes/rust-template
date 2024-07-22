@@ -50,8 +50,8 @@ console-subscriber = { version = "0.1", default-features = false, features = [ "
 const_format = "0.2"
 futures = "0.3"
 headers = "0.4"
-http = "0.2"
-http-serde = "1.1"
+http = "1.1"
+http-serde = "2.1"
 hyper = "1.0.1"
 metrics = "0.20"
 metrics-exporter-prometheus = "0.11"
@@ -66,11 +66,11 @@ opentelemetry-semantic-conventions = "0.15"
 opentelemetry_sdk = { version = "0.23", features = ["rt-tokio", "trace"] }
 parking_lot = "0.12"{% if bench %}
 proptest = { version = "1.1", optional = true }{% endif %}
-reqwest = { version = "0.11", features = ["json"] }
-reqwest-middleware = "0.2"
-reqwest-retry = "0.2"
-reqwest-tracing = { version = "0.4", features = ["opentelemetry_0_17"] }
-retry-policies = "0.1"
+reqwest = { version = "0.12", features = ["json"] }
+reqwest-middleware = "0.3"
+reqwest-retry = "0.6"
+reqwest-tracing = { version = "0.5", features = ["opentelemetry_0_23"] }
+retry-policies = "0.4"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 serde_path_to_error = "0.1"

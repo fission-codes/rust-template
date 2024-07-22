@@ -5,12 +5,11 @@ use anyhow::{anyhow, Result};
 use async_trait::async_trait;
 use axum::{
     body::{Body, Bytes},
-    http::{Request, StatusCode},
+    http::{Extensions, Request, StatusCode},
     middleware::Next,
     response::{IntoResponse, Response},
 };
 use reqwest_middleware::Middleware as ReqwestMiddleware;
-use task_local_extensions::Extensions;
 use tracing::{debug, info, warn};
 
 /// Generic "null" field for unset logs/fields.
@@ -267,7 +266,7 @@ async fn log_reqwest_response(
         body: reqwest::Body,
         headers: reqwest::header::HeaderMap,
         status_code: u16,
-        version: reqwest::Version,
+        version: http::Version,
     ) -> Result<reqwest::Response> {
         let mut builder = http::Response::builder()
             .status(status_code)
