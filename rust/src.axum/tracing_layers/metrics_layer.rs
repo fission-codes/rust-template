@@ -68,12 +68,9 @@ where
             // Need to sort labels to remain the same across all metrics.
             labels.sort_unstable();
 
-            metrics::increment_counter!(format!("{name}_total"), &labels);
-            metrics::histogram!(
-                format!("{name}_duration_seconds"),
-                elapsed_secs_f64,
-                &labels
-            );
+            metrics::counter!(format!("{name}_total"), &labels).increment(1);
+            metrics::histogram!(format!("{name}_duration_seconds"), &labels)
+                .record(elapsed_secs_f64);
 
             // Remove storage as this is the last layer.
             extensions
