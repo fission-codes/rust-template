@@ -1,10 +1,10 @@
 //! Generic result/error resprentation(s).
 
 use axum::{
+    http::StatusCode,
     response::{IntoResponse, Response},
     Json,
 };
-use http::StatusCode;
 use serde::{Deserialize, Serialize};
 use tracing::warn;
 use ulid::Ulid;
@@ -83,12 +83,8 @@ impl From<AppError> for (StatusCode, Json<ErrorResponse>) {
 
 impl IntoResponse for AppError {
     fn into_response(self) -> Response {
-        let error_response: (StatusCode, Json<ErrorResponse>) = self.into();
-        let error_response: (axum::http::StatusCode, Json<ErrorResponse>) = (
-            axum::http::StatusCode::from_u16(error_response.0.as_u16()).unwrap(),
-            error_response.1,
-        );
-        error_response.into_response()
+        let resp: (StatusCode, Json<ErrorResponse>) = self.into();
+        resp.into_response()
     }
 }
 
@@ -118,7 +114,7 @@ impl From<anyhow::Error> for AppError {
 ///
 /// We could have used http_serde, but it encodes the status code as a NUMBER.
 pub mod serde_status_code {
-    use http::StatusCode;
+    use axum::http::StatusCode;
     use serde::{de::Unexpected, Deserialize, Deserializer, Serialize, Serializer};
 
     /// Serialize [StatusCode]s.
@@ -175,7 +171,7 @@ mod tests {
                 .map(|r| r.to_string())
         );
 
-        assert_eq!(err.status, http::StatusCode::INTERNAL_SERVER_ERROR);
+        assert_eq!(err.status, StatusCode::INTERNAL_SERVER_ERROR);
     }
 
     #[test]
@@ -183,7 +179,7 @@ mod tests {
         let id = Ulid::new();
         let err = AppError::not_found(id);
 
-        assert_eq!(err.status, http::StatusCode::NOT_FOUND);
+        assert_eq!(err.status, StatusCode::NOT_FOUND);
         assert_eq!(
             err.title,
             StatusCode::NOT_FOUND
@@ -207,7 +203,7 @@ mod tests {
         let err = parse_error(response).await;
 
         // Check that the result is all good
-        assert_eq!(err.status, http::StatusCode::NOT_FOUND);
+        assert_eq!(err.status, StatusCode::NOT_FOUND);
         assert_eq!(
             err.title,
             StatusCode::NOT_FOUND

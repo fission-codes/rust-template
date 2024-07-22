@@ -86,7 +86,7 @@ where
                     err,
                 );
                 AppError::new(
-                    http::StatusCode::BAD_REQUEST,
+                    StatusCode::BAD_REQUEST,
                     Some("Unable to parse request body"),
                 )
             })?;
@@ -105,7 +105,7 @@ where
                                 err.inner()
                             );
                             AppError::new(
-                                http::StatusCode::UNPROCESSABLE_ENTITY,
+                                StatusCode::UNPROCESSABLE_ENTITY,
                                 Some(format!(
                                     "failed to deserialize the JSON body into the target type, json error path: {}; json error {:#}",
                                     err.path(),
@@ -121,7 +121,7 @@ where
                                 err.inner()
                             );
                             AppError::new(
-                                http::StatusCode::BAD_REQUEST,
+                                StatusCode::BAD_REQUEST,
                                 Some(format!(
                                     "failed to parse the request body as JSON; json error {:#}",
                                     err.inner()
@@ -134,7 +134,7 @@ where
             }
         } else {
             Err(AppError::new(
-                http::StatusCode::UNSUPPORTED_MEDIA_TYPE,
+                StatusCode::UNSUPPORTED_MEDIA_TYPE,
                 Some("Expected request with `Content-Type: application/json`"),
             ))
         }

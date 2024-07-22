@@ -5,7 +5,7 @@ use anyhow::{anyhow, Result};
 use async_trait::async_trait;
 use axum::{
     body::{Body, Bytes},
-    http::Request,
+    http::{Request, StatusCode},
     middleware::Next,
     response::{IntoResponse, Response},
 };
@@ -354,7 +354,7 @@ async fn buffer(direction: &str, body: Body) -> Result<Bytes, anyhow::Error> {
     let bytes = match axum::body::to_bytes(body, usize::MAX).await {
         Ok(bytes) => bytes,
         Err(err) => anyhow::bail!(AppError::new(
-            http::StatusCode::BAD_REQUEST,
+            StatusCode::BAD_REQUEST,
             Some(format!("failed to read {direction} body: {err}")),
         )),
     };

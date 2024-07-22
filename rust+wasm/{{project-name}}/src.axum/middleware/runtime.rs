@@ -25,6 +25,7 @@ mod test {
     use super::*;
     use crate::error::{parse_error, AppError};
     use axum::{body::Body, http::Request, routing::get, Router};
+    use axum::http::StatusCode;
     use tower::{ServiceBuilder, ServiceExt};
     use tower_http::catch_panic::CatchPanicLayer;
 
@@ -45,7 +46,7 @@ mod test {
 
         assert_eq!(
             err,
-            AppError::new(http::StatusCode::INTERNAL_SERVER_ERROR, Some("hi"))
+            AppError::new(StatusCode::INTERNAL_SERVER_ERROR, Some("hi"))
         );
     }
 }
