@@ -279,7 +279,7 @@ async fn log_reqwest_response(
             .headers_mut()
             .ok_or_else(|| anyhow!("failed to convert response headers"))?;
 
-        headers.extend(headers_iter.map(|(k, v)| (k, v)));
+        headers.extend(headers_iter);
 
         let res = builder.body(body)?;
         Ok(reqwest::Response::from(res))
