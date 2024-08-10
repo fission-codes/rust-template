@@ -51,10 +51,10 @@ static MAXIMUM_NUMBER_OF_RETRIES: u32 = 10;
 ///
 /// Some workaround suggestions:
 /// * If you can fit the data in memory, you can instead build static request bodies e.g. with
-/// `Body`'s `From<String>` or `From<Bytes>` implementations.
+///   `Body`'s `From<String>` or `From<Bytes>` implementations.
 /// * You can wrap this middleware in a custom one which skips retries for streaming requests.
 /// * You can write a custom retry middleware that builds new streaming requests from the data
-/// source directly, avoiding the issue of streaming requests not being clonable.
+///   source directly, avoiding the issue of streaming requests not being clonable.
 #[derive(Debug)]
 pub struct RetryTransientMiddleware<T: RetryPolicy + Send + Sync + 'static> {
     client_name: String,

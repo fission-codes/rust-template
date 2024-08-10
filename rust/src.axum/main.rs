@@ -12,9 +12,7 @@ use std::{
 };
 use tokio::signal;
 #[cfg(unix)]
-use tokio::signal::{
-    unix::{signal, SignalKind},
-};
+use tokio::signal::unix::{signal, SignalKind};
 use tower::ServiceBuilder;
 use tower_http::{
     catch_panic::CatchPanicLayer, sensitive_headers::SetSensitiveHeadersLayer,

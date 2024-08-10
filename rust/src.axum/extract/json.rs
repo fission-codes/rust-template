@@ -30,7 +30,7 @@ use crate::error::AppError;
 /// - The request doesn't have a `Content-Type: application/json` (or similar) header.
 /// - The body doesn't contain syntactically valid JSON.
 /// - The body contains syntactically valid JSON but it couldn't be deserialized into the target
-/// type.
+///   type.
 /// - Buffering the request body fails.
 ///
 /// See [AppError] for more details.

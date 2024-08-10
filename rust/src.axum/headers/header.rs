@@ -54,6 +54,7 @@ macro_rules! header {
 
 /// Trait for returning header value directly for passing
 /// along to client calls.
+#[allow(unused)]
 pub(crate) trait HeaderValue {
     fn header_value(&self) -> String;
 }
