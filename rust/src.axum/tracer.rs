@@ -4,11 +4,11 @@ use crate::settings::Otel;
 use anyhow::{anyhow, Result};
 use const_format::formatcp;
 use http::Uri;
-use opentelemetry::{
-    global, runtime,
-    sdk::{self, propagation::TraceContextPropagator, trace::Tracer, Resource},
-};
+use opentelemetry::{global, KeyValue};
 use opentelemetry_otlp::{TonicExporterBuilder, WithExportConfig};
+use opentelemetry_sdk::{
+    self, propagation::TraceContextPropagator, runtime, trace::Tracer, Resource,
+};
 use opentelemetry_semantic_conventions as otel_semcov;
 use tonic::{metadata::MetadataMap, transport::ClientTlsConfig};
 
@@ -24,9 +24,9 @@ pub fn init_tracer(settings: &Otel) -> Result<Tracer> {
     global::set_text_map_propagator(TraceContextPropagator::new());
 
     let resource = Resource::new(vec![
-        otel_semcov::resource::SERVICE_NAME.string(PKG_NAME),
-        otel_semcov::resource::SERVICE_VERSION.string(VERSION),
-        otel_semcov::resource::TELEMETRY_SDK_LANGUAGE.string(LANG),
+        KeyValue::new(otel_semcov::resource::SERVICE_NAME, PKG_NAME),
+        KeyValue::new(otel_semcov::resource::SERVICE_VERSION, VERSION),
+        KeyValue::new(otel_semcov::resource::TELEMETRY_SDK_LANGUAGE, LANG),
     ]);
 
     let endpoint = &settings.exporter_otlp_endpoint;
@@ -36,7 +36,7 @@ pub fn init_tracer(settings: &Otel) -> Result<Tracer> {
     let trace = opentelemetry_otlp::new_pipeline()
         .tracing()
         .with_exporter(exporter(map, endpoint)?)
-        .with_trace_config(sdk::trace::config().with_resource(resource))
+        .with_trace_config(opentelemetry_sdk::trace::config().with_resource(resource))
         .install_batch(runtime::Tokio)
         .map_err(|e| anyhow!("failed to intialize tracer: {:#?}", e))?;
 

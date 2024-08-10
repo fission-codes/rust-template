@@ -5,7 +5,6 @@ use axum::{
     response::{IntoResponse, Response},
     Json,
 };
-
 use serde::{Deserialize, Serialize};
 use tracing::warn;
 use ulid::Ulid;
@@ -84,8 +83,8 @@ impl From<AppError> for (StatusCode, Json<ErrorResponse>) {
 
 impl IntoResponse for AppError {
     fn into_response(self) -> Response {
-        let error_response: (StatusCode, Json<ErrorResponse>) = self.into();
-        error_response.into_response()
+        let resp: (StatusCode, Json<ErrorResponse>) = self.into();
+        resp.into_response()
     }
 }
 
@@ -115,7 +114,7 @@ impl From<anyhow::Error> for AppError {
 ///
 /// We could have used http_serde, but it encodes the status code as a NUMBER.
 pub mod serde_status_code {
-    use http::StatusCode;
+    use axum::http::StatusCode;
     use serde::{de::Unexpected, Deserialize, Deserializer, Serialize, Serializer};
 
     /// Serialize [StatusCode]s.
@@ -148,7 +147,9 @@ impl std::fmt::Display for AppError {
 #[cfg(test)]
 /// Parse the app error out of the json body
 pub async fn parse_error(response: Response) -> AppError {
-    let body_bytes = hyper::body::to_bytes(response.into_body()).await.unwrap();
+    let body_bytes = axum::body::to_bytes(response.into_body(), usize::MAX)
+        .await
+        .unwrap();
     let mut err_response: ErrorResponse = serde_json::from_slice(&body_bytes).unwrap();
     err_response.errors.remove(0)
 }

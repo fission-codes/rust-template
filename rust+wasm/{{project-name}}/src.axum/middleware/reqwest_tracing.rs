@@ -1,10 +1,10 @@
 //! Adding trace information to [reqwest::Request]s.
 
+use http::Extensions;
 use reqwest::{Request, Response};
 use reqwest_middleware::Result;
 use reqwest_tracing::{default_on_request_end, reqwest_otel_span, ReqwestOtelSpanBackend};
 use std::time::Instant;
-use task_local_extensions::Extensions;
 use tracing::Span;
 
 /// Latency string.
@@ -20,7 +20,7 @@ impl ReqwestOtelSpanBackend for ExtendedTrace {
         reqwest_otel_span!(
             name = "reqwest-http-request",
             req,
-            latency_ms = tracing::field::Empty
+            latency_ms = tracing::field::Empty,
         )
     }
 

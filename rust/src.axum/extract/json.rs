@@ -2,15 +2,12 @@
 
 use async_trait::async_trait;
 use axum::{
-    body::{Bytes, HttpBody},
-    extract::FromRequest,
+    body::Bytes,
+    extract::{FromRequest, Request},
+    http::{header, StatusCode},
     response::{IntoResponse, Response},
-    BoxError,
 };
-use http::{
-    header::{self, HeaderMap, HeaderValue},
-    Request, StatusCode,
-};
+use axum_extra::headers::{HeaderMap, HeaderValue};
 use serde::{de::DeserializeOwned, Serialize};
 use std::ops::{Deref, DerefMut};
 use tracing::warn;
@@ -38,6 +35,7 @@ use crate::error::AppError;
 /// # Extractor example
 ///
 /// ```rust,no_run
+/// use std::net::SocketAddr;
 /// use axum::{
 ///     response,
 ///     routing::post,
@@ -45,6 +43,8 @@ use crate::error::AppError;
 /// };
 /// use {{crate_name}}::extract;
 /// use serde::Deserialize;
+///
+/// use tokio::net::TcpListener;
 ///
 /// #[derive(Deserialize)]
 /// struct CreateUser {
@@ -58,24 +58,25 @@ use crate::error::AppError;
 ///
 /// let app = Router::new().route("/users", post(create_user));
 /// # async {
-/// # axum::Server::bind(&"".parse().unwrap()).serve(app.into_make_service()).await.unwrap();
+/// # let port = 3000;
+/// # let listener = TcpListener::bind(format!("0.0.0.0:{port}")).await.unwrap();
+/// #     axum::serve(listener, app.into_make_service_with_connect_info::<SocketAddr>())
+/// #         .await
+/// #         .unwrap();
 /// # };
 /// ```
 #[derive(Debug, Clone, Copy, Default)]
 pub struct Json<T>(pub T);
 
 #[async_trait]
-impl<T, S, B> FromRequest<S, B> for Json<T>
+impl<T, S> FromRequest<S> for Json<T>
 where
     T: DeserializeOwned,
-    B: HttpBody + Send + 'static,
-    B::Data: Send,
-    B::Error: Into<BoxError>,
     S: Send + Sync,
 {
     type Rejection = AppError;
 
-    async fn from_request(req: Request<B>, state: &S) -> Result<Self, Self::Rejection> {
+    async fn from_request(req: Request, state: &S) -> Result<Self, Self::Rejection> {
         if json_content_type(req.headers()) {
             let bytes = Bytes::from_request(req, state).await.map_err(|err| {
                 warn!(
@@ -202,9 +203,11 @@ where
 #[cfg(test)]
 mod tests {
     use super::*;
-    use axum::routing::{get, Router};
-    use http::Request;
-    use hyper::Body;
+    use axum::{
+        body::Body,
+        http::Request,
+        routing::{get, Router},
+    };
     use serde::Deserialize;
     use tower::ServiceExt;
 
@@ -232,7 +235,9 @@ mod tests {
             .await
             .unwrap();
 
-        let body = hyper::body::to_bytes(response.into_body()).await.unwrap();
+        let body = axum::body::to_bytes(response.into_body(), usize::MAX)
+            .await
+            .unwrap();
         let body_text = std::str::from_utf8(&body[..]).unwrap();
         dbg!(body_text);
         assert_eq!(body_text, "bar");
