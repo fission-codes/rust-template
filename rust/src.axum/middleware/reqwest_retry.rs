@@ -163,8 +163,7 @@ impl<T: RetryPolicy + Send + Sync> RetryTransientMiddleware<T> {
         extensions: &mut Extensions,
         next: Next<'a>,
     ) -> Result<Response> {
-        let url = request.url().clone();
-        let request_path: String = url.path().to_string();
+        let request_path = request.url().path().to_string();
         let method = request.method().clone();
 
         let result = next.run(request, extensions).await;
@@ -172,12 +171,15 @@ impl<T: RetryPolicy + Send + Sync> RetryTransientMiddleware<T> {
         let labels = vec![
             ("client", self.client_name.to_string()),
             ("method", method.to_string()),
-            ("request_path", request_path),
+            ("request_path", request_path.clone()),
         ];
 
         let extended_labels = client::metrics::extend_labels_for_response(labels, &result);
 
-        metrics::increment_counter!("client_http_requests_retry_total", &extended_labels);
+        metrics::counter!("client_http_requests_retry_total").increment(1);
+        metrics::counter!("client_http_requests_retry_total", "request_path" => request_path)
+            .increment(1);
+        metrics::counter!("client_http_requests_retry_total", &extended_labels).increment(1);
         result
     }
 }

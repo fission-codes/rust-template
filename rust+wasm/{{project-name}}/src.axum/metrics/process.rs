@@ -80,31 +80,20 @@ async fn get_proc_stats(mut sys: System) -> Result<()> {
         let disk = proc.disk_usage();
 
         // cpu-usage divided by # of cores.
-        metrics::gauge!(
-            "process_cpu_usage_percentage",
-            f64::from(proc.cpu_usage() / (cpus as f32))
-        );
+        metrics::gauge!("process_cpu_usage_percentage")
+            .set(f64::from(proc.cpu_usage() / (cpus as f32)));
 
         // The docs for sysinfo indicate that `virtual_memory`
         // returns in KB, but that is incorrect.
         // See this issue: https://github.com/GuillaumeGomez/sysinfo/issues/428#issuecomment-774098021
         // And this PR: https://github.com/GuillaumeGomez/sysinfo/pull/430/files
-        metrics::gauge!(
-            "process_virtual_memory_bytes",
-            (proc.virtual_memory()) as f64
-        );
-        metrics::gauge!("process_memory_bytes", (proc.memory() * 1_000) as f64);
-        metrics::gauge!("process_uptime_seconds", proc.run_time() as f64);
-        metrics::gauge!(
-            "process_disk_total_written_bytes",
-            disk.total_written_bytes as f64,
-        );
-        metrics::gauge!("process_disk_written_bytes", disk.written_bytes as f64);
-        metrics::gauge!(
-            "process_disk_total_read_bytes",
-            disk.total_read_bytes as f64,
-        );
-        metrics::gauge!("process_disk_read_bytes", disk.read_bytes as f64);
+        metrics::gauge!("process_virtual_memory_bytes").set(proc.virtual_memory() as f64);
+        metrics::gauge!("process_memory_bytes").set((proc.memory()) as f64);
+        metrics::gauge!("process_uptime_seconds").set(proc.run_time() as f64);
+        metrics::gauge!("process_disk_total_written_bytes").set(disk.total_written_bytes as f64);
+        metrics::gauge!("process_disk_written_bytes").set(disk.written_bytes as f64);
+        metrics::gauge!("process_disk_total_read_bytes").set(disk.total_read_bytes as f64);
+        metrics::gauge!("process_disk_read_bytes").set(disk.read_bytes as f64);
     } else {
         info!(
             subject = "metrics.process_collection",
