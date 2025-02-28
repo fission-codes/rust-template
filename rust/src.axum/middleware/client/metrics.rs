@@ -29,7 +29,7 @@ impl ReqwestMiddleware for Metrics {
         let now = Instant::now();
 
         let url = request.url().clone();
-        let request_path: String = url.path().to_string();
+        let request_path = url.path().to_string();
         let method = request.method().clone();
 
         let result = next.run(request, extensions).await;
@@ -38,17 +38,21 @@ impl ReqwestMiddleware for Metrics {
         let labels = vec![
             ("client", self.name.to_string()),
             ("method", method.to_string()),
-            ("request_path", request_path),
+            ("request_path", request_path.clone()),
         ];
 
         let extended_labels = extend_labels_for_response(labels, &result);
 
-        metrics::increment_counter!("client_http_requests_total", &extended_labels);
-        metrics::histogram!(
-            "client_http_request_duration_seconds",
-            latency,
-            &extended_labels
-        );
+        metrics::counter!("client_http_requests_total").increment(1u64);
+        metrics::counter!("client_http_requests_total", &extended_labels).increment(1u64);
+        metrics::counter!("client_http_requests_total", "client" => self.name.to_string())
+            .increment(1u64);
+        metrics::counter!("client_http_requests_total", "client" => self.name.to_string(), "request_path" => request_path.clone()).increment(1u64);
+        metrics::histogram!("client_http_request_duration_seconds").record(latency);
+        metrics::histogram!("client_http_request_duration_seconds", &extended_labels)
+            .record(latency);
+        metrics::histogram!("client_http_request_duration_seconds", "client" => self.name.to_string()).record(latency);
+        metrics::histogram!("client_http_request_duration_seconds", "client" => self.name.to_string(), "request_path" => request_path.clone()).record(latency);
 
         result
     }

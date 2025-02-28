@@ -9,21 +9,18 @@ use std::time::Instant;
 pub async fn track(req: Request<Body>, next: Next) -> impl IntoResponse {
     let start = Instant::now();
 
-    let method = req.method().clone();
-    let path = req.path();
+    let path = req.path().to_string();
 
     let res = next.run(req).await;
     let latency = start.elapsed().as_secs_f64();
-    let status = res.status().as_u16().to_string();
+    let status = res.status().as_u16();
 
-    let labels = [
-        ("method", method.to_string()),
-        ("request_path", path),
-        ("status", status),
-    ];
-
-    metrics::increment_counter!("http_requests_total", &labels);
-    metrics::histogram!("http_request_duration_seconds", latency, &labels);
-
+    metrics::counter!("http_requests_total").increment(1);
+    metrics::counter!("http_requests_total", "request_path" => path.clone() ).increment(1);
+    metrics::counter!("http_requests_total", "request_path" => path.clone(), "status" => status.to_string() ).increment(1);
+    metrics::histogram!("http_request_duration_seconds").record(latency);
+    metrics::histogram!("http_request_duration_seconds", "request_path" => path.clone())
+        .record(latency);
+    metrics::histogram!("http_request_duration_seconds", "request_path" => path.clone(), "status" => status.to_string()).record(latency);
     res
 }
