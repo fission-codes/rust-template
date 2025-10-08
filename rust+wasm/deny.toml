@@ -52,6 +52,7 @@ ignore = [
     "RUSTSEC-2023-0071", # Impacts rsa crate, which is only used in dev, see
                          # https://github.com/RustCrypto/RSA/pull/394 for remediation
     { id = "RUSTSEC-2024-0320", reason = "Not planning to force upgrade to rust-yaml2 yet" },
+    { id = "RUSTSEC-2024-0375", reason = "atty unmaintained, only used by criterion in dev. Can likely upgrade criterion to resolve" },
 ]
 # Threshold for security vulnerabilities, any vulnerability with a CVSS score
 # lower than the range specified will be ignored. Note that ignored advisories
