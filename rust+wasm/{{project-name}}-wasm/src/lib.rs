@@ -31,9 +31,9 @@ pub fn set_panic_hook() {
 
 #[wasm_bindgen]
 extern "C" {
-    // For alerting
+    /// For alerting
     pub(crate) fn alert(s: &str);
-    // For logging in the console.
+    /// For logging in the console.
     #[wasm_bindgen(js_namespace = console)]
     pub fn log(s: &str);
 }
