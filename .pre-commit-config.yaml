@@ -28,3 +28,12 @@ repos:
       - id: check-executables-have-shebangs
       - id: check-toml
         exclude: ^(rust|rust+wasm)
+
+  - repo: local
+    hooks:
+      - id: copy-example-lockfiles
+        name: copy example cargo lockfiles
+        entry: scripts/copy-example-lockfiles.sh
+        language: script
+        files: ^examples/(Cargo\.(toml|lock)|.*/Cargo\.toml)$
+        pass_filenames: false
